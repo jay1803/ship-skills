@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: UI Design"
+  short_description: "Shape screens, layout, states, and copy"
+  default_prompt: "Use $pm-ui-design to define product-level screen design, UI states, layout hierarchy, and visible copy."

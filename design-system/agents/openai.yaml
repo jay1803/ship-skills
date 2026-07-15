@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design: System"
+  short_description: "Extract and maintain design-system artifacts"
+  default_prompt: "Use $design-system to extract or refine tokens and reusable component definitions from these sources."

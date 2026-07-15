@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: UX State"
+  short_description: "Clarify flows, states, edge cases, and copy"
+  default_prompt: "Use $pm-ux-state to define the user workflow, involved screens, user-facing states, edge cases, copy, and acceptance criteria."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Refactor Architect"
+  short_description: "Plan safe behavior-preserving refactors"
+  default_prompt: "Use $dev-refactor-architect to design a safe refactor plan with invariants, migration order, risks, and rollback strategy."

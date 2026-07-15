@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Spec"
+  short_description: "Write PRDs and canonical issue specs"
+  default_prompt: "Use $pm-spec to synthesize the available context into a PRD or canonical issue description with requirements and acceptance criteria."

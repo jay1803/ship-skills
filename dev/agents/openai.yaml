@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Orchestrator"
+  short_description: "Run dev through release handoff"
+  default_prompt: "Use $dev to run the fast-default post-PM workflow for this dev-ready issue. Default goal: address the feature or bug and merge the PR through release handoff, unless I explicitly set a narrower boundary. $dev owns state transitions while delegated roles return artifacts."

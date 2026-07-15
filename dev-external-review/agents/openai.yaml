@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: External Review"
+  short_description: "Invoke project review APIs"
+  default_prompt: "Use $dev-external-review to run this project's configured external PR review, post the PR start comment after request acceptance, and report verified results."

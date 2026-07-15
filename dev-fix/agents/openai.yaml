@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Fix"
+  short_description: "Resolve PR comments and conflicts"
+  default_prompt: "Use $dev-fix to resolve review comments and merge conflicts on the last PR in this conversation."

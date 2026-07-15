@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Backlog"
+  short_description: "Split product or skill work into clean issue trees"
+  default_prompt: "Use $pm-backlog to split this product or skill-building work into clean Linear issues, dependencies, and follow-ups."

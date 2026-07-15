@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Self Review"
+  short_description: "Review the diff before PR"
+  default_prompt: "Use $dev-self-review to review this diff before opening a PR."

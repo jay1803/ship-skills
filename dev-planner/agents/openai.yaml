@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Planner"
+  short_description: "Build ordered implementation plans"
+  default_prompt: "Use $dev-planner to create an ordered implementation plan from the technical approach or refactor architecture brief with verification checkpoints."

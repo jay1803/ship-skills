@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Scope"
+  short_description: "Comment the smallest coherent scope"
+  default_prompt: "Use $pm-scope to define the smallest coherent version worth building, its non-goals, and leave the scope artifact as a comment."

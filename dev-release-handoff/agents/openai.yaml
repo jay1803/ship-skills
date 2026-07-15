@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Release Handoff"
+  short_description: "Gate, merge, and clean up PRs"
+  default_prompt: "Use $dev-release-handoff to verify merge readiness, squash-merge the PR when safe, clean up merged branches/worktrees, and close the tracker loop."

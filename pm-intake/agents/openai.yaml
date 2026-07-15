@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Intake"
+  short_description: "Classify and route PM work"
+  default_prompt: "Use $pm-intake to classify this request, comment the intake result, update supported tracker metadata, and route bugs to $pm-bug-triage or product work to the next PM step."

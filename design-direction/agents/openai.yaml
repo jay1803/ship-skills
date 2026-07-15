@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design: Direction"
+  short_description: "Define a distinctive visual language"
+  default_prompt: "Use $design-direction to establish a concrete visual direction for this approved product brief."

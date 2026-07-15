@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design: Orchestrator"
+  short_description: "Route design work to the right phase"
+  default_prompt: "Use $design to route this approved product brief through visual direction, exploration, prototyping, system work, and review."

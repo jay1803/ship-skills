@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Spike"
+  short_description: "Reduce technical uncertainty"
+  default_prompt: "Use $dev-spike to investigate this technical uncertainty and recommend a build direction."

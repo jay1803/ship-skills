@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: PR Product Review"
+  short_description: "Gate PRs against product requirements"
+  default_prompt: "Use $pm-pr-product-review to compare this PR against the original product intent, Linear requirements, scope, edge cases, and platform coverage."

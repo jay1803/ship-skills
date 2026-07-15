@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design: Explore"
+  short_description: "Explore wireframes and visual options"
+  default_prompt: "Use $design-explore to create and compare substantive design directions for this approved screen or flow."

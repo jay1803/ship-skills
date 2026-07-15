@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Repo Context"
+  short_description: "Map code, tests, and constraints"
+  default_prompt: "Use $dev-repo-context to research the repository and produce a codebase context brief."

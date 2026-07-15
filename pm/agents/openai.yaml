@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Orchestrator"
+  short_description: "Route PM work and delegation"
+  default_prompt: "Use $pm to route product work through the right PM workflow, deciding when to run narrow PM skills inline or as bounded sub-agents."

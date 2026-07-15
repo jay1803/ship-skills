@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Readiness Review"
+  short_description: "Comment and set readiness status"
+  default_prompt: "Use $pm-readiness-review to comment the readiness decision and update status only when tracker semantics are clear."

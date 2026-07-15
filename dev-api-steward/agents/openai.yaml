@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: API Steward"
+  short_description: "Keep API contracts and docs current"
+  default_prompt: "Use $dev-api-steward to review API contract changes, update docs and changelog, assess client impact, and decide compatibility or migration needs."

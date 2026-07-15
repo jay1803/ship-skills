@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Implementer"
+  short_description: "Implement planned code changes"
+  default_prompt: "Use $dev-implementer to implement the approved dev plan for the selected platform."

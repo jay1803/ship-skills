@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: CI Repair"
+  short_description: "Diagnose and repair failing CI"
+  default_prompt: "Use $dev-ci-repair to diagnose failing CI and repair it within the issue scope."

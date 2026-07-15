@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Technical Boundary"
+  short_description: "Comment product technical constraints"
+  default_prompt: "Use $pm-technical-boundary to clarify product-level technical constraints and leave them as a comment."

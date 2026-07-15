@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Data & Analytics"
+  short_description: "Define metrics, events, and learning loops"
+  default_prompt: "Use $pm-data-analytics to define success metrics, events, failure signals, and learning questions."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design: Prototype"
+  short_description: "Build and verify an interactive prototype"
+  default_prompt: "Use $design-prototype to build a disposable interactive prototype for this approved flow and verify its behavior."

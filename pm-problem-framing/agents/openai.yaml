@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Problem Framing"
+  short_description: "Comment crisp problem framing"
+  default_prompt: "Use $pm-problem-framing to turn this request into a clear user problem statement and leave it as a comment."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Project Orchestrator"
+  short_description: "Control multi-issue dev waves and barriers"
+  default_prompt: "Use $dev-project-orchestrator to control multi-issue work with a persistent controller, worker threads, and merge barriers; use --sequence for strict serial delivery or --deep-plan only for verified conflict mapping."

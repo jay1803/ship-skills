@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Architect"
+  short_description: "Turn specs into technical approach"
+  default_prompt: "Use $dev-architect to turn this dev-ready product spec into a technical approach; route refactor-first work to $dev-refactor-architect."

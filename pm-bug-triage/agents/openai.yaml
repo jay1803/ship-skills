@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Bug Triage"
+  short_description: "Clarify and prioritize bug reports"
+  default_prompt: "Use $pm-bug-triage to confirm expected behavior, actual behavior, severity, user impact, affected platforms, and the next bug route."

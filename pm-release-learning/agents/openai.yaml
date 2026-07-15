@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Release Learning"
+  short_description: "Draft release notes and shipped learning"
+  default_prompt: "Use $pm-release-learning to draft user-friendly release notes or summarize what shipped, what was learned, metrics to watch, and follow-up issues."

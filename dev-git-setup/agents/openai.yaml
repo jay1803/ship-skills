@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Git Setup"
+  short_description: "Prepare Dev branches and worktrees"
+  default_prompt: "Use $dev-git-setup to prepare feature/AG-1 in the default sibling worktree from an up-to-date develop branch."

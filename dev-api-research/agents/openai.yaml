@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: API Research"
+  short_description: "Research third-party APIs"
+  default_prompt: "Use $dev-api-research to research this API integration and produce an API research brief."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design: Review"
+  short_description: "Audit design quality and conformance"
+  default_prompt: "Use $design-review to review this design artifact for accessibility, hierarchy, consistency, and interaction quality."

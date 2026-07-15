@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Test"
+  short_description: "Verify code and hands-on QA"
+  default_prompt: "Use $dev-test to run automated validation and any required standard-mode hands-on app or browser QA for this implementation."

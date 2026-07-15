@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Product Strategy"
+  short_description: "Shape product vision and roadmap"
+  default_prompt: "Use $pm-strategy to define product vision, roadmap shape, priorities, sequencing, and strategic tradeoffs."

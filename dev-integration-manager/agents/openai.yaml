@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Integration Manager"
+  short_description: "Manage cross-PR integration safely"
+  default_prompt: "Use $dev-integration-manager to manage merge order, cross-branch conflicts, API contracts, combined validation, and rollback risk across multiple PRs."

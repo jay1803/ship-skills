@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Project Orchestrator"
+  short_description: "Shape projects and PM delegation"
+  default_prompt: "Use $pm-project-orchestrator to shape this project into milestones, issues, dependencies, risks, and a serial PM assignment plan."

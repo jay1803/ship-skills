@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: PR Writer"
+  short_description: "Prepare and open pull requests"
+  default_prompt: "Use $dev-pr-writer to create the pull request with implementation and test evidence."

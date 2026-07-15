@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Code Review"
+  short_description: "Review PRs via Codex or adapters"
+  default_prompt: "Use $dev-code-review to run the configured technical review path for this pull request."

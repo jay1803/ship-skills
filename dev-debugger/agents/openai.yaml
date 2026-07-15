@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Debugger"
+  short_description: "Diagnose triaged bug tickets"
+  default_prompt: "Use $dev-debugger to read the bug ticket and any PM bug triage brief, then produce an evidence-led root-cause brief."
