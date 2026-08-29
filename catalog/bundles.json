@@ -1,0 +1,14 @@
+{
+  "plugins": {
+    "delivery": {
+      "path": "plugins/delivery",
+      "package": "@jay1803/ship-skills-delivery",
+      "status": "stable"
+    },
+    "design": {
+      "path": "plugins/design",
+      "package": "@jay1803/ship-skills-design",
+      "status": "stable"
+    }
+  }
+}
