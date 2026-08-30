@@ -1,0 +1,17 @@
+{
+  "name": "jay1803-ship-skills",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Source monorepo for jay1803's PM-to-Dev delivery and design Codex plugins.",
+  "workspaces": [
+    "plugins/*"
+  ],
+  "scripts": {
+    "catalog": "python3 scripts/build_catalog.py",
+    "check": "python3 scripts/validate_repository.py",
+    "pack:check": "bash scripts/check_packages.sh"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

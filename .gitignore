@@ -1,0 +1,31 @@
+.DS_Store
+__pycache__/
+*.pyc
+*.pyo
+node_modules/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Local credential files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials
+credentials.json
+secrets.json
+*.secret
+*_credentials*
+*_secrets*
+.netrc
+
+# Logs and databases
+*.log
+*.sqlite
+*.db

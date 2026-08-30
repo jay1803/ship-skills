@@ -1,0 +1,20 @@
+{
+  "name": "@jay1803/ship-skills-design",
+  "version": "0.1.0",
+  "description": "Design direction, exploration, prototyping, systems, and review workflows for Codex.",
+  "files": [
+    ".codex-plugin",
+    "skills"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jay1803/ship-skills.git",
+    "directory": "plugins/design"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

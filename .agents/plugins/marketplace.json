@@ -1,0 +1,32 @@
+{
+  "name": "jay1803-ship-skills",
+  "interface": {
+    "displayName": "Jay1803 Ship Skills"
+  },
+  "plugins": [
+    {
+      "name": "delivery",
+      "source": {
+        "source": "local",
+        "path": "./plugins/delivery"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "design",
+      "source": {
+        "source": "local",
+        "path": "./plugins/design"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

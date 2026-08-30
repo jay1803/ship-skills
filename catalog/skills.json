@@ -1,0 +1,392 @@
+{
+  "schemaVersion": 1,
+  "skills": [
+    {
+      "name": "dev",
+      "description": "",
+      "path": "plugins/delivery/skills/dev",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-api-research",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-api-research",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-api-steward",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-api-steward",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-architect",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-architect",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-ci-repair",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-ci-repair",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-code-review",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-code-review",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-debugger",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-debugger",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-external-review",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-external-review",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-fix",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-fix",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-git-setup",
+      "description": "Use when Dev needs to prepare Git state for a coding-ready issue: inspect repo/worktrees, update main and develop, verify develop contains main, create or reuse a feature/ISSUE_ID or fix/ISSUE_ID branch, and choose a separate worktree by default or current-checkout branch setup when explicitly required.",
+      "path": "plugins/delivery/skills/dev-git-setup",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-implementer",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-implementer",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-integration-manager",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-integration-manager",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-planner",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-planner",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-pr-writer",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-pr-writer",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-project-orchestrator",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-project-orchestrator",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-refactor-architect",
+      "description": "Use when Dev is planning a refactor, architecture cleanup, module split, dependency inversion, migration, or tech-debt reduction where behavior should remain stable. Use before implementation planning to define invariants, affected modules, contracts, migration order, risk areas, test strategy, rollback, and whether to split the refactor into safer PRs.",
+      "path": "plugins/delivery/skills/dev-refactor-architect",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-release-handoff",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-release-handoff",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-repo-context",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-repo-context",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-self-review",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-self-review",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-spike",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-spike",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "dev-test",
+      "description": "",
+      "path": "plugins/delivery/skills/dev-test",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm",
+      "description": "",
+      "path": "plugins/delivery/skills/pm",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-backlog",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-backlog",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-bug-triage",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-bug-triage",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-data-analytics",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-data-analytics",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-intake",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-intake",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-pr-product-review",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-pr-product-review",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-problem-framing",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-problem-framing",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-project-orchestrator",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-project-orchestrator",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-readiness-review",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-readiness-review",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-release-learning",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-release-learning",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-scope",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-scope",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-spec",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-spec",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-strategy",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-strategy",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-technical-boundary",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-technical-boundary",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-ui-design",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-ui-design",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "pm-ux-state",
+      "description": "",
+      "path": "plugins/delivery/skills/pm-ux-state",
+      "owner": "jay1803",
+      "family": "delivery",
+      "maturity": "stable",
+      "distribution": "delivery"
+    },
+    {
+      "name": "design",
+      "description": "",
+      "path": "plugins/design/skills/design",
+      "owner": "jay1803",
+      "family": "design",
+      "maturity": "stable",
+      "distribution": "design"
+    },
+    {
+      "name": "design-direction",
+      "description": "",
+      "path": "plugins/design/skills/design-direction",
+      "owner": "jay1803",
+      "family": "design",
+      "maturity": "stable",
+      "distribution": "design"
+    },
+    {
+      "name": "design-explore",
+      "description": "",
+      "path": "plugins/design/skills/design-explore",
+      "owner": "jay1803",
+      "family": "design",
+      "maturity": "stable",
+      "distribution": "design"
+    },
+    {
+      "name": "design-prototype",
+      "description": "",
+      "path": "plugins/design/skills/design-prototype",
+      "owner": "jay1803",
+      "family": "design",
+      "maturity": "stable",
+      "distribution": "design"
+    },
+    {
+      "name": "design-review",
+      "description": "",
+      "path": "plugins/design/skills/design-review",
+      "owner": "jay1803",
+      "family": "design",
+      "maturity": "stable",
+      "distribution": "design"
+    },
+    {
+      "name": "design-system",
+      "description": "",
+      "path": "plugins/design/skills/design-system",
+      "owner": "jay1803",
+      "family": "design",
+      "maturity": "stable",
+      "distribution": "design"
+    }
+  ]
+}
