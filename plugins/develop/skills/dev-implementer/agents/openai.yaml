@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Implementer"
+  short_description: "Implement changes and repair scoped PR findings"
+  default_prompt: "Use $dev-implementer to implement this approved change or repair this exact PR, preserving scope and current validation evidence."

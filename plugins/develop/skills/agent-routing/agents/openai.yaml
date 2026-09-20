@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Routing"
+  short_description: "Route PM and Dev agents across Codex and Claude Code"
+  default_prompt: "Use $agent-routing to classify this delegated task and select its role, depth, capabilities, executor policy, profile, and runtime binding."

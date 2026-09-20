@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "displayName": "Review",
+  "name": "review",
+  "version": "0.5.1",
+  "description": "GitHub-native PR code review, isolated technical-review orchestration, and finding judgment.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "engineering",
+    "review",
+    "pull-request",
+    "quality"
+  ],
+  "skills": "./skills/"
+}

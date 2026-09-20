@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "jay1803-ship-skills",
+  "owner": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "description": "Jay1803's public agent-skill plugins for Codex and Claude Code.",
+  "plugins": [
+    {
+      "name": "product",
+      "source": "./plugins/product"
+    },
+    {
+      "name": "develop",
+      "source": "./plugins/develop"
+    },
+    {
+      "name": "devops",
+      "source": "./plugins/devops"
+    },
+    {
+      "name": "review",
+      "source": "./plugins/review"
+    },
+    {
+      "name": "design",
+      "source": "./plugins/design"
+    },
+    {
+      "name": "research",
+      "source": "./plugins/research"
+    },
+    {
+      "name": "project",
+      "source": "./plugins/project"
+    }
+  ]
+}

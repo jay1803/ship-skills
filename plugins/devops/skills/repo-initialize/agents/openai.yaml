@@ -1,0 +1,4 @@
+interface:
+  display_name: "Repository Setup"
+  short_description: "Initialize or update repository agent guidance"
+  default_prompt: "Use $repo-initialize to initialize or update this repository’s agent guidance while preserving project rules."

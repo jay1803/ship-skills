@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Technical Plan"
+  short_description: "Design task boundaries and implementation-ready tickets"
+  default_prompt: "Use $dev-planner to settle the engineering design and task boundaries, then return concrete ticket plans with implementation latitude and verification evidence."

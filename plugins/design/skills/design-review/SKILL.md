@@ -17,7 +17,7 @@ Read [references/review-checklist.md](references/review-checklist.md) completely
 
 ## Boundary
 
-- Review visual and interaction craft. Do not replace `$pm-pr-product-review`, `$dev-self-review`, tests, security review, or architecture review.
+- Review visual and interaction craft. Do not replace `$pm-pr-product-review`, `$dev-verifier`, tests, security review, or architecture review.
 - Default to report-only for requests to inspect, audit, critique, or review.
 - Apply changes only when the user asks to fix, polish, improve, or complete delivery and the target files are in scope.
 - Route product-behavior disagreements to PM and production implementation work to Dev.

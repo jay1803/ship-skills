@@ -17,7 +17,7 @@ Make design choices visible and comparable before committing to a final artifact
 
 - Require a clear product goal and approved workflow or screen requirements.
 - Explore layout, hierarchy, density, visual treatment, and presentation within those requirements.
-- Route changes to user flow, state behavior, feature scope, or acceptance criteria back to PM.
+- Route missing flow/screen design to `$design`; route changes to material product policy, scope or acceptance back to PM.
 - Create design artifacts only. Do not mutate production application code unless the user explicitly changes the task to implementation.
 
 ## Modes
@@ -29,7 +29,7 @@ Make design choices visible and comparable before committing to a final artifact
 
 ## Workflow
 
-1. Read the approved brief, `$pm-ux-state` / `$pm-ui-design` output, current interface, selected `$design-direction`, and existing design-system sources.
+1. Read the approved brief, `$design` interaction/screen specification, current interface, selected `$design-direction`, and existing design-system sources.
 2. Define the exploration question in one sentence.
 3. Select two to four meaningful axes. Examples: information hierarchy, density, layout model, navigation presentation, typography, visual tone, or component treatment.
 4. Confirm the requested option count. When the user asks for options without a count, default to three: conservative, refined, and more exploratory.

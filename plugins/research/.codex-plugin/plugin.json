@@ -1,0 +1,36 @@
+{
+  "name": "research",
+  "version": "0.1.1",
+  "description": "Decision-oriented research orchestration, evidence planning, specialist investigation, synthesis, and independent review workflows.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "research",
+    "decision-making",
+    "strategy",
+    "evidence",
+    "forecasting"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Research",
+    "shortDescription": "Turn open questions into decision-ready evidence.",
+    "longDescription": "A decision-research family for framing open questions, modeling decisions, mapping hypotheses, prioritizing evidence, conducting specialist research, synthesizing uncertainty, and independently reviewing whether a recommendation is ready to act on.",
+    "developerName": "jay1803",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Research this open question and produce a decision-ready brief.",
+      "Determine what evidence would change this decision before collecting more information.",
+      "Compare these strategic alternatives using explicit criteria and current evidence.",
+      "Review this research brief for source quality, uncertainty, and decision readiness."
+    ]
+  }
+}

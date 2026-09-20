@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Readiness Review"
+  short_description: "Assess readiness and return one Dev handoff"
+  default_prompt: "Use $pm-readiness-review to assess the current canonical issue and return its readiness and handoff result."

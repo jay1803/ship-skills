@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Merge Handoff"
+  short_description: "Land one issue PR into the resolved issue PR base safely"
+  default_prompt: "Use $dev-merge-handoff to verify and land one issue PR into the resolved issue PR base, then clean up and return a release-candidate handoff."

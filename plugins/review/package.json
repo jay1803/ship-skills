@@ -1,0 +1,21 @@
+{
+  "name": "@jay1803/ship-skills-review",
+  "version": "0.5.1",
+  "description": "GitHub-native PR code review, isolated technical-review orchestration, and finding judgment for Codex and Claude Code.",
+  "files": [
+    ".codex-plugin",
+    ".claude-plugin",
+    "skills"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jay1803/ship-skills.git",
+    "directory": "plugins/review"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

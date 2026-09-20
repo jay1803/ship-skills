@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Project Orchestrator"
+  short_description: "Set goals and control multi-issue PM waves"
+  default_prompt: "Use $pm-project-orchestrator to inspect this project and complete the authorized structure or PM-readiness work, respecting the requested task and write boundaries."

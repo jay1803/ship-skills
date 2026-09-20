@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Git Setup"
+  short_description: "Set up issue-linked Dev worktrees"
+  default_prompt: "Use $dev-git-setup only after resolving or creating the tracker issue, then prepare its default sibling worktree from the repository-policy or batch integration base."

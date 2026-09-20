@@ -1,9 +1,10 @@
 {
   "name": "@jay1803/ship-skills-design",
-  "version": "0.1.0",
-  "description": "Design direction, exploration, prototyping, systems, and review workflows for Codex.",
+  "version": "0.2.0",
+  "description": "Design direction, exploration, prototyping, systems, and review workflows for Codex and Claude Code.",
   "files": [
     ".codex-plugin",
+    ".claude-plugin",
     "skills"
   ],
   "publishConfig": {

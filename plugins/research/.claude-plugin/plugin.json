@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "displayName": "Research",
+  "name": "research",
+  "version": "0.1.1",
+  "description": "Decision-oriented research orchestration, evidence planning, specialist investigation, synthesis, and independent review workflows.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "research",
+    "decision-making",
+    "strategy",
+    "evidence",
+    "forecasting"
+  ],
+  "skills": "./skills/"
+}

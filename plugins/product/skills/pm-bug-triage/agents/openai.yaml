@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Bug Triage"
+  short_description: "Triage bugs before diagnosis and synthesis"
+  default_prompt: "Use $pm-bug-triage to clarify the bug, route it to diagnosis, and require $pm-spec canonical synthesis afterward."

@@ -1,0 +1,21 @@
+{
+  "name": "@jay1803/ship-skills-devops",
+  "version": "0.1.1",
+  "description": "Repository initialization, deployment-skill authoring, and production release orchestration.",
+  "files": [
+    ".codex-plugin",
+    ".claude-plugin",
+    "skills"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jay1803/ship-skills.git",
+    "directory": "plugins/devops"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

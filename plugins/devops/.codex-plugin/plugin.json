@@ -1,0 +1,34 @@
+{
+  "name": "devops",
+  "version": "0.1.1",
+  "description": "Repository initialization, deployment-skill authoring, and production release orchestration.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "devops",
+    "repository",
+    "deployment",
+    "release"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "DevOps",
+    "shortDescription": "Set up repositories and prepare and execute releases.",
+    "longDescription": "Repository initialization, deployment-skill authoring, and production release orchestration.",
+    "developerName": "jay1803",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Initialize this repository for our agents.",
+      "Create a deployment skill from this repository’s actual workflow.",
+      "Prepare a verified production release."
+    ]
+  }
+}

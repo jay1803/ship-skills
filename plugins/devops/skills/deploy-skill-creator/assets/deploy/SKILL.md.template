@@ -1,0 +1,132 @@
+---
+name: deploy
+description: >-
+  Deploy or verify {{PROJECT_NAME}} in its test or production environment using
+  the repository's authoritative {{DEPLOYMENT_SYSTEM}} workflow. Use for an
+  exact immutable revision after integration or when invoked by
+  $release after the repository-policy production promotion. Do not use to
+  choose release scope, decide or execute a promotion merge, create tags, or
+  publish GitHub Releases.
+---
+
+# {{PROJECT_NAME}}: Deploy
+
+Implement contract `release-deploy/v1` for this repository only.
+
+## Project Contract
+
+```text
+Repository: {{REPOSITORY_PATH}}
+Release policy: <repo>/.agents/policies/release.yaml (consumed by $release)
+Environments: test | production
+Deployment system: {{DEPLOYMENT_SYSTEM}}
+```
+
+Never infer the target from the current checkout, current host, or ambient
+provider selection. Resolve and report the exact {{TARGET_IDENTITY_FIELDS}}
+before mutation.
+
+## Inputs
+
+```yaml
+contract: release-deploy/v1
+project: {{PROJECT_NAME}}
+repo: {{REPOSITORY_PATH}}
+action: deploy | verify
+environment: test | production
+requested_ref: <full commit SHA>
+release_tag: <immutable tag or null>
+release_pr: <URL or null>
+authorization: <user-authorized scope>
+```
+
+Reject an abbreviated, missing, or unresolved `requested_ref`. A branch name is
+context, not an immutable deployment identity.
+
+## Capabilities
+
+| Environment | Deployment | Verify-only | Trigger |
+| --- | --- | --- | --- |
+| test | {{TEST_DEPLOY_SUPPORT}} | {{TEST_VERIFY_SUPPORT}} | {{TEST_TRIGGER}} |
+| production | {{PRODUCTION_DEPLOY_SUPPORT}} | {{PRODUCTION_VERIFY_SUPPORT}} | {{PRODUCTION_TRIGGER}} |
+
+GitHub Release publication triggers deployment: {{GITHUB_RELEASE_TRIGGER}}
+
+## Preconditions And Authorization
+
+{{PRECONDITIONS_AND_AUTHORIZATION}}
+
+Name required credentials or login state, but never print or persist secret
+values. A `verify` request is read-only and must not be upgraded to `deploy`.
+Rollback is a separate mutation and requires its own authorization unless an
+already-approved project policy explicitly owns it.
+
+## Test Procedure
+
+### Deploy
+
+{{TEST_DEPLOY_PROCEDURE}}
+
+### Verify
+
+{{TEST_VERIFY_PROCEDURE}}
+
+## Production Procedure
+
+### Deploy
+
+{{PRODUCTION_DEPLOY_PROCEDURE}}
+
+### Verify
+
+{{PRODUCTION_VERIFY_PROCEDURE}}
+
+## Migration And Compatibility Order
+
+{{MIGRATION_AND_COMPATIBILITY}}
+
+## Revision Integrity, Health, And Smoke Checks
+
+{{INTEGRITY_HEALTH_SMOKE}}
+
+Success requires runtime proof that the observed revision matches
+`requested_ref` or a documented deterministic immutable equivalent. A completed
+upload, build, restart, or provider job alone is not deployment success.
+
+## Retry, Stop, And Rollback
+
+{{RETRY_STOP_ROLLBACK}}
+
+Do not blindly retry non-idempotent deployments, migrations, submissions, or
+rollbacks. Return `blocked` or `failed` with evidence when the safe boundary is
+reached.
+
+## Receipt
+
+```yaml
+contract: release-deploy/v1
+project: {{PROJECT_NAME}}
+action: deploy | verify
+environment: test | production
+status: deployed | verified | blocked | failed | rolled-back
+requested_ref: <full commit SHA>
+observed_ref: <full running commit SHA or immutable equivalent>
+release_tag: <tag or null>
+deployment_id: <provider/run/deployment id or null>
+started_at: <timestamp or null>
+finished_at: <timestamp or null>
+checks:
+  build: passed | failed | not-applicable
+  migration: passed | failed | not-applicable
+  rollout: passed | failed | not-applicable
+  health: passed | failed | not-applicable
+  smoke: passed | failed | not-applicable
+rollback:
+  supported: {{ROLLBACK_SUPPORTED}}
+  target: <immutable ref or null>
+  performed: true | false
+evidence:
+  - <redacted provider/runtime proof>
+notes:
+  - <remaining risk or none>
+```

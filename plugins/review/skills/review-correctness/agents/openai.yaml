@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review: Correctness"
+  short_description: "Find reproducible correctness defects in a PR or diff"
+  default_prompt: "Use $review-correctness to trace an exact PR or immutable diff for reproducible, high-confidence correctness defects."

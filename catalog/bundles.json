@@ -1,13 +1,38 @@
 {
   "plugins": {
-    "delivery": {
-      "path": "plugins/delivery",
-      "package": "@jay1803/ship-skills-delivery",
-      "status": "stable"
-    },
     "design": {
       "path": "plugins/design",
       "package": "@jay1803/ship-skills-design",
+      "status": "stable"
+    },
+    "develop": {
+      "path": "plugins/develop",
+      "package": "@jay1803/ship-skills-develop",
+      "status": "stable"
+    },
+    "devops": {
+      "path": "plugins/devops",
+      "package": "@jay1803/ship-skills-devops",
+      "status": "stable"
+    },
+    "product": {
+      "path": "plugins/product",
+      "package": "@jay1803/ship-skills-product",
+      "status": "stable"
+    },
+    "project": {
+      "path": "plugins/project",
+      "package": "@jay1803/ship-skills-project",
+      "status": "stable"
+    },
+    "research": {
+      "path": "plugins/research",
+      "package": "@jay1803/ship-skills-research",
+      "status": "stable"
+    },
+    "review": {
+      "path": "plugins/review",
+      "package": "@jay1803/ship-skills-review",
       "status": "stable"
     }
   }

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "displayName": "Product",
+  "name": "product",
+  "version": "0.8.0",
+  "description": "Product strategy, issue and project orchestration, PM readiness, and product review workflows.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "product-management",
+    "strategy",
+    "requirements",
+    "linear"
+  ],
+  "skills": "./skills/"
+}

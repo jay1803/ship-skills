@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "displayName": "Project",
+  "name": "project",
+  "version": "0.2.0",
+  "description": "Project document lifecycle: stakeholder proposals, kickoff and Entry Pages, evidence-backed progress updates, closeout and document review.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "project",
+    "proposal",
+    "kickoff",
+    "progress",
+    "retrospective"
+  ],
+  "skills": "./skills/"
+}

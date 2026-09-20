@@ -2,7 +2,7 @@
   "name": "jay1803-ship-skills",
   "version": "0.1.0",
   "private": true,
-  "description": "Source monorepo for jay1803's PM-to-Dev delivery and design Codex plugins.",
+  "description": "Source monorepo for jay1803's public product, engineering, design and research agent-skill plugins.",
   "workspaces": [
     "plugins/*"
   ],

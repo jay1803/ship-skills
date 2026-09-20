@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review: Spec Compliance"
+  short_description: "Compare implementation to governing requirements"
+  default_prompt: "Use $review-spec to check this frozen implementation against its governing acceptance contract."

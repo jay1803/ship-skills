@@ -2,341 +2,8 @@
   "schemaVersion": 1,
   "skills": [
     {
-      "name": "dev",
-      "description": "",
-      "path": "plugins/delivery/skills/dev",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-api-research",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-api-research",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-api-steward",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-api-steward",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-architect",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-architect",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-ci-repair",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-ci-repair",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-code-review",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-code-review",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-debugger",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-debugger",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-external-review",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-external-review",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-fix",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-fix",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-git-setup",
-      "description": "Use when Dev needs to prepare Git state for a coding-ready issue: inspect repo/worktrees, update main and develop, verify develop contains main, create or reuse a feature/ISSUE_ID or fix/ISSUE_ID branch, and choose a separate worktree by default or current-checkout branch setup when explicitly required.",
-      "path": "plugins/delivery/skills/dev-git-setup",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-implementer",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-implementer",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-integration-manager",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-integration-manager",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-planner",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-planner",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-pr-writer",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-pr-writer",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-project-orchestrator",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-project-orchestrator",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-refactor-architect",
-      "description": "Use when Dev is planning a refactor, architecture cleanup, module split, dependency inversion, migration, or tech-debt reduction where behavior should remain stable. Use before implementation planning to define invariants, affected modules, contracts, migration order, risk areas, test strategy, rollback, and whether to split the refactor into safer PRs.",
-      "path": "plugins/delivery/skills/dev-refactor-architect",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-release-handoff",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-release-handoff",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-repo-context",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-repo-context",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-self-review",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-self-review",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-spike",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-spike",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "dev-test",
-      "description": "",
-      "path": "plugins/delivery/skills/dev-test",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm",
-      "description": "",
-      "path": "plugins/delivery/skills/pm",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-backlog",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-backlog",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-bug-triage",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-bug-triage",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-data-analytics",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-data-analytics",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-intake",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-intake",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-pr-product-review",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-pr-product-review",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-problem-framing",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-problem-framing",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-project-orchestrator",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-project-orchestrator",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-readiness-review",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-readiness-review",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-release-learning",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-release-learning",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-scope",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-scope",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-spec",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-spec",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-strategy",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-strategy",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-technical-boundary",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-technical-boundary",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-ui-design",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-ui-design",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
-      "name": "pm-ux-state",
-      "description": "",
-      "path": "plugins/delivery/skills/pm-ux-state",
-      "owner": "jay1803",
-      "family": "delivery",
-      "maturity": "stable",
-      "distribution": "delivery"
-    },
-    {
       "name": "design",
-      "description": "",
+      "description": "Design user flows, interaction states and screen specifications from clear product intent, or route visual direction, alternatives, prototypes, design systems and craft review. Use for UX/UI design and textual engineering handoffs as well as visual artifacts. Product policy and scope stay with PM; production implementation stays with Dev.",
       "path": "plugins/design/skills/design",
       "owner": "jay1803",
       "family": "design",
@@ -387,6 +54,573 @@
       "family": "design",
       "maturity": "stable",
       "distribution": "design"
+    },
+    {
+      "name": "agent-routing",
+      "description": "Select executor and runtime bindings when dispatching or escalating a delegated controller, worker, or bounded agent.",
+      "path": "plugins/develop/skills/agent-routing",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev",
+      "description": "Deliver one coding-ready issue through its PR, review, CI, merge, and test handoff. Use for the full issue lifecycle, not ordinary bounded edits or multi-issue scheduling.",
+      "path": "plugins/develop/skills/dev",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-api-research",
+      "description": "Research third-party API or SDK capabilities and integration contracts when external behavior needs clarification.",
+      "path": "plugins/develop/skills/dev-api-research",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-api-steward",
+      "description": "Maintain owned backend/API contracts and client-facing documentation when implementation may change API behavior or compatibility.",
+      "path": "plugins/develop/skills/dev-api-steward",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-ci-repair",
+      "description": "Repair red PR checks or repeated CI/environment failures escalated by dev-test. Initial implementation validation belongs to dev-test.",
+      "path": "plugins/develop/skills/dev-ci-repair",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-debugger",
+      "description": "Diagnose an observed defect, regression, crash, or unexplained test failure and return an evidence-backed root-cause brief before repair.",
+      "path": "plugins/develop/skills/dev-debugger",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-git-setup",
+      "description": "Prepare or reconcile an issue branch and isolated worktree for coding-ready Dev work, preserving existing checkouts and verifying integration bases.",
+      "path": "plugins/develop/skills/dev-git-setup",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-implementer",
+      "description": "Implement approved changes and repair PR review findings or conflicts, preserving scoped ownership and current validation evidence.",
+      "path": "plugins/develop/skills/dev-implementer",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-integration-manager",
+      "description": "Coordinate integration of an explicit PR or branch set when merge order, cross-branch contracts, conflicts, or combined validation need a shared checkpoint.",
+      "path": "plugins/develop/skills/dev-integration-manager",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-merge-handoff",
+      "description": "Gate and complete one issue PR merge into the resolved integration base, cleanup, and test-revision handoff. Production promotion belongs to release.",
+      "path": "plugins/develop/skills/dev-merge-handoff",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-planner",
+      "description": "Design approved engineering work, decide task boundaries, and prepare implementation-ready ticket plans. Use for technical choices, decomposition, or concrete implementation planning; not execution scheduling.",
+      "path": "plugins/develop/skills/dev-planner",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-pr-writer",
+      "description": "Prepare, push, and open or reuse a GitHub PR from implemented work with validation evidence; supports explicitly requested drafts.",
+      "path": "plugins/develop/skills/dev-pr-writer",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-project-orchestrator",
+      "description": "Plan or execute multiple dev-ready issues as dependency waves or an ordered merge sequence. Single-issue delivery belongs to dev.",
+      "path": "plugins/develop/skills/dev-project-orchestrator",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-spike",
+      "description": "Investigate unresolved technical feasibility or competing implementation paths before architecture. Observed defects belong to dev-debugger first.",
+      "path": "plugins/develop/skills/dev-spike",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-test",
+      "description": "Run post-implementation validation under the selected Dev mode and classify failures before PR preparation.",
+      "path": "plugins/develop/skills/dev-test",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "dev-verifier",
+      "description": "Audit completion claims against fresh tests, runtime evidence, acceptance criteria, and an exact revision. Independent technical review belongs to review.",
+      "path": "plugins/develop/skills/dev-verifier",
+      "owner": "jay1803",
+      "family": "develop",
+      "maturity": "stable",
+      "distribution": "develop"
+    },
+    {
+      "name": "deploy-skill-creator",
+      "description": "Create or update a repository-local deploy skill when a project needs its evidenced deployment and verification procedure captured.",
+      "path": "plugins/devops/skills/deploy-skill-creator",
+      "owner": "jay1803",
+      "family": "devops",
+      "maturity": "stable",
+      "distribution": "devops"
+    },
+    {
+      "name": "release",
+      "description": "Orchestrate a production release under repository policy, including promotion, tag, optional project deployment, and GitHub Release. Excludes ordinary issue delivery.",
+      "path": "plugins/devops/skills/release",
+      "owner": "jay1803",
+      "family": "devops",
+      "maturity": "stable",
+      "distribution": "devops"
+    },
+    {
+      "name": "repo-initialize",
+      "description": "Initialize or update a repository's AGENTS.md and optional .agents policies from the agent repository template while preserving project-specific rules.",
+      "path": "plugins/devops/skills/repo-initialize",
+      "owner": "jay1803",
+      "family": "devops",
+      "maturity": "stable",
+      "distribution": "devops"
+    },
+    {
+      "name": "issue-router",
+      "description": "Select one read-only workflow route for a bound Linear issue or project before PM, Dev, investigation, verification, or release.",
+      "path": "plugins/product/skills/issue-router",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm",
+      "description": "Drive one product issue to development readiness, including intake, missing decisions, canonical specification, and a verified Dev handoff. Route multi-issue work to pm-project-orchestrator.",
+      "path": "plugins/product/skills/pm",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-backlog",
+      "description": "Draft independently valuable issue slices and dependencies from stable product scope. Hand authorized tracker creation to pm-project-orchestrator.",
+      "path": "plugins/product/skills/pm-backlog",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-bug-triage",
+      "description": "Clarify expected versus actual behavior, impact, severity, and actionable evidence before engineering diagnoses a bug.",
+      "path": "plugins/product/skills/pm-bug-triage",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-data-analytics",
+      "description": "Design feature success metrics, event semantics, and privacy-aware measurement plans. Excludes analyzing datasets or implementing dashboards.",
+      "path": "plugins/product/skills/pm-data-analytics",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-pr-product-review",
+      "description": "Compare an implemented PR with confirmed product requirements and acceptance criteria; assess conformance without implementing fixes.",
+      "path": "plugins/product/skills/pm-pr-product-review",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-project-orchestrator",
+      "description": "Structure a Linear project or coordinate PM readiness across related issues, including decomposition of an umbrella issue.",
+      "path": "plugins/product/skills/pm-project-orchestrator",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-project-status",
+      "description": "Read current Linear project and roadmap status, milestone health and shipment evidence. Use for a project status report; route scope changes to Product and issue/PR delivery mutations to Develop.",
+      "path": "plugins/product/skills/pm-project-status",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-readiness-review",
+      "description": "Assess whether one issue has sufficient confirmed product scope and acceptance evidence to begin development; return one combined readiness and Dev handoff result.",
+      "path": "plugins/product/skills/pm-readiness-review",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-release-learning",
+      "description": "Draft evidence-backed release notes or summarize post-release product learning from shipped changes and feedback.",
+      "path": "plugins/product/skills/pm-release-learning",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-scope",
+      "description": "Clarify the user problem, desired outcome, and smallest coherent product scope with meaningful non-goals and proposed tradeoffs before specification.",
+      "path": "plugins/product/skills/pm-scope",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-solution-review",
+      "description": "Review a confirmed product solution for unnecessary complexity and unsupported rules while preserving its goal. Excludes strategy, design, and code review.",
+      "path": "plugins/product/skills/pm-solution-review",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-spec",
+      "description": "Synthesize confirmed product scope or a diagnosed bug into a concise PRD or canonical issue title and description.",
+      "path": "plugins/product/skills/pm-spec",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "pm-strategy",
+      "description": "Shape product direction, roadmap priorities, and evidence-backed investment recommendations before project commitment.",
+      "path": "plugins/product/skills/pm-strategy",
+      "owner": "jay1803",
+      "family": "product",
+      "maturity": "stable",
+      "distribution": "product"
+    },
+    {
+      "name": "proj-closeout",
+      "description": "Prepare a project completion review, handover and retrospective against approved goals and actual delivery evidence. Keep outstanding impact measurement and follow-up ownership explicit.",
+      "path": "plugins/project/skills/proj-closeout",
+      "owner": "jay1803",
+      "family": "project",
+      "maturity": "stable",
+      "distribution": "project"
+    },
+    {
+      "name": "proj-context",
+      "description": "Build or refresh a project onboarding context pack from existing documents and relevant sources. Reuse known project materials; use proj-sources when discovery is needed.",
+      "path": "plugins/project/skills/proj-context",
+      "owner": "jay1803",
+      "family": "project",
+      "maturity": "stable",
+      "distribution": "project"
+    },
+    {
+      "name": "proj-kickoff",
+      "description": "Turn an approved project proposal into kickoff material and a reusable Project Entry Page. Use for execution alignment, scope, roles, resources and milestones; does not schedule meetings or create delivery issues.",
+      "path": "plugins/project/skills/proj-kickoff",
+      "owner": "jay1803",
+      "family": "project",
+      "maturity": "stable",
+      "distribution": "project"
+    },
+    {
+      "name": "proj-proposal",
+      "description": "Write or refine a stakeholder project proposal, including a short go/no-go brief, using available context and evidence. Use for an investment or resource decision; approved execution setup belongs to proj-kickoff.",
+      "path": "plugins/project/skills/proj-proposal",
+      "owner": "jay1803",
+      "family": "project",
+      "maturity": "stable",
+      "distribution": "project"
+    },
+    {
+      "name": "proj-review",
+      "description": "Review a proposal, kickoff, project update or closeout document for decision quality, evidence and consistency. Return findings and readiness; does not approve the project or edit the document unless separately authorized.",
+      "path": "plugins/project/skills/proj-review",
+      "owner": "jay1803",
+      "family": "project",
+      "maturity": "stable",
+      "distribution": "project"
+    },
+    {
+      "name": "proj-sources",
+      "description": "Find and inventory relevant sources for a named project across connected workspace tools, with explicit coverage and access gaps. Use when the user gives a project, initiative, feature, launch, customer, or code name and asks for source links, context, docs, meetings, meeting notes, Slack channels, Notion pages, Google Docs, Google Calendar/Meet events, or other related resource URLs.",
+      "path": "plugins/project/skills/proj-sources",
+      "owner": "jay1803",
+      "family": "project",
+      "maturity": "stable",
+      "distribution": "project"
+    },
+    {
+      "name": "proj-update",
+      "description": "Gather project progress and reconcile an Entry Page or plan, then draft a stakeholder update. Also supports log-only reconciliation; accepts existing document platforms and local Markdown.",
+      "path": "plugins/project/skills/proj-update",
+      "owner": "jay1803",
+      "family": "project",
+      "maturity": "stable",
+      "distribution": "project"
+    },
+    {
+      "name": "project",
+      "description": "Prepare and maintain project documents from stakeholder proposal through kickoff, progress updates and closeout. Resume an existing document workflow; excludes product issue decomposition and engineering delivery.",
+      "path": "plugins/project/skills/project",
+      "owner": "jay1803",
+      "family": "project",
+      "maturity": "stable",
+      "distribution": "project"
+    },
+    {
+      "name": "research",
+      "description": "",
+      "path": "plugins/research/skills/research",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-causal-analysis",
+      "description": "",
+      "path": "plugins/research/skills/research-causal-analysis",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-competitive",
+      "description": "",
+      "path": "plugins/research/skills/research-competitive",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-data-analysis",
+      "description": "",
+      "path": "plugins/research/skills/research-data-analysis",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-decision-model",
+      "description": "",
+      "path": "plugins/research/skills/research-decision-model",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-desk",
+      "description": "",
+      "path": "plugins/research/skills/research-desk",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-evidence-plan",
+      "description": "",
+      "path": "plugins/research/skills/research-evidence-plan",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-experiment-design",
+      "description": "",
+      "path": "plugins/research/skills/research-experiment-design",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-forecasting",
+      "description": "",
+      "path": "plugins/research/skills/research-forecasting",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-hypothesis-map",
+      "description": "",
+      "path": "plugins/research/skills/research-hypothesis-map",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-market-landscape",
+      "description": "",
+      "path": "plugins/research/skills/research-market-landscape",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-question-framing",
+      "description": "",
+      "path": "plugins/research/skills/research-question-framing",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-review",
+      "description": "",
+      "path": "plugins/research/skills/research-review",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-synthesis",
+      "description": "",
+      "path": "plugins/research/skills/research-synthesis",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-user-study",
+      "description": "",
+      "path": "plugins/research/skills/research-user-study",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "research-user-synthesis",
+      "description": "",
+      "path": "plugins/research/skills/research-user-synthesis",
+      "owner": "jay1803",
+      "family": "research",
+      "maturity": "stable",
+      "distribution": "research"
+    },
+    {
+      "name": "review",
+      "description": "",
+      "path": "plugins/review/skills/review",
+      "owner": "jay1803",
+      "family": "review",
+      "maturity": "stable",
+      "distribution": "review"
+    },
+    {
+      "name": "review-code-quality",
+      "description": "",
+      "path": "plugins/review/skills/review-code-quality",
+      "owner": "jay1803",
+      "family": "review",
+      "maturity": "stable",
+      "distribution": "review"
+    },
+    {
+      "name": "review-correctness",
+      "description": "",
+      "path": "plugins/review/skills/review-correctness",
+      "owner": "jay1803",
+      "family": "review",
+      "maturity": "stable",
+      "distribution": "review"
+    },
+    {
+      "name": "review-judge",
+      "description": "",
+      "path": "plugins/review/skills/review-judge",
+      "owner": "jay1803",
+      "family": "review",
+      "maturity": "stable",
+      "distribution": "review"
+    },
+    {
+      "name": "review-pr",
+      "description": "",
+      "path": "plugins/review/skills/review-pr",
+      "owner": "jay1803",
+      "family": "review",
+      "maturity": "stable",
+      "distribution": "review"
+    },
+    {
+      "name": "review-spec",
+      "description": "",
+      "path": "plugins/review/skills/review-spec",
+      "owner": "jay1803",
+      "family": "review",
+      "maturity": "stable",
+      "distribution": "review"
     }
   ]
 }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Spec"
+  short_description: "Write canonical feature and bug specs"
+  default_prompt: "Use $pm-spec to synthesize feature context or a diagnosed bug into the canonical issue title and description."

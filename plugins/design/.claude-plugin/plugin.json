@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "displayName": "Design",
+  "name": "design",
+  "version": "0.2.0",
+  "description": "Interaction and screen specifications, visual direction, exploration, prototypes, design systems, and review workflows.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "design",
+    "prototype",
+    "design-system",
+    "review"
+  ],
+  "skills": "./skills/"
+}

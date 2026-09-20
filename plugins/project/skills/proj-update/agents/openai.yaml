@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Update"
+  short_description: "Reconcile project state and progress updates"
+  default_prompt: "Use $proj-update to refresh this project document from the relevant evidence and report coverage gaps."

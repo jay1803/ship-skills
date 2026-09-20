@@ -12,7 +12,9 @@ The core idea is simple:
 - Design optionally turns approved product/UI intent into visual direction,
   exploration artifacts, prototypes, system definitions, and review evidence.
 - Dev turns that package into code, validation evidence, a reviewed PR, and a
-  release handoff.
+  merge handoff.
+- Review independently checks specification compliance, correctness, and
+  maintainability on a frozen PR.
 - Tracker updates happen at the handoff points, not as a separate delivery
   wrapper.
 
@@ -93,7 +95,7 @@ flowchart TD
   AI -->|Pass| AIA{"Cross-PR integration<br/>checkpoint required?"}
   AIA -->|Yes| AIB["Dev: Integration Manager<br/>merge order, cross-PR contracts and conflicts,<br/>combined validation, rollout and rollback"]
   AIA -->|No| AJ
-  AIB --> AJ["Dev: Release Handoff<br/>final per-PR merge gates in planned order,<br/>squash merge, branch cleanup,<br/>risk and rollback notes, tracker closeout"]
+  AIB --> AJ["Dev: Merge Handoff<br/>final per-PR merge gates in planned order,<br/>squash merge, branch cleanup,<br/>risk and rollback notes, tracker closeout"]
 
   AJ --> AJC{"Project-controlled worker?"}
   AJC -->|No| AK["Shipped<br/>optional PM: Release Learning for learnings,<br/>metrics to watch, release notes, and follow-ups"]
@@ -319,7 +321,7 @@ acceptance criteria. This is separate from Dev testing:
 If the product review fails as different or incomplete, the work returns to
 implementation and validation before another product review.
 
-## Phase 8: Project Integration, Release Handoff, And Closeout
+## Phase 8: Project Integration, Merge Handoff, And Closeout
 
 For interacting PRs, **Dev: Integration Manager** runs before merge. It chooses
 direct ordered merge, a temporary integration branch, or blocked status; checks
@@ -328,11 +330,11 @@ and records rollout and rollback risk. It does not add product scope or use the
 integration branch as the final merge vehicle unless the user explicitly asks
 for that branch strategy.
 
-Each PR still lands through **Dev: Release Handoff** in the planned order. After
+Each PR still lands through **Dev: Merge Handoff** in the planned order. After
 every merge, the integration manager refreshes the base branch and re-checks
 the remaining PRs.
 
-**Dev: Release Handoff** owns the final release gate:
+**Dev: Merge Handoff** owns the final merge gate:
 
 - final PR status and mergeability
 - unresolved comments
@@ -341,7 +343,12 @@ the remaining PRs.
 - squash merge or repository-approved landing path
 - branch cleanup
 - tracker closeout
-- release notes, risk notes, and rollback notes when relevant
+- risk notes and rollback notes when relevant
+
+Merging an issue PR is not a production release. Promoting merged work to
+production — version changes, tags, deployment, and a GitHub Release — is owned
+by the DevOps plugin's `release` skill under repository policy, and needs its own
+authorization.
 
 After merge, the default Dev goal is complete. **PM: Release Learning** can
 then capture product learning, metrics to watch, release notes, changelog text,
@@ -360,7 +367,9 @@ integration checkpoint has passed.
 | --- | --- | --- |
 | PM | problem, scope, product behavior, acceptance criteria, readiness, product review | branches, worktrees, commits, PR creation, technical implementation |
 | Design | visual direction, exploration, disposable prototypes, design-system artifacts, design review | product scope, tracker authority, production architecture or implementation |
-| Dev | git setup, repo context, technical design, API stewardship, implementation, validation, PR, external review, CI repair, project execution control, cross-PR integration, release handoff | changing approved product scope without returning to PM |
+| Dev | git setup, technical design, API stewardship, implementation, validation, PR, CI repair, project execution control, cross-PR integration, merge handoff | changing approved product scope without returning to PM |
+| Review | independent specification, correctness, and maintainability findings on a frozen PR or diff | applying fixes, or deciding whether the change ships |
+| DevOps | repository setup, production promotion, tags, deployment, GitHub Releases | issue delivery |
 | Project Management | tracker status sync, PR traceability, confirmed issue relationships | speculative issue movement or unrelated tracker cleanup |
 
 ## Default Modes

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review: Pull Request"
+  short_description: "Post code-only structural PR feedback"
+  default_prompt: "Use $review-pr to review this GitHub pull request's production-code structure and post verified inline comments."
