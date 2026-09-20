@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Test"
+  short_description: "Verify code and hands-on QA"
+  default_prompt: "Use $dev-test with standard primary-flow and ticket-specific regression coverage by default, no automatic reverse-red or unrelated edge cases; preserve explicit strict for deeper risk-selected validation and preserve required checks and authority."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release: Orchestrator"
+  short_description: "Promote a repository release safely"
+  default_prompt: "Use $release to read the repository release policy, promote the verified candidate through its configured PR and merge authority, create immutable versioning, use the project deploy skill when the repository provides one, and publish the GitHub Release."

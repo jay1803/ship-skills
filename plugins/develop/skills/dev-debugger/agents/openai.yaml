@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Debugger"
+  short_description: "Diagnose bugs and route the evidence"
+  default_prompt: "Use $dev-debugger to produce an evidence-led diagnosis and route PM-only diagnosis back to $pm-spec before Dev planning."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review: Code Quality"
+  short_description: "Find material maintainability risks in a PR or diff"
+  default_prompt: "Use $review-code-quality to inspect an exact PR or immutable diff for evidence-backed maintenance risks and bounded simplifications."

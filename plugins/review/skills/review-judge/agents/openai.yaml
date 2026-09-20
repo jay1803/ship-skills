@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review: Finding Judge"
+  short_description: "Validate and combine isolated review artifacts"
+  default_prompt: "Use $review-judge to validate Review v2 source artifacts and produce a provenance-preserving combined judgment for the frozen target."

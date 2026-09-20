@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Sources"
+  short_description: "Find relevant project source links"
+  default_prompt: "Use $proj-sources to find the sources needed for this project question."

@@ -1,0 +1,35 @@
+{
+  "name": "product",
+  "version": "0.8.0",
+  "description": "Product strategy, issue and project orchestration, PM readiness, and product review workflows.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "product-management",
+    "strategy",
+    "requirements",
+    "linear"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Product",
+    "shortDescription": "Shape issues and projects into dev-ready outcomes.",
+    "longDescription": "A product-management family for strategy, issue and project orchestration, problem and scope clarification, canonical specifications, optional Design handoff, readiness, product review, and release learning.",
+    "developerName": "jay1803",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Clarify this issue and prepare it for development.",
+      "Structure this project and drive its issue set to PM readiness.",
+      "Define the smallest coherent product scope.",
+      "Review this implementation against the approved product intent."
+    ]
+  }
+}

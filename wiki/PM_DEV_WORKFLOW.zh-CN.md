@@ -2,13 +2,14 @@
 
 > English version: [`PM_DEV_WORKFLOW.md`](PM_DEV_WORKFLOW.md)
 
-本文档说明一条端到端交付流程：从原始产品需求开始，到代码完成、PR 通过评审并完成上线交接为止。这个流程把 PM 编排层和 Dev 编排层串成一条连续路径。
+本文档说明一条端到端交付流程：从原始产品需求开始，到代码完成、PR 通过评审并完成合并交接为止。这个流程把 PM 编排层和 Dev 编排层串成一条连续路径。
 
 核心原则很简单：
 
 - PM 把不清楚的产品工作收敛成开发就绪包。
 - Design 在需要时把已批准的产品/UI 意图转成视觉方向、方案、原型、设计系统产物和评审证据。
-- Dev 把开发就绪包变成代码、验证证据、已评审 PR 和上线交接。
+- Dev 把开发就绪包变成代码、验证证据、已评审 PR 和合并交接。
+- Review 对冻结的 PR 独立检查规格符合度、正确性与可维护性。
 - Tracker 状态更新发生在关键交接点，而不是依赖单独的交付包装器。
 
 ## 流程图
@@ -88,7 +89,7 @@ flowchart TD
   AI -->|通过| AIA{"是否需要跨 PR<br/>integration checkpoint？"}
   AIA -->|需要| AIB["Dev：集成管理<br/>merge order、跨 PR contract 和冲突、<br/>组合验证、rollout 和 rollback"]
   AIA -->|不需要| AJ
-  AIB --> AJ["Dev：上线交接<br/>按计划顺序执行每个 PR 的最终 merge gate、<br/>squash merge、分支清理、<br/>风险和回滚说明、tracker closeout"]
+  AIB --> AJ["Dev：合并交接<br/>按计划顺序执行每个 PR 的最终 merge gate、<br/>squash merge、分支清理、<br/>风险和回滚说明、tracker closeout"]
 
   AJ --> AJC{"是否为项目控制的 worker？"}
   AJC -->|否| AK["已上线<br/>可选 PM：发布学习，记录学习、<br/>关注指标、release notes 和 follow-ups"]
@@ -232,13 +233,13 @@ PR 创建后，流程立即执行 PR traceability sync：
 
 如果产品评审结果是不同或不完整，工作回到实现和验证，然后再次产品评审。
 
-## 阶段 8：项目集成、上线交接与收尾
+## 阶段 8：项目集成、合并交接与收尾
 
 对于会互相影响的 PR，**Dev：集成管理** 在 merge 前运行。它决定 direct ordered merge、临时 integration branch 或 blocked；检查跨 PR 的 API/schema/client contracts 和冲突；执行组合验证；并记录 rollout 和 rollback 风险。除非用户明确要求该分支策略，否则 integration branch 不作为最终 merge vehicle，也不在集成阶段增加产品范围。
 
-每个 PR 仍然按照计划顺序通过 **Dev：上线交接** 落地。每次 merge 后，集成管理都会刷新 base branch，并重新检查剩余 PR。
+每个 PR 仍然按照计划顺序通过 **Dev：合并交接** 落地。每次 merge 后，集成管理都会刷新 base branch，并重新检查剩余 PR。
 
-**Dev：上线交接** 负责最终 release gate：
+**Dev：合并交接** 负责最终 merge gate：
 
 - 最终 PR 状态和可合并性
 - 未解决评论
@@ -247,7 +248,11 @@ PR 创建后，流程立即执行 PR traceability sync：
 - squash merge 或仓库批准的 landing path
 - 分支清理
 - tracker closeout
-- 需要时补充 release notes、风险说明和回滚说明
+- 需要时补充风险说明和回滚说明
+
+合并一个 issue PR 并不等于生产发布。把已合并的工作推上生产——版本变更、打 tag、
+部署和 GitHub Release——由 DevOps 插件的 `release` 技能按仓库策略负责，并且需要单
+独授权。
 
 合并后，默认 Dev 目标才算完成。随后 **PM：发布学习** 可以记录产品学习、需要关注的指标、release notes、changelog 文案和 follow-up issues。
 
@@ -259,7 +264,9 @@ PR 创建后，流程立即执行 PR traceability sync：
 | --- | --- | --- |
 | PM | 问题、范围、产品行为、验收标准、开发就绪、产品评审 | 分支、worktree、commit、PR 创建、技术实现 |
 | Design | 视觉方向、方案探索、一次性原型、设计系统产物、设计评审 | 产品范围、tracker 写权限、生产架构或实现 |
-| Dev | Git 设置、仓库上下文、技术设计、API stewardship、实现、验证、PR、外部评审、CI 修复、项目执行控制、跨 PR 集成、上线交接 | 未回到 PM 就改变已批准产品范围 |
+| Dev | Git 设置、技术设计、API stewardship、实现、验证、PR、CI 修复、项目执行控制、跨 PR 集成、合并交接 | 未回到 PM 就改变已批准产品范围 |
+| Review | 对冻结的 PR 或 diff 给出独立的规格、正确性与可维护性结论 | 动手修复，或决定这个变更是否发布 |
+| DevOps | 仓库初始化、生产晋级、tag、部署、GitHub Release | issue 交付 |
 | Project Management | tracker 状态同步、PR traceability、确认的 issue 关系 | 推测性 issue 移动或无关 tracker 清理 |
 
 ## 默认模式
@@ -284,7 +291,7 @@ PR 创建后，流程立即执行 PR traceability sync：
 - 外部评审和 CI 干净，或已明确处理。
 - 产品评审通过，或用户明确说不在本次范围内。
 - PR 已通过仓库批准的 landing path 合并。
-- 上线交接完成合并确认、清理、closeout 和风险说明。
+- 合并交接完成合并确认、清理、closeout 和风险说明。
 - 对于多 issue 工作，所有 active-wave merge barriers 都从实时验证状态打开，所有 required issues 都已合并，且所有计划中的 integration checkpoints 都已通过。
 
 ## Apple / Swift / Xcode 技能

@@ -1,0 +1,36 @@
+{
+  "name": "project",
+  "version": "0.2.0",
+  "description": "Project document lifecycle: stakeholder proposals, kickoff and Entry Pages, evidence-backed progress updates, closeout and document review.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "project",
+    "proposal",
+    "kickoff",
+    "progress",
+    "retrospective"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Project",
+    "shortDescription": "Prepare and maintain project lifecycle documents.",
+    "longDescription": "Prepare stakeholder proposals, build kickoff agreements and a Project Entry Page, maintain current progress with source evidence, and close out delivery and lessons. Resume from existing records; preserve approval boundaries, original commitments and outstanding measurement. Includes document review, source discovery and context packs. Product owns roadmap status and Develop owns engineering delivery.",
+    "developerName": "jay1803",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Prepare this project proposal for stakeholder review.",
+      "Turn this approved proposal into kickoff material and an Entry Page.",
+      "Update this project page and preserve the approved baseline.",
+      "Review project delivery, results and lessons for closeout."
+    ]
+  }
+}

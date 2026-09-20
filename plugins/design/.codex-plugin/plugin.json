@@ -1,23 +1,32 @@
 {
   "name": "design",
-  "version": "0.1.0",
-  "description": "Design direction, exploration, prototypes, design systems, and review workflows.",
+  "version": "0.2.0",
+  "description": "Interaction and screen specifications, visual direction, exploration, prototypes, design systems, and review workflows.",
   "author": {
     "name": "jay1803",
     "url": "https://github.com/jay1803"
   },
   "homepage": "https://github.com/jay1803/ship-skills",
   "repository": "https://github.com/jay1803/ship-skills",
-  "keywords": ["design", "prototype", "design-system", "review"],
+  "keywords": [
+    "design",
+    "prototype",
+    "design-system",
+    "review"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Design",
-    "shortDescription": "Explore, prototype, systematize, and review design.",
-    "longDescription": "A visual design workflow spanning direction, comparable explorations, interactive prototypes, design-system work, and evidence-based review.",
+    "shortDescription": "Design flows, screens, prototypes, systems, and visual artifacts.",
+    "longDescription": "A design workflow for textual UX/UI engineering handoffs and visual direction, comparable explorations, interactive prototypes, design systems, and evidence-based review.",
     "developerName": "jay1803",
     "category": "Productivity",
-    "capabilities": ["Read", "Write"],
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
     "defaultPrompt": [
+      "Design the user flow and screen states for this product change.",
       "Define a visual direction for this product.",
       "Explore several design approaches for this flow.",
       "Review this interface and report the highest-impact issues."

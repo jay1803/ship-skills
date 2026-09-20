@@ -1,0 +1,4 @@
+interface:
+  display_name: "Issue Router"
+  short_description: "Select one fixed workflow owner"
+  default_prompt: "Use $issue-router to produce one read-only canonical Issue Route receipt before starting PM, Dev, project, post-PR, or release work."

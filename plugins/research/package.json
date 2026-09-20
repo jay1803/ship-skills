@@ -1,0 +1,21 @@
+{
+  "name": "@jay1803/ship-skills-research",
+  "version": "0.1.1",
+  "description": "Decision-oriented research orchestration, specialist evidence work, synthesis, and review workflows for Codex and Claude Code.",
+  "files": [
+    ".codex-plugin",
+    ".claude-plugin",
+    "skills"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jay1803/ship-skills.git",
+    "directory": "plugins/research"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

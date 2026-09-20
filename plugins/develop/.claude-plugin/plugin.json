@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "displayName": "Develop",
+  "name": "develop",
+  "version": "0.12.0",
+  "description": "Single- and multi-issue engineering orchestration, implementation, integration, validation, repair, and merge handoff workflows.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "engineering",
+    "development",
+    "testing"
+  ],
+  "skills": "./skills/"
+}

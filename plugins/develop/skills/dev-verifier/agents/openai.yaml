@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Verifier"
+  short_description: "Verify fresh completion evidence"
+  default_prompt: "Use $dev-verifier to verify this implementation before opening a PR."

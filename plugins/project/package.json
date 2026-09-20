@@ -1,0 +1,21 @@
+{
+  "name": "@jay1803/ship-skills-project",
+  "version": "0.2.0",
+  "description": "Project proposals, kickoff, progress updates, closeout and document review for Codex and Claude Code.",
+  "files": [
+    ".codex-plugin",
+    ".claude-plugin",
+    "skills"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jay1803/ship-skills.git",
+    "directory": "plugins/project"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

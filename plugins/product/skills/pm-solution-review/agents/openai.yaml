@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Solution Review"
+  short_description: "Simplify product solutions before specs"
+  default_prompt: "Use $pm-solution-review to find the simplest product solution that still achieves the confirmed goal."

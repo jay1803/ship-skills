@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy Skill Creator"
+  short_description: "Create a project-specific deploy skill"
+  default_prompt: "Use $deploy-skill-creator to inspect this repository and generate its project-level deploy skill from the standard release/deploy contract."

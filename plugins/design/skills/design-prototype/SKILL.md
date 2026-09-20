@@ -15,7 +15,7 @@ Turn approved behavior and visual decisions into an interactive artifact that ca
 
 ## Boundary
 
-- Require an approved flow and screen specification. Route missing behavior or acceptance decisions to `$pm-ux-state` or `$pm-ui-design`.
+- Require an approved flow and screen specification. Route missing interaction/screen design to `$design`, and unresolved product policy or acceptance to `$pm`.
 - Treat the prototype as disposable design evidence, not production architecture.
 - Keep prototype files isolated from the production app unless the user explicitly authorizes using an existing prototype target.
 - Route selected behavior and visuals to Dev for production implementation.

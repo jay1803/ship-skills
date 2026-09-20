@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev: Orchestrator"
+  short_description: "Resolve issues and ship code safely"
+  default_prompt: "Use $dev to resolve the issue record, accept a verified PM handoff or audit an already-complete existing issue directly, then deliver it through a reviewed PR into the resolved issue PR base and verify the matching test revision; route production promotion to $release."

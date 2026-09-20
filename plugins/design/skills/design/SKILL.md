@@ -1,7 +1,6 @@
 ---
 name: design
-description: >-
-  Orchestrate design-stage work after product intent is clear. Use when Codex needs to route an approved product brief, PM UX/UI artifact, existing interface, or design request through visual direction, wireframes or variations, a disposable interactive prototype, design-system extraction or refinement, or a design quality review. Keep product behavior in pm-* and production implementation in dev-*.
+description: Design user flows, interaction states and screen specifications from clear product intent, or route visual direction, alternatives, prototypes, design systems and craft review. Use for UX/UI design and textual engineering handoffs as well as visual artifacts. Product policy and scope stay with PM; production implementation stays with Dev.
 metadata:
   owner: jay1803
   family: design
@@ -11,73 +10,86 @@ metadata:
 
 # Design Orchestrator
 
-Turn clear product intent into visual artifacts, reusable system decisions, and review evidence. Own phase selection and Design State; delegate each artifact to the narrow design skill that owns it.
+Turn clear product intent into interaction/screen specifications, visual
+artifacts or reusable design decisions. Choose the smallest path that produces
+the requested result; a text specification does not need the visual pipeline.
 
 ## Boundary
 
-- Require a clear user goal, workflow, and screen-level product requirement before visual execution.
-- Route unclear product behavior, scope, states, acceptance criteria, or tracker work to `$pm`, `$pm-ux-state`, or `$pm-ui-design`.
-- Own visual direction, exploration artifacts, prototypes, design-system artifacts, and craft review.
-- Route production architecture, application code, tests, pull requests, and release work to `$dev` or the relevant platform implementation skill.
-- Route slide-deck files to the presentation skill. Route deep motion work to `animation-vocabulary`, `apple-design`, `improve-animations`, or `review-animations` as appropriate.
+- Require an understandable product goal and known material policy boundaries,
+  not a pre-existing UX or UI artifact. Inspect supplied briefs, current UI,
+  screenshots, code and design-system sources before asking for missing facts.
+- Own journeys, screen sequence, interaction states and recovery presentation,
+  hierarchy, controls, copy placement, accessibility and platform differences
+  within that product promise. Honor bounded delegated design discretion.
+- PM owns product goals, scope, acceptance and material policy: permissions,
+  retention/deletion, automatic account actions, fallback promises, eligibility
+  and other user rights. Return unresolved changes to `$pm` / `$pm-scope`; do
+  not turn a design choice into authorization for new product behavior.
+- Canonical issue title/description changes belong to `$pm-spec`. Return
+  confirmed behavior and source links for synthesis. A standalone design request
+  does not require an issue, tracker writes or a full PM lifecycle.
+- Production architecture, application code, tests, PRs and releases go to
+  `$dev` or the relevant platform implementation owner. Disposable prototype
+  evidence does not prove production integrations.
+- Slide decks go to the presentation skill; deep motion work to the relevant
+  motion specialist when available.
 
-## Default Paths
+## Select the artifact
 
-- Greenfield visual work: `$design-direction` -> `$design-explore` -> optional `$design-prototype` -> `$design-review`.
-- Existing product with a design system: optional `$design-system` extraction/audit -> `$design-explore` -> optional `$design-prototype` -> `$design-review`.
-- Design-system work: `$design-system` -> `$design-review`.
-- Existing artifact review: `$design-review` directly.
+| Requested or missing result | Path |
+| --- | --- |
+| Flow, screens, states, controls, copy or textual engineering specification | Read [interaction specification](references/interaction-spec.md), produce it inline |
+| Typography, palette, density, imagery or visual language | `$design-direction` |
+| Wireframes, alternatives, layout/component comparisons | `$design-explore` |
+| Clickable mockup or usability-test artifact | `$design-prototype` |
+| Tokens, component inventory or canonical system refinement | `$design-system` |
+| Existing artifact critique or finished visual polish gate | `$design-review` |
 
-Do not run every worker by default. Load only the next skill required by the requested outcome.
+Complete a text-only request with the text artifact and any material unresolved
+choices. Do not force images, options, prototypes, a design-system phase or a
+separate craft gate. For visual work, typical dependencies are direction ->
+exploration -> optional prototype -> review; reuse existing decisions and read
+only the next needed Skill. If a visual artifact cannot be generated or verified,
+return the usable result and exact limitation without claiming completion.
 
-## Operating Workflow
+## Decisions and state
 
-1. Read the supplied brief, PM artifacts, screenshots, brand guidance, design-system sources, and relevant code before asking questions.
-2. Confirm the target medium, fidelity, audience, approved behavior, and requested deliverable from available context.
-3. Ask only for missing decisions that materially change the artifact. Choose a reasonable default for minor reversible choices and state it.
-4. Classify the next artifact and route it to one narrow skill.
-5. Maintain Design State across phases. Carry approved decisions forward; do not make later workers rediscover them.
-6. Run `$design-review` before stakeholder delivery when the request includes a finished artifact or polish gate.
-7. Return artifact links, decisions, evidence, and the next handoff without recapping routine steps.
+Confirm medium, platform, audience, fidelity and intended handoff from context.
+Ask only for missing choices that materially change the result; choose routine
+reversible details within the authorized design discretion. A user request for
+a particular design artifact authorizes producing it without another blanket
+approval pause. External publication/attachments retain their own authority.
 
-## Routing
+For multi-phase work, carry the source brief, approved policy and direction,
+active artifact, current phase, existing system sources, decisions, evidence,
+open blockers and next owner. Do not create this state record for every small
+copy or layout request. A changed policy goes back to PM before dependent work;
+independent design may continue within known boundaries.
 
-- Need a visual language, typography, palette, density, shape, imagery, or motion direction: use `$design-direction`.
-- Need wireframes, visual options, alternate layouts, or substantive variations: use `$design-explore`.
-- Need a clickable mockup with real state and feedback: use `$design-prototype`.
-- Need tokens, foundations, component inventory, system documentation, or consistency cleanup: use `$design-system`.
-- Need accessibility, hierarchy, interaction-state, conformance, generic-aesthetic, or final polish review: use `$design-review`.
-- Need a product journey, involved screens, state model, UI requirements, or acceptance criteria: route to PM.
-- Need production code: route to Dev.
+## Delegation and writes
 
-## Delegation Model
+Keep phase selection and Design State in the current agent. Delegate bounded
+source inspection or independent review when authorized and useful. Serialize
+writers touching the same artifact; `$design-system` alone writes canonical
+system tokens/components. Workers return actual sources, artifacts, decisions,
+verification and gaps, without taking product lifecycle ownership.
 
-Keep orchestration and Design State in the main agent.
-
-- Delegate bounded source inspection, screenshot inventory, or independent review passes when fresh judgment helps.
-- Run artifact writers serially when they touch the same files or canonical design-system source.
-- Let `$design-system` be the only design-family skill that writes canonical token or component-system definitions.
-- Require delegated workers to return sources read, artifacts created or changed, decisions, verification evidence, blockers, and open questions.
-
-## Design State
-
-Maintain this compact record for multi-phase work:
-
-```markdown
-## Design State
-- Source brief:
-- Product behavior status: clear / needs PM
-- Platform and medium:
-- Current phase:
-- Approved direction:
-- Existing system sources:
-- Active artifact:
-- Review mode: report / fix / final gate
-- Decisions carried forward:
-- Open blockers:
-- Next route:
-```
+When a Product controller authorizes an exact issue reply, return or publish
+only the design artifact under its supplied PM root ID, verify the parent, and
+reuse an existing design reply on revision. If the root or reply capability is
+missing, return the artifact to that controller; do not create a new PM thread
+or edit canonical issue fields. Standalone artifact work remains draft-only
+unless publication was requested.
 
 ## Handoff
 
-For Dev handoff, provide the approved artifact, selected direction, system/token sources, component and state decisions, responsive or platform differences, accessibility requirements, asset gaps, and unresolved design decisions. Do not replace the PM acceptance criteria or prescribe implementation architecture.
+Return the artifact and only the decisions and limits the next owner needs:
+flow/screens, relevant state transitions and recovery, controls/copy, platform
+and accessibility differences, source policies, optional system/token links and
+verification performed. Mark simulated integrations and unknowns explicitly.
+
+Send new or changed product behavior to `$pm-spec` through the PM controller
+before readiness. Hand implementation-ready design to Dev within the user's
+requested endpoint, without replacing product acceptance or prescribing
+production architecture.

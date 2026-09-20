@@ -1,0 +1,4 @@
+interface:
+  display_name: "PM: Scope"
+  short_description: "Clarify the problem and smallest product scope"
+  default_prompt: "Use $pm-scope to clarify the user problem, desired outcome and smallest coherent scope."

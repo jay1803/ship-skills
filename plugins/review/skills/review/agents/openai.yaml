@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review"
+  short_description: "Review PRs and immutable diffs"
+  default_prompt: "Use $review to run an independent technical review of this pull request or immutable diff."
