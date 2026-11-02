@@ -4,12 +4,10 @@ Use this contract when an implementation can look correct in ordinary tests yet 
 
 ## Applicability
 
-Apply the [unattended validation rule](development-mode-contract.md#unattended-validation-and-deferred-acceptance)
-before treating a loop as an engineering gate. A material need for later real
-evidence belongs in a separate human acceptance follow-up; it does not require
-real credentials, devices or deployment during standard engineering delivery.
-Keep its fidelity and threshold intact and unverified, while running the
-applicable simulator/seed/fixture validation.
+Apply the [unattended validation precedence](development-mode-contract.md#unattended-validation-and-deferred-acceptance)
+before treating a loop as an engineering gate. A waived loop keeps its fidelity
+and threshold intact and unverified while the applicable simulator/seed/fixture
+validation runs.
 
 Mark `Production Loop: required` when at least one material acceptance risk depends on:
 
@@ -39,7 +37,7 @@ Resource Budget: <time, compute, cost, requests, or not constrained>
 Iteration / Escalation: <limit and the condition that requires a decision>
 ```
 
-PM supplies the product-known outcome, constraints, required environment fidelity, and pass threshold. Engineering may complete implementation-owned details such as the exact harness command or safe execution environment. Mark unknowns explicitly with an owner; do not invent a verifier or production access.
+The issue or requester supplies the product-known outcome, constraints, required environment fidelity, and pass threshold. Engineering may complete implementation-owned details such as the exact harness command or safe execution environment. Mark unknowns explicitly with an owner; do not invent a verifier or production access.
 
 ## Readiness
 
@@ -70,8 +68,8 @@ An agent-authored test can be useful without being independent. A production-sca
 `$dev` controls the loop. `$dev-test` captures observations and verifier evidence;
 `$dev-implementer` applies one scoped change at a time. Neither worker changes
 the goal, threshold, verifier, or resource boundary independently. Complete
-implementation-owned contract details during planning; return to PM only when
-an unknown changes product scope, safety, the user promise, or acceptance.
+implementation-owned contract details during planning; ask the requester only
+when an unknown changes product scope, safety, the user promise, or acceptance.
 Apply existing same-check and review/CI repair limits unless the loop contract
 sets a lower resource or iteration boundary.
 
@@ -87,6 +85,5 @@ sets a lower resource or iteration boundary.
 ## Completion
 
 - A required pre-merge verifier must pass before merge handoff can merge into the resolved issue PR base.
-- Apply mode waivers before pre-merge or post-deploy gates. A waived real-environment verifier stays unverified without holding engineering Done or successors open. A remaining enforced test-environment verifier keeps its actual pending/fail/pass state; never bypass enforcement.
+- Apply the unattended validation precedence before pre-merge or post-deploy gates. A waived verifier stays an unverified follow-up; a binding or enforced test-environment verifier keeps its actual pending/fail/pass state; never bypass enforcement.
 - A failed test-environment verifier returns control to `$dev` for a new bounded repair cycle or an explicit escalation decision. A production-only verifier belongs to `$release` and the project deploy skill.
-- Deferred human acceptance has its own ticket and evidence boundary, not an engineering gate. Record the omission under `Skipped / Unverified` without claiming acceptance.

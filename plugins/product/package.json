@@ -1,6 +1,6 @@
 {
   "name": "@jay1803/ship-skills-product",
-  "version": "0.8.0",
+  "version": "0.8.14",
   "description": "Product strategy, issue and project orchestration, PM readiness, and product review workflows for Codex and Claude Code.",
   "files": [
     ".codex-plugin",

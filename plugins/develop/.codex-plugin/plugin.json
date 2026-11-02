@@ -1,6 +1,6 @@
 {
   "name": "develop",
-  "version": "0.12.0",
+  "version": "0.13.16",
   "description": "Single- and multi-issue engineering orchestration, implementation, integration, validation, repair, and merge handoff workflows.",
   "author": {
     "name": "jay1803",
@@ -17,7 +17,7 @@
   "interface": {
     "displayName": "Develop",
     "shortDescription": "Build and ship dev-ready issues and dependency chains.",
-    "longDescription": "An engineering-development family for single issues and multi-issue dependency graphs. Its lifecycle entrypoints require Product's Issue Router, then provide controller-owned waves, agent routing, technical design, implementation, cross-PR integration, validation, repair, PR creation, and merge handoff workflows.",
+    "longDescription": "An engineering-development family for single issues and multi-issue dependency graphs, with its own readiness audit, controller-owned waves, agent routing, technical design, implementation, cross-PR integration, validation, repair, PR creation, and merge handoff workflows. It needs neither the Product plugin nor a paid credential.",
     "developerName": "jay1803",
     "category": "Productivity",
     "capabilities": [

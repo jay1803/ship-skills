@@ -12,6 +12,11 @@ metadata:
 
 Review product conformance, not code quality. Do not implement fixes in this role.
 
+For Dev-managed delivery, apply the
+[three-round acceptance deferral](../pm-spec/references/acceptance-policy.md#three-round-acceptance-deferral)
+to the current controller disposition, including explicit P2/P3 ticket criteria.
+Keep their unmet evidence visible while assessing the effective Product gate.
+
 For a standalone analysis or draft, follow the
 [Product Artifact Contract](../pm/references/artifact-contract.md) and complete
 the requested artifact without tracker setup. The tracker steps below apply
@@ -27,7 +32,11 @@ only to an issue-bound lifecycle or authorized publication.
 - Require a GitHub PR URL or number, or infer the PR from the current branch only when that is unambiguous.
 - Require at least one Linear issue ID, or infer issue IDs from the PR title, branch, commits, PR body, or linked references.
 - Read the actual PR base branch and frozen head; do not assume a repository branch convention.
-- In Merge-Ready Gate mode, treat unresolved review comments as blocking unless they are clearly out of scope. If the review state cannot be checked, mark the result blocked or ask whether the user wants a pre-final product review.
+- In Merge-Ready Gate mode, treat unresolved review comments as blocking unless
+  they are clearly out of scope or covered by a verified acceptance deferral.
+  Keep deferred comments visible; a Product verdict does not resolve GitHub
+  threads or bypass branch protection. If review state cannot be checked,
+  mark the result blocked or ask whether the user wants a pre-final product review.
 
 ## Workflow
 
@@ -47,6 +56,10 @@ only to an issue-bound lifecycle or authorized publication.
      evidence is not `Failed - Incomplete` or `Blocked`. Continue to check all
      required product behavior against current implementation evidence.
    - Convert source material into required behavior, acceptance criteria, explicit non-goals, constraints, affected platforms, validation expectations, and deferred scope.
+   - Verify any three-round controller disposition against the current PR and
+     accepted history. Carry the original criterion, severity/impact, actual
+     coverage, effective gate and follow-up reference as separate matrix fields.
+     An explicit criterion alone does not undo a valid deferral.
    - Preserve exact issue wording for ambiguous requirements, but keep quotes short.
    - Mark inferred expectations as inferred; do not fail the PR on an inferred expectation unless it follows directly from explicit acceptance criteria.
 4. Read the implementation.
@@ -89,9 +102,16 @@ itself promise both platforms for every feature.
 
 ## Decision Rules
 
-- `approve` / `Passed`: every explicit requirement is `Covered` or properly `Out of scope`, no material `Partial`, `Missing`, `Different`, or `Blocked` items remain, and cross-platform expectations are addressed when relevant.
-- `request changes` / `Failed - Different`: delivered behavior materially differs from the Linear description, product spec, or acceptance criteria, even if the result may be useful.
-- `request changes` / `Failed - Incomplete`: delivered behavior follows the intended direction but leaves explicit requirements unaddressed or partially addressed.
+- `approve` / `Passed`: every effective required item is `Covered` or properly
+  `Out of scope`, and cross-platform expectations are addressed when relevant.
+  A verified three-round deferral may retain `Partial`, `Missing`, `Different`,
+  or unverified evidence without blocking. Qualify the pass with its follow-ups;
+  do not claim all original acceptance is complete.
+- `request changes` / `Failed - Different`: delivered behavior materially differs
+  from a nondeferred requirement, even if the result may be useful.
+- `request changes` / `Failed - Incomplete`: delivered behavior leaves a
+  nondeferred explicit requirement unaddressed or partially addressed. Do not
+  return this verdict solely for a verified deferred P2/P3 criterion.
 - `questions`: product intent, scope, or platform coverage is ambiguous but enough evidence exists to ask focused product questions.
 - `blocked`: required Linear or PR evidence could not be read, review state could not be verified, or the implementation cannot be compared with enough confidence.
 
@@ -107,5 +127,7 @@ formal gate or PR comment needs a structured result.
 - Lead with the verdict; when a comment was authorized, match its result.
 - Use concrete issue IDs, PR numbers, branch names, files, and commits.
 - Do not claim a product-scope pass from code review alone; pass requires a requirement-by-requirement match.
-- Do not rewrite Linear requirements to match the PR. Treat Linear as the source of truth unless a later Linear comment or linked decision explicitly changes it.
+- Do not rewrite Linear requirements to match the PR. Preserve the original
+  source of truth alongside applicable later decisions and verified policy-bound
+  deferrals; a gate exception changes blocking status, not delivered behavior.
 - Keep the final answer short after posting the PR comment: result, PR comment status, and any blocking access issue.

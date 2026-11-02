@@ -7,127 +7,308 @@ Read before dispatching, resuming, or accepting issue execution in any schedulin
 When this skill needs a fresh issue thread:
 
 1. Use the resolved executor's persistent controller/session entry directly.
-   - For Codex, discover and use the create-thread tool. For Claude Code, discover the native background-session or configured Axis entry through the [Claude adapter](../../agent-routing/references/claude-code-adapter.md#discover-the-actual-session-surface), and verify its creation and management receipts. Do not launch an ad-hoc provider command that bypasses the selected adapter or worker registry.
+   - For Codex, discover and use the create-thread tool. For Claude Code, discover the native background-session or configured Axis entry through [executor sessions](executor-sessions.md#discover-the-actual-session-surface), and verify its creation and management receipts. Do not launch an ad-hoc provider command that bypasses the selected adapter or worker registry.
    - Create one new user-owned, user-visible controller thread or session per ready issue in the current project scope. Dispatch every member of the same safe wave before waiting.
-   - When the user requested execution through this skill, that request already supplies the required authorization for these issue-worker threads; do not pause for redundant confirmation.
-   - Classify the whole issue before creation. Choose `controller/standard`, `controller/deep`, or `controller/critical` with `standard` as the minimum; full lifecycle ownership gives every issue controller a `high` reasoning floor but does not force critical capability or `xhigh`. Apply the resolved adapter's permitted model/effort parameters, including its visible-task default-selection rule.
-   - Publish the shared routing request before creation. Record queued acceptance as pending; at the first ready/active observation apply the adapter's binding verification and update the resolved notice. Include the actual request, observed binding or explicit unknowns, and required routing receipt in the handoff.
+   - Route the issue under [Issue-Worker Routing](#issue-worker-routing) before creation, and apply the binding through the actual tool's permitted model/effort parameters, including its visible-task default-selection rule.
+   - Publish the requested binding before creation. Record queued acceptance as pending; at the first ready/active observation apply the adapter's binding verification and update the resolved notice. Keep runtime acceptance separate from the routing result.
+   - Apply the [thread naming contract](#controller-and-worker-thread-names): supply the worker title through the supported creation field and carry verified naming context in its handoff. Record the requested name and observed title separately; reconcile queued creation before renaming.
    - Use a local environment unless the user explicitly asks for a new worktree.
    - For an explicit worktree request, use the worktree environment and preserve requested branch or starting-state details when the tool supports them.
-2. Include the controller thread/session id and worker callback packet in the initial prompt. Resolve the controller id with the executor's management tools; do not guess when multiple workers could match.
+2. Include the controller thread/session id and worker callback packet in the initial prompt. Resolve the controller id with the executor's management tools; do not guess when multiple workers could match. Use the callback triggers in the Worker Handoff Shape; do not add a separate ordinary-progress callback request.
 3. Use the worker handoff as the new thread's initial prompt without adding summaries, hidden instructions, or extra commentary.
-4. Record the returned worker thread/session id and resolved executor against the issue before creating another worker or yielding.
-5. Do not execute a worker payload in the controller thread after its fresh worker was created.
-6. After dispatching the complete ready wave, report all worker ids and enter the Controller-Owned Wave Execution workflow.
-7. If direct worker callbacks are unavailable, continue with controller heartbeat monitoring instead of decentralizing successor dispatch.
-8. If the current project id is unavailable and the thread tool cannot infer it, ask one short question for the target project instead of falling back to a projectless thread.
-9. If persistent worker creation remains unavailable after entry discovery or an attempted creation, report the limitation and enter Serial Inline Fallback in the invoking controller. Do not spawn a bounded sub-agent to impersonate a persistent issue controller.
+4. Record the returned worker thread/session id (or queued creation handle) and resolved executor against the issue before creating another worker or yielding. A queued handle reserves that issue: reconcile its creation instead of creating a duplicate, and do not pass it to tools requiring a ready thread id.
+5. After dispatching the complete ready wave, report all worker ids and enter the Controller-Owned Wave Execution workflow.
+6. If direct worker callbacks are unavailable, continue with controller heartbeat monitoring.
+7. If the current project id is unavailable and the thread tool cannot infer it, ask one short question for the target project instead of falling back to a projectless thread.
+8. If persistent worker creation remains unavailable after entry discovery or an attempted creation, report the limitation and apply Worker Creation Failure And Recovery below.
 
-## Serial Inline Fallback
+## Issue-Worker Routing
 
-Use this path only after persistent worker creation is confirmed unavailable.
-It preserves the complete project queue while limiting execution in the current
-session to one issue lifecycle. It takes precedence over dispatching every ready
-member of a wave; a free sub-agent slot is not a free issue-controller slot.
+The project controller routes each fresh issue worker, in wave and sequence
+mode, deciding from that issue's complete scope with `lifecycle: controller`.
+Record the routed envelope and binding in the issue-keyed registry and pass them
+in the handoff; the worker consumes them without rerouting. Keep creation
+handles, worker IDs, observed binding and fallbacks separate: queued is not
+active and unexposed values remain unknown.
 
-Keep this compact record in existing controller state, not a new registry:
+An ordinary resume of the same worker keeps its route while task, authority and
+runtime inventory are materially unchanged. After compaction or a heartbeat,
+recover the route and any pending creation before acting. A material change
+reroutes with the prior envelope as `previous_route`; an accepted adjustment
+follows the [escalation handoff](executor-sessions.md#accepted-escalation-handoff)
+within the [escalation budget](executor-sessions.md#escalation-budget), never a
+silent switch or duplicate owner. A fresh worker needs its own route after any
+previous creation or owner is reconciled. This does not waive the worker's
+readiness audit or its routing of its own bounded helpers.
 
-- `execution_mode: serial-inline` and the session-creation failure/discovery
-  evidence; unresolved creation remains pending instead of entering fallback.
-- `active_issue`, the current controller identity, and `worker_session: none`.
-- The active issue's phase, branch/worktree, PR and current head, pending gates,
-  and bounded helper IDs with their scoped tasks and status.
-- Remaining issues and the verified condition that allows the next one to start.
+## Controller And Worker Thread Names
 
-Before starting issue work, dispatching any helper, or resuming after a callback,
-interruption or compaction, reconcile that record with current issue, PR and
-helper state. Missing state requires read-only reconstruction, not a new issue.
-Only the active issue may enter issue-specific research, implementation, review,
-repair or validation. Project-wide read-only dependency/status checks remain
-allowed; they do not start a successor lifecycle.
+Once execution is accepted, name this controller and its workers:
 
-Bounded helpers may work on the active issue under the existing one-writer and
-review-independence rules. Their completion returns an artifact to the inline
-`$dev` owner; it does not complete the issue or authorize successor dispatch.
-Waiting for helpers, review, CI, repairs, test deployment or required acceptance
-keeps `active_issue` occupied. A green CI result, open PR, or stopped reviewer
-cannot release it. Apply the same delivery-mode gates as normal issue workers;
-fallback does not combine review roles or waive a gate.
+| Owner | Name | Example |
+| --- | --- | --- |
+| Project controller for a parent issue | `<parent_issue> Controller` | `EX-100 Controller` |
+| Persistent issue worker in that delivery | `<parent_issue>: <issue> Worker` | `EX-100: EX-101 Worker` |
 
-Advance only after the current issue satisfies the existing mode-required merge
-and handoff barrier, all its helpers have finished or are confirmed stopped,
-and the completion evidence is recorded. Then clear `active_issue` and select
-the next eligible issue. A blocker uses the existing retry/stop policy and does
-not open a slot for unrelated issue execution. An explicit user scope change
-may stop or reassign work; record that transition without calling it completed.
+For a project or issue set without a parent issue, use its verified concise
+scope/project label in place of `<parent_issue>`; do not invent a tracker parent
+for naming. Apply the name to this controller through the supported title
+surface, and supply a fresh worker's title at creation when supported. Record
+the requested name and observed title separately in the registry; use
+thread/session IDs for identity and callbacks, since titles need not be unique.
+A queued creation handle is not a ready thread ID: wait for its actual identity
+before using rename tools. User-chosen titles, resume, missing title control and
+bounded-helper names follow the
+[Dev naming rule](../../dev/references/execution-ownership.md#thread-and-sub-agent-names).
 
-If resume reveals several unfinished inline issue lifecycles, do not launch
-more work or erase their branches, PRs, results or review generations. Record
-the overlap, preserve returned artifacts, and quiesce outstanding helpers using
-supported controls before resuming one issue. Keep other issues explicitly
-paused; if a helper cannot be confirmed quiescent, report that blocker. Choose
-the active issue from the user's order and verified dependencies, then resume
-its pending gate. Do not restart discovery or silently mark paused issues done.
+## Worker Creation Failure And Recovery
 
-When persistent sessions become available later, verify an accepted session
-handoff and stop inline ownership of that issue before switching execution
-mode. Do not run both owners for the same issue.
+The project controller remains a scheduler when persistent worker creation is
+unavailable. Record `execution_mode: dispatch-blocked`, the exact discovery or
+creation failure, affected issue IDs and next recovery action, preserving
+pending gates, helper state and artifacts for that recovery. Do not start the
+issue inline or substitute a bounded agent for its persistent delivery owner.
+Other accepted workers may continue within their existing dependencies; an
+explicit sequence still waits for its current issue.
+
+Reconcile pending or accepted-but-unobserved creation before retrying. Reuse a
+verified existing issue worker and its state. If replacement is necessary,
+confirm the prior owner and its mutating helpers have stopped before assigning
+another owner; preserve branch/worktree, PR, current head, validation, Review
+history and cumulative budgets. An inaccessible owner is not confirmed stopped.
+Do not reset counters or restart delivered phases to recover a session.
+
+## Progress Intervention
+
+Record each substantial phase's expected observable proof, last meaningful
+progress and next reassessment time in existing worker/controller state. A
+closed causal question, supported contract decision, representative passing
+path or independently reviewable delivery is progress for its phase. Activity,
+new logs/source bundles and ordinary commits do not indefinitely renew an unmet
+checkpoint. Known build/CI or external waiting is separate from active work.
+
+Use compact current phase, proof, pending operation and blocker signals first.
+Intervene immediately for a material boundary change or repeated failure with
+no new discriminating evidence. For sustained implementation, use 30–60 minute
+proof checkpoints as a starting window, a substantive reassessment around two
+hours when the expected proof remains absent, and stop scope expansion around
+four hours in the same unclosed phase pending a bounded revised plan. These are
+soft review points, not automatic kill/merge/model-switch timers. Record a
+phase-specific exception and next review point when known runtime duration,
+useful evidence or an inseparable core justifies it; external waits do not
+consume this active-work window. Reuse the existing callback/heartbeat and
+[recovery state](controller-recovery.md), not a new short-poll supervisor.
+
+1. Send the intervention to the owning issue worker: stop new expansion/retries
+   at the earliest safe operation boundary, preserve WIP/commits and failures,
+   coordinate affected mutating helpers, and return one compact checkpoint.
+2. Verify the old writer, mutating descendants and background operations are
+   stopped or safely handed off before admitting another writer. An interrupted
+   model turn or inaccessible owner does not prove terminal/DB work stopped.
+   Use only supported interruption/recovery controls; otherwise retain the exact
+   execution blocker instead of duplicating ownership or bypassing the runtime.
+3. Read the checkpoint: issue/owner and current target, verified outcomes and
+   remaining acceptance, blocker/hypotheses and attempts, current WIP/resource
+   ownership, independently deliverable parts and the next discriminating proof.
+   Keep full sources at existing immutable locators; do not copy the full history.
+4. Record one disposition, its owner, evidence, remaining budgets, next proof,
+   stop condition and reassessment time in existing state:
+
+| Evidence | Disposition |
+| --- | --- |
+| Selected gates and authorized merge/closeout are ready, only optional expansion remains | Stop optional work and prioritize the pending delivery through its assigned executor |
+| Bounded scope, meaningful progress and a finite remaining proof | Resume the same worker with that proof and deadline |
+| A bounded judgment exceeds current reasoning | Accept the existing escalation route; use stronger analysis or a safe supported binding handoff |
+| New producer/state ownership or independent delivery invalidates the leaf | Return to [task reassessment](../../dev-planner/references/task-decomposition.md#reassessment-handoff); accept the plan, materialize/readiness-check children, then dispatch |
+| Known build/CI/external dependency is pending | Save the operation/cursor and resume condition; use existing recovery |
+| A product or authority decision, or a human decision an explicit user budget/binding instruction requires, is unresolved | Prepare the exact decision/options for its owner or human; hold only dependent work |
+
+For task reassessment, assign the bounded question to the lead planner; a
+missing product choice goes to the requester. On `no_split`, resume the same
+worker with the planner's next proof and stop condition. On `split`, persist
+the accepted drafts under [ticket preparation](ticket-preparation.md), verify
+real child IDs, relations and readiness, and stop the old parent writer before
+any overlapping child write; keep its PR until that work has an explicit
+preserved or replacement disposition. A new issue never resets the failed
+repair or Review loop. On `blocked`, hold dependent work for the named decision
+owner.
+
+Routine engineering disposition, including a model or effort choice within
+existing authority and budget, needs no renewed human approval. A clearer task
+boundary takes precedence over raising effort on an expanding assignment.
+
+Make existing callbacks/heartbeat consume the recorded disposition, so an old
+continue signal cannot reopen paused expansion. A phase dispatch hold is not
+permission to change a tool-managed Goal's pause/budget state. Preserve selected
+validation, independent Review, CI, permissions, merge authority and cumulative
+history; elapsed pressure never waives them. A changed HEAD/intervention alone
+need not repeat full Review. A merge here still requires the recorded
+[explicit executor assignment](#merge-executor-assignment).
+
+## Capacity Scheduling
+
+Use the executor's observed limits and active-owner/helper receipts before
+admitting more issues. Persistent sessions and bounded helpers may use different
+pools; do not assume a fixed slot count or infer occupancy from visible issue
+count. Plan room for the next required implementer or independent reviewer.
+Review lenses can run serially against the same frozen target when parallel
+capacity is unavailable; all selected coverage and independence still apply.
+
+Reassess admission after a verified merge, freed resource or changed conflict.
+An earlier planning group, one slow worker or a stale capacity estimate does not
+hold an independent ready issue. Carry the actual scarce resource and evidence
+for serialization; recheck it when that evidence changes, without assuming
+extra slots or overlapping a shared simulator or a recorded conflict.
+
+When a helper cannot start, preserve the issue worker and its exact pending
+phase under [bounded repair and capacity recovery](../../dev/references/execution-ownership.md#bounded-repair-and-capacity-recovery).
+Adjust admission or serialize helper demand before making another dispatch.
+Use supported state-preserving release/recovery only after reconciling active
+descendants. A completed parent label or a wait timeout is not a free-slot
+receipt.
+
+If the runtime permits helper creation only from an ancestor, the controller may
+broker the issue worker's exact bounded handoff through an already-authorized
+dispatch path. The issue worker remains phase and evidence owner: it records the
+helper and its binding in its state and accepts the returned artifact before
+continuing. Brokering creates no other issue owner and never lets the controller
+implement, judge or merge; a helper artifact does not complete the issue or open
+its merge barrier. Without a supported dispatch/recovery path, report that
+concrete blocker.
+
+Coordinate already-planned updates to a PR's base before its worker freezes an
+expensive Review target. Record the pending merge/dependency and the next review
+start condition in existing worker state. This is scheduling, not permission to
+accept an old target: drift during Review still returns stale. Do not wait for
+an indefinitely quiet base or hold unrelated work without a concrete update.
+
+## Merge Executor Assignment
+
+Issue workers merge their eligible PRs by default. Change the executor only for
+an explicit user instruction or applicable repository policy: record the source,
+covered issues/action, executor and release condition in the registry and the
+worker handoff. A user-assigned controller may perform that exact eligible issue
+merge while the worker holds its
+[awaiting authorized merge](../../dev/references/execution-ownership.md#merge-executor-and-handoff-authority)
+gate; the assignment moves only that action. Only the recorded executor attempts
+the merge. Apply a later authorized change to its stated scope, without racing
+the old executor or spreading a one-issue exception to siblings.
 
 ## Controller-Owned Wave Execution
 
-Use this state machine for normal project batches and sequence mode. Treat a sequence as waves containing exactly one issue.
+Use this state machine for normal project waves and sequence mode. In normal
+mode a wave is an admitted cohort, not a dependency edge. Admit another ready
+issue whenever its own predecessors and conflicts are resolved and capacity
+is verified. Treat an explicit sequence as waves containing exactly one issue.
+Record a whole-wave barrier only for an explicit user instruction or a named
+shared contract/integration gate with its actual members and reason.
 
 1. Initialize controller state before dispatch:
    - Controller thread id.
    - Project objective and completion criteria. Keep these in controller state by default; project execution is not a request to enable tool-managed goal auto-continuation. Use a goal tool only when explicitly requested and permitted by its active contract. Do not mark an existing goal complete or blocked merely to idle; follow its status rules.
-   - If the id is not directly available, give the controller a unique project-specific title, then use the thread listing and reading tools to resolve it unambiguously.
-   - Ordered dependency graph and wave membership.
-   - Per-issue state: `Pending`, `Dispatched`, `MergedAwaitingTestDeploy`, `MergedAwaitingHumanAcceptance`, `Merged`, `Blocked`, or `Stopped`.
-   - Resolved branch strategy: policy source, scope, upstream, issue PR base, temporary branch, promotion target, and aggregate PR state.
+   - If the id is not directly available, use supported thread listing/reading and creation context to resolve it unambiguously. Apply the canonical naming contract when title control is available; a matching title alone does not establish identity.
+   - Dependency graph with edge reasons, admitted cohort, and any explicit sequence or shared barrier with its authority/reason and members.
+   - Per-issue state: `Pending`, `Dispatched`, `StackReady`, `AwaitingAuthorizedMerge`, `MergedAwaitingTestDeploy`, `MergedAwaitingHumanAcceptance`, `Merged`, `Blocked`, or `Stopped`.
+   - Resolved branch strategy: policy source, scope, upstream, issue PR base, temporary branch, promotion target, and aggregate PR state; selected stack trunk/layers, exact predecessor pins, owners and per-edge development gate.
    - Delivery mode and project-level skipped/unverified entries.
-   - Worker thread id, retry count, requested semantic route/capability/reasoning/profile/model/executor/profile-fallback policy, accepted binding and separate fallbacks, PR URL, merge commit, validation result, escalation, and blocker.
+   - Issue route (envelope and requested binding), worker thread id or queued creation handle, retry count, observed binding and separate fallbacks, escalation budget and used counts, PR URL, merge commit, validation result, and blocker.
+   - Per-worker closeout: `pending`, `complete`, or `retained with accepted handoff`, with the cleanup evidence and any follow-up owner below; independent of per-issue merge state.
+   - Per-issue merge executor and any source-bound exception, including exact target, next owner/action and wake condition for `AwaitingAuthorizedMerge`; that state does not satisfy a merge barrier.
+   - Worker/external-gate health and due checks under [controller recovery](controller-recovery.md#existing-state-and-check-results), separate from merge evidence and capacity.
+   - Naming context: verified parent issue or scope label, assigned issue, requested worker name and observed title (or unknown). Preserve it on resume and in bounded descendant handoffs.
    - A `dispatched` marker for every issue to prevent duplicate thread creation.
-2. Dispatch every currently ready issue once. Key the worker registry by Linear issue ID and record the thread id immediately.
-3. After the ready wave is dispatched and its wake path is verified, save controller state and end the turn when only external progress remains. A callback wakes the same controller; it does not authorize the worker to dispatch another issue. Ending an idle turn leaves project ownership and unfinished barriers intact.
+2. Dispatch every currently ready issue once through Fresh Thread Handoff and its routing step. Key the worker registry by Linear issue ID and record the creation receipt immediately; a routing result alone does not mark the issue `Dispatched`.
+3. After the ready wave is dispatched and its wake path is verified, save controller state and end the turn when only external progress remains. A callback wakes the same controller. Ending an idle turn leaves project ownership and unfinished barriers intact.
 4. On a callback or a heartbeat, apply Wake Strategy below before expanding reads:
    - Start from compact status and the callback for the affected worker; read detailed history only for an unresolved gate, blocker or health signal. Workers own implementation, tests and review; ordinary progress does not transfer those phases to the controller.
    - For a due recovery check or an actionable signal, inspect the necessary live Linear/GitHub/CI/base evidence. Before accepting a merge or opening a barrier, verify all required live evidence; do not replay the complete merge checklist on every healthy progress-only wake.
    - Update the matching registry entry.
-   - Re-evaluate the entire active wave, not only the reporting worker.
-5. Open a barrier only when every issue in the active wave is verified `Merged` into the resolved issue PR base under the selected mode. Standard mode applies the unattended validation waiver: real-environment tests and human acceptance labels do not hold engineering barriers open; require the recorded waiver and remaining automated evidence. Separate human acceptance tickets are not coding workers or barrier prerequisites. For a batch child with no required branch deployment, an explicit not-applicable environment result satisfies the environment portion; batch-only verification remains at promotion. Fast mode may treat a base-merged issue as `Merged` after its skipped/unverified scope is recorded in controller state even when optional verification or acceptance was skipped; `MergedAwaitingTestDeploy`, thread completion, an open PR, green CI without merge, or an unsupported claim is never sufficient.
-6. Before dispatching unlocked successors, re-read controller state and live issue/PR state. Dispatch only issues still `Pending` with all hard predecessors `Merged` and no existing worker, branch, or PR that represents active work.
-7. Dispatch the newly ready wave exactly once, then wait again. Never let workers decide that they were the last finisher.
-8. If a worker reports `Blocked` or fails the resolved-base merge/test handoff, keep dependent issues closed. Resume the same worker with its existing branch, worktree, PR, checks, and evidence for up to five total attempts. Mark the project `Stopped` after attempt five and report the blocked downstream issues.
-9. For temporary batch integration, run combined validation and the aggregate promotion PR after all required child barriers pass, following the canonical branch strategy. Do not mark batch execution complete before promotion and final handoff gates pass.
-10. Complete the project only when all required issues are verified `Merged` under the selected mode and any planned integration checkpoint passes. Fast mode additionally requires project state and final reporting to contain every skipped/unverified item.
+   - Re-evaluate all pending issues against their own predecessors, recorded conflicts/barriers and observed capacity, not only the reporting worker or its cohort.
+5. Mark each issue's merge barrier satisfied only when it is verified `Merged`
+   on the recorded landing destination under the selected mode: the resolved
+   issue PR base for ordinary work, or the native stack trunk for a stack layer.
+   Verify each layer's reviewed head, merged PR and resulting trunk commit under
+   the stack contract; do not require an upper layer to land on its predecessor
+   branch. A recorded whole-wave barrier requires all its named members; other
+   ready issues need not wait for that cohort. Apply the mode contract's
+   [unattended validation precedence](../../dev/references/development-mode-contract.md#unattended-validation-and-deferred-acceptance):
+   require the recorded waiver and remaining automated evidence; separate human
+   acceptance tickets are not coding workers or barrier prerequisites. For a
+   batch child with no required
+   branch deployment, an explicit not-applicable environment result satisfies
+   the environment portion; batch-only verification remains at promotion. Fast
+   mode may accept verified landing after its skipped/unverified scope is
+   recorded in controller state even when optional verification or acceptance
+   was skipped; `MergedAwaitingTestDeploy`, thread completion, an open PR, green
+   CI without merge, or an unsupported claim is never sufficient.
+6. Before dispatching unlocked successors, re-read controller state and live
+   issue/PR state. Ordinary merge edges require `Merged`; a selected native
+   stack development edge can use a verified `StackReady` predecessor under
+   the [stack contract](../../dev/references/stacked-prs.md). Keep explicit
+   sequence, deployment and other required gates. Dispatch only `Pending`
+   issues whose actual edges pass and which have no existing active owner/PR.
+7. Admit the newly ready issues exactly once through the same Fresh Thread Handoff and per-issue routing step, then wait again.
+8. A Review scope/budget handoff follows the [controller disposition after exhaustion](../../dev/references/review-lifecycle.md#controller-disposition-after-exhaustion), keeping its plan identity, counts and references in the registry; the retry allowance below cannot restart that loop. For other recoverable failures, if a worker reports `Blocked` or fails the resolved-base merge/test handoff, keep dependent issues closed. Resume the same worker with its existing branch, worktree, PR, checks, and evidence for up to five total attempts; waiting on deployment, outcome verification or human acceptance is not an attempt. Mark the project `Stopped` after attempt five and report the blocked downstream issues.
+9. Run the integration checkpoint at the time the
+   [branch strategy's row](../SKILL.md#integration-checkpoints) sets. Record its
+   explicit PR set, ownership and callback, and verify its outcome. Do not mark
+   batch execution complete before promotion and final handoff gates pass.
+10. Complete the project only when all required issues are verified `Merged` under the selected mode, each worker closeout is accepted under Cleanup Acceptance below, and any planned integration checkpoint passes.
+
+### Cleanup Acceptance
+
+For a merged callback, consume the per-resource
+[cleanup evidence](../../dev-merge-handoff/SKILL.md#cleanup-evidence) and verify
+it against the exact issue head/worktree on the owning executor. An inaccessible
+executor is unverified, not evidence of absence. Keep the result in the existing
+worker registry rather than creating a second tracking artifact.
+
+A callback containing only `merged`, issue Done or a merge SHA leaves closeout
+`pending`. Resume the same worker at cleanup to supply missing evidence; do not
+restart implementation, reviews or merge. A concrete unsafe/failed cleanup
+keeps `merged with cleanup blocker` and its next action/owner visible. Accept
+closeout as `complete` only with verified cleanup, or as `retained with accepted
+handoff` when the retention boundary, remaining resources, reason and follow-up
+owner are explicit and accepted by that owner. Merely naming an owner is not
+acceptance and does not grant deletion authority.
+
+Verified code integration may still satisfy the existing mode-required
+wave/sequence dependency barrier while cleanup is pending; it does not complete
+the worker or project. Carry cleanup follow-up alongside successors without
+consuming implementation-repair attempts or creating another issue worker.
+Respect an explicit user ordering requirement that includes cleanup. During worker replacement, transfer retained
+follow-up explicitly; never leave competing mutators on its branch/worktree.
 
 ### Resume Authority
 
 Carry the actual authorizing instruction and its scope when resuming a worker,
 including any changed repair ceiling. Project retry attempts and Review's
 accepted-repair count are separate; use the
-[Review state contract](../../dev/references/dev-review-v2-contract.md#repair-and-re-review-state)
+[Review lifecycle ledger](../../dev/references/review-lifecycle.md#ledger)
 for the latter. A progress question cannot be forwarded as a cap increase.
 Retain the same worker, run and counters; a sent prompt is only a dispatch
 receipt until the worker confirms the resumed phase. Report that distinction
 without claiming that implementation is already running.
 
+Use a delta handoff to the same owner: issue/thread, actual authority or changed
+restriction and scope, current PR/base/head/worktree, accepted failure or changed
+fact, next phase/action, cumulative attempts/Review history and evidence locators.
+Retain unchanged routing and completed gates; do not send the initial handoff
+again or repeat its full route. Name the callback destination and trigger if
+changed. A correction supersedes only its stated scope; reconcile the old owner
+before any transfer. No forwarded progress question expands a repair ceiling.
+
 ### Wake Strategy
 
-- Use worker-initiated callbacks as the primary wake path: include the controller id, supported messaging tool and Worker Callback Packet in every handoff. Workers report a verified merge or a concrete blocker/decision requiring controller action promptly; ordinary commits, CI transitions and progress commentary do not need a separate wake. Confirm the transport can reach the original controller before relying on it; the heartbeat is backup for missed callbacks, silent exits and external merges.
-- Fix the wake predicate before arming recovery, because the rest of this section depends on what counts as actionable. A wake needs controller action when a barrier input changed (a verified merge into the resolved issue base, a received callback, or a worker that exited, stopped, or is blocked), or when missing signals, uncertain worker health, or a due recovery check require reconciliation. Recovery work does not itself open the barrier. A pushed commit, a new PR head, a CI transition, and a changed progress message are worker progress, not controller work; they leave the barrier where it was. When signals are healthy and recovery is not due, record progress-only wakes as quiet, keep the consecutive-quiet count running, and do not treat progress as evidence that the current interval is earning its cost.
-- On Claude Code, verify the callback transport before dispatch and always name an external callback record (the assigned Linear issue, or the PR) in the handoff; the worker writes the same packet there as the packet of record and native messaging is only the wake signal. Read the [Claude communication reference](../../agent-routing/references/claude-communication.md#external-callback-record) for the record and heartbeat limits.
-- Prefer a terminal-condition watcher to a fixed interval only when the runtime supports background execution, completion notification, and waking the same controller after its turn ends, with verified receipts for that path: the controller dispatches it, ends its turn, and is woken once when the watcher observes a merge, a worker exit, or the callback record. Polling then happens outside the model, so a quiet hour costs no wakes. Keep a long-interval heartbeat as the residual net for the watcher itself dying with its session, and say which mechanism owns which signal in controller state. Shell command execution alone does not establish a wake path. For Codex, read the [controller wake capability boundary](../../agent-routing/references/codex-adapter.md#controller-status-and-wake-capabilities).
-- Keep one heartbeat attached to the controller as backup while workers are active. With verified callbacks and healthy workers, start with a 45-minute recovery interval and back off toward 60 minutes after repeated quiet checks, within the recorded maximum missed-event recovery delay. Use a shorter interval when callbacks are unavailable, health is uncertain, or a user deadline requires faster detection; record that reason. A normal progress message does not restore a short interval. Direct callbacks remain immediate regardless of the backup interval. Record the job id, interval, last worker/callback cursor, last external-state check and next recovery check in the existing registry. Arm it per wave rather than once per project: before ending a turn that dispatched a wave, verify a heartbeat is active and re-arm one when an earlier wave's heartbeat was removed. Callbacks alone cannot report a worker that exits without sending one.
-- Callbacks, heartbeat, user status requests and any already-authorized goal continuation consume the same saved worker cursor, signal identity and recovery deadline. Reuse a signal already processed in this wake cycle; do not read it again merely because a second wake source fired. A duplicate wake source is not a new recovery deadline or reason to reload unchanged Skills. Reuse loaded instructions and compact controller state unless context loss, a version change or a new pending decision requires the relevant source again. A quiet wake does not reset the recovery deadline: advance it only after the due external check actually completes. Keep freshness/health uncertainty actionable.
-- On heartbeat or another reconciliation wake, first request missing compact worker status and callback changes since the recorded cursor, batching independent reads where supported. Follow the executor adapter's required record/status checks. A changed progress message alone need not trigger full thread-history reads. When signals are healthy and non-actionable and the external-state check is not due, save the cursor and end the turn with the runtime's required quiet response. Treat repeated quiet wakes as a wake-configuration defect rather than normal operation: after a few consecutive non-actionable wakes, widen the interval or narrow the wake predicate before ending the turn, and shorten the backup interval only when the recorded recovery need changes, not merely because progress resumed.
-- Keep the heartbeat prompt stable: identify the controller, active scope, state location, wake predicate and authority boundaries. Store changing cursors, heads, test counts and logs in existing controller state. Update the automation only when its wave/scope, recovery policy, authority or lifecycle changes, or its recorded configuration is missing/stale; routine progress and quiet cursor updates do not require another automation write. Preserve notification policy; a quiet/DONT_NOTIFY response suppresses notification, not model execution.
-- Check compact live PR/CI/issue signals at the recorded recovery interval even when worker status is unchanged: a missed callback or external merge may not change that status. If no reliable change cursor is available, perform bounded recovery reads instead of assuming nothing changed. Missing signals, stopped/failed workers, actionable callbacks, changed external state or expired verification require reconciliation. Two failures look like ordinary silence and need an explicit check: a worker that was accepted but never produced a first turn, because a queued or backgrounded creation receipt is not a running worker; and a worker that exited leaving commits only in its local worktree. Preserve unpushed work on the remote issue branch before resuming or re-dispatching that issue. Read detailed history only for the affected worker or unresolved gate; verify all required live evidence before changing barriers or dispatching successors.
-- Prefer one supported wake mechanism for the same pending signal; reuse the existing heartbeat rather than creating one for each goal continuation. If an active goal runtime immediately replays idle turns and offers no supported pause/coalescing control, report that runtime limitation once and preserve the recovery schedule. Do not mark its goal complete/blocked just to suppress wakeups, infer permission to alter its budget, or claim the Skill repaired host scheduling.
-- Do not chain short status waits or sleep calls to keep an idle controller turn alive. That ban is about holding the current turn open; it does not forbid a detached watcher that ends the turn and wakes the controller once when its terminal condition is met. A bounded wait is appropriate for a concrete in-flight operation, such as confirming worker creation, but return to the verified callback/heartbeat wake path once only external progress remains. Disable or remove the heartbeat when no workers are active, the project completes, or the project stops. A quiet heartbeat still consumes model tokens; do not describe this strategy as a measured token saving without a comparison.
-- If neither callbacks nor heartbeat automation is available, report that automatic continuation is unavailable and ask the user to resume the controller. Do not transfer orchestration ownership to a worker.
+Read [controller recovery](controller-recovery.md) before arming a wake path,
+handling a callback/heartbeat or returning quietly. It owns stable prompts,
+successful-check deadlines, worker/external-gate reconciliation and the host
+failure boundary. Use one saved cursor/signal/deadline across all wake sources;
+recovery alone does not open a merge barrier or transfer issue ownership.
 
 ### Barrier Example
+
+For an explicitly requested whole-wave barrier or a recorded shared gate:
 
 ```text
 Wave 1: EX-101, EX-102, EX-103, EX-104
@@ -139,60 +320,72 @@ Barrier: both verified merged
 Wave 4: EX-108, EX-109
 ```
 
+In normal mode, if only EX-101 is a predecessor of EX-105, its verified merge
+can unlock EX-105 while another admitted worker remains active, provided actual
+conflicts and capacity allow it. Planning them in adjacent waves adds no edge.
+
 ## Worker Handoff Shape
 
-For non-sequence project batches, send this shape to each issue-level worker in a fresh controller thread or session on the resolved executor by default:
+Use the same compact contract for waves and sequences; scheduling changes
+dependencies, not delivery ownership. Put task-specific facts, source-bound
+exceptions and source locators in the prompt. Keep shared Skill instructions,
+other workers' history and changing project progress in their existing sources.
+Do not impose an arbitrary length limit or omit a necessary environment boundary.
+
+Pass the shared discovery inventory under the
+[discovered-work rule](../../dev/references/execution-ownership.md#autonomous-decisions-and-discovered-work).
+Workers return new findings to the controller for grouping and scope decisions;
+they do not start out-of-scope work. Report a development blocker promptly;
+nonblocking discoveries can accompany the next normal callback.
 
 ```markdown
 Use $dev.
 Mode: <fast | standard | strict; standard by default>.
 Skipped / Unverified: <entries or none>.
 
-Project:
-Controller thread:
-Routing binding: <requested semantic route/capability/reasoning/executor/profile/model/profile-fallback policy plus accepted executor/model/reasoning/profile and separate fallbacks>
-Routing receipt required: use the shared agent-routing receipt in the callback
-Assigned issue:
-Wave / batch:
-Branch strategy: <policy source, scope, upstream, issue PR base, temporary branch, promotion target>
-Base branch:
-Dependencies already satisfied:
-Assigned scope:
-Accepted engineering ticket / design basis: <content and source/contract revision; reuse settled decisions under the engineering ticket protocol>
-Expected touched areas:
-Do not touch:
-Validation required: <mode-selected checks; source for explicit additions; no automatic standard reverse-red or unrelated edge-case matrix; when the phase plan or repository policy requires technical Review, the combined Review V2 result accepted on the exact PR head to be merged; otherwise carry the mode/preset or explicit exception and its required omission disclosure>
-Integration notes:
-API Steward expectations:
-Stop and report if:
+Identity: <project/parent, issue, controller ID, naming context and worker ID when ready>
+Target: <repository/worktree/branch, resolved base and branch-strategy policy/scope>
+Scope/design: <accepted issue/spec/design revision and readable locators; settled decisions>
+Dependencies/integration: <satisfied prerequisites, remaining gates, shared-area coordination>
+Environment/boundaries: <owned resources, protected targets and task-specific restrictions>
+Authority/merge: <source and covered scope; issue worker by default or explicit executor/release condition>
+Validation/API: <mode-selected gates and source-bound additions; API Steward if applicable>
+Routing: <routed envelope and requested binding for this issue>
+Runtime acceptance: <pending/observed/unknown, separate fallbacks>
+Discovery inventory: <existing shared parent/locator, or none>
+Completion/callback: <verified merge plus closeout, stack-ready checkpoint or source-bound held merge gate;
+  controller ID, supported transport, durable packet destination and concrete blocker triggers>
 
-Resolve exactly this issue through the $dev workflow. Commit and push each working step to the issue branch as you reach it; work that exists only in your local worktree is invisible to the controller and is lost if this session exits. After reaching a merged PR against the resolved issue base with its mode-required test handoff, or a concrete blocker, send the Worker Callback Packet to the controller thread. Do not create or dispatch successor issue threads.
+Own this issue through $dev, preserving its implementation/Review boundaries,
+cumulative budgets and the recorded merge executor. Commit and push working
+steps to the issue branch; report a risk of unpreserved local work. Send the
+callback after verified merge/closeout, a recorded external merge handoff, a
+selected stack-ready checkpoint, or a blocker/decision requiring controller
+action. Keep ordinary progress in this worker.
 ```
 
 ## Worker Callback Packet
 
-Require every normal-batch and strict-sequence worker to send this packet to the controller with the thread messaging tool:
+Require every issue worker to send this packet to the controller through the
+handoff's transport and packet destination:
 
 ```markdown
 Dev project worker callback
-- Project: <project>
-- Issue: <issue id>
-- Worker thread: <thread id>
-- Routing receipt: <shared agent-routing receipt>
-- Attempt: <number>
-- Status: <merged | merged awaiting test deploy | merged awaiting human acceptance | blocked>
-- PR: <number and URL, or none>
-- Head branch: <branch>
-- Base branch: <verified issue PR base>
-- Batch / promotion state: <scope, temporary branch, promotion target, aggregate PR or pending>
-- Validation / QA: <result>
-- Merge/test handoff: <result>
-- Review evidence: <combined Review V2 artifact identifier and the head it was accepted on, or `skipped (fast mode)`, `not selected (tracked-artifact)`, or `waived` with the applicable phase-plan/policy or explicit user authority; never call omitted Review passed>
-- Human acceptance: <not required | required steps and evidence status | skipped (fast mode) with closeout disclosure>
+- Issue / worker / attempt: <issue ID, worker session ID, correlation ID and attempt number>
+- Status: <stack-ready | merged | merged with cleanup blocker | merged awaiting test deploy | merged awaiting human acceptance | awaiting authorized merge | blocked>
+- PR / head / merge: <PR URL, base, reviewed head and merge commit, or none; for a stack layer its immediate base and pinned predecessor>
+- Evidence: <locators for validation, the Review result bound to that head (or the authorized omission and its source), the merge/test handoff and per-resource cleanup>
 - Skipped / Unverified: <entries or none>
-- Merge commit: <commit, or none>
-- Blocker and attempted fix: <details, or none>
-- Integration notes: <notes, or none>
-
-Controller action: verify this result against live Linear, GitHub, CI, and base-branch state; apply the recorded phase plan and repository policy: when Review is required, verify the accepted combined artifact and its binding to the PR head that was merged (not the squash/rebase merge commit), retaining the barrier for missing, stale, or self-assembled evidence; otherwise verify the authorized omission and its disclosure; update the full active-wave barrier; dispatch unlocked successors only if the barrier is satisfied.
+- Blocker or next action: <blocker and attempted fix; or the held gate's owner, action, authority and release condition; Review recovery state when active; retained cleanup and its owner; none when complete>
+- Discoveries: <originating issue, evidence, proposed blocking status and ticket/comment anchors, or none>
 ```
+
+Treat the packet as a claim. Verify it against live Linear, GitHub, CI and
+base-branch state before updating the registry. When Review is required, the
+accepted result must cover the policy minimum and bind to the PR head that was
+merged, not a squash or rebase merge commit; retain the barrier for missing,
+stale or self-assembled evidence, and otherwise verify the authorized omission
+and its disclosure. Apply Cleanup Acceptance separately from the merge barrier,
+then re-evaluate pending issues under Controller-Owned Wave Execution. A
+stack-ready callback opens only its development gate: it has no merge commit,
+leaves closeout pending and never marks the issue Done.

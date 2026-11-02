@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Session Review"
+  short_description: "Review session cost against verified quality"
+  default_prompt: "Use $skill-session-review to review the supplied sessions from task input to verified outcome, trace avoidable cost to its owner, and propose quality-preserving experiments."

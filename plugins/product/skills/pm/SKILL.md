@@ -26,6 +26,9 @@ material change. Continue for `pm/*`; send `project/pm` to
 `$pm-project-orchestrator`; return other routes to their selected owner without
 PM writes. Preserve diagnosis-only, verification-only, and preparation-only
 endpoints.
+For a proven engineering-task child, reuse the accepted Dev plan and parent
+product outcome. Resolve a real product gap through its Product owner; do not
+send the child through its own Solution Review or create an independent PRD.
 
 For authorized unnumbered issue work, search for a relevant record, reuse a
 clear match, or create a faithful initial record if none exists. Ask only when
@@ -34,8 +37,8 @@ Unavailable tracker access permits independent analysis and exact unapplied
 drafts, not claims of tracker writes or development readiness.
 
 Read the [tracker contract](references/tracker-contract.md) before writes. PM
-owns intake and the single `## PM Workflow` root: classify the request from
-current evidence, resolve/reuse the root ID, and apply supported labels,
+owns the single `## PM Workflow` root: reuse the router/confirmed intake
+evidence, resolve/reuse the root ID, and apply supported labels,
 priority, owner and assignee. A Bug label preserves the Bug route unless the
 user authorizes reclassification. Use the acceptance policy linked there to
 separate unattended engineering from human follow-up. Do not add `scoped` or
@@ -48,13 +51,17 @@ implementation branches, code, commits or PRs.
 
 ## Default flow
 
-Read the [issue state machine](references/issue-state-machine.md) for entry,
-review applicability, changed decisions, resume and completion.
+Use the [working context](references/working-context.md) to retain source-bound
+facts and select only the next action's inputs. Consume `issue_route.pm_action`;
+do not classify the gaps again or load all downstream Skills. A `clarify` action
+loads its gap owner; `write-spec` loads Spec; `assess-readiness` loads Readiness;
+`reuse-handoff` verifies the existing result; `blocked` returns the named gap.
 
-The usual flow is **clarify goal and scope -> canonical specification ->
-readiness and Dev handoff**. Treat existing sufficient evidence as satisfied.
-Run short dependent analysis inline; load only a specialist needed for the next
-missing decision or requested artifact.
+Follow the [state machine](references/issue-state-machine.md) when applicability,
+a new decision, scope change or completion is in question. Successful dependent
+steps advance the same context under its transition table without another Jev
+call. Short analysis and mechanical tracker operations stay inline; specialist
+Skills remain available for an actual missing decision or requested artifact.
 
 | Need | Owner |
 | --- | --- |
@@ -102,14 +109,18 @@ such as “any progress?” grants no new product or execution authority.
 
 ## Delegation
 
-The current agent owns single-issue state and writes. Use a bounded agent for
-independent review or substantial separable analysis when authorized. It returns
-an artifact, not lifecycle ownership; never run concurrent issue writers.
-Before dispatch, supply task and runtime facts under the [Jev input contract](references/jev-input.md)
-and run `python3 <this-skill>/scripts/route_agent.py --input <facts.json>`.
-Consume its envelope, binding and dispatch instructions without reading routing
-policies or reclassifying. A blocked result stops dispatch. Inline work retains
-the current model; project issue dispatch belongs to the project owner.
+The current agent owns single-issue state and writes. Scope, specification and
+readiness work need the whole issue context, so they stay inline. Use a bounded
+agent, when authorized, only for an independent judgment of an existing
+artifact, parallel research that needs little issue context and returns a
+compact result, or a context that has measurably degraded with length. It
+returns an artifact, not lifecycle ownership; never run concurrent issue writers.
+Before dispatch, decide the routing fields with the [routing contract](references/routing-contract.md#decide)
+and [PM map](references/pm-routing-map.md), run
+`python3 <this-skill>/scripts/route_agent.py --input <facts.json>` and dispatch
+its binding through the selected adapter. A blocked result stops dispatch.
+Inline work retains the current model; project issue dispatch belongs to the
+project owner.
 
 ## Completion
 

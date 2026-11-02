@@ -1,55 +1,52 @@
 # Review Result Contract
 
+Every route returns this result. It describes one run on one frozen target;
+it carries no cross-run state.
+
 ```markdown
 ## Technical Review
 
-Contract Version: 2
-Review Run ID: <id>
-Generation: <integer>
-Attempt Count: <accepted repaired heads>
-Repair Limit / Authority: <default 5 | verified numeric user override and exact source/scope>
-Repair Budget Remaining: <Repair Limit minus Attempt Count>
-Generation Status: <collecting | judged | stale | resolved>
-Invocation: <dev-managed | standalone>
-Review Mode: <fast | standard | strict | explicit standalone>
-Started At: <timestamp copied from the frozen envelope>
-Target Type: <pull-request | immutable-diff>
 Repository: <repository>
 PR: <url or none>
+Target Type: <pull-request | immutable-diff>
 Base Revision: <full SHA>
 Head Revision: <full SHA>
-Review Lens: <thermo-nuclear>
+Mode: <fast | standard | strict>
+Depth: <lightweight | focused | full>
+Started At: <timestamp>
 Decision: <approved | comments | stale | blocked>
 Common Action: <repair-required | advisory | coverage-blocked | none>
-Independence: <not required | satisfied | blocked>
-GitHub Posting: <verified URL/evidence | not applicable | not posted>
+Independence: <satisfied | not satisfied: reason>
+GitHub Posting: <verified URL | not posted | not applicable>
 
-### Source Verification
-- <artifact ID, source/provenance, native decision, verified/quarantined>
-
-### Findings and Dispositions
-- <combined and separate findings with source IDs, native labels, dispositions,
-  and immutable raw-source references in the assembled artifact>
+### Findings
+- <ID, source, native severity or classification, disposition, scenario and
+  evidence; for focused review, each prior finding's status: fixed or open>
 
 ### Coverage
-- Specification: <assessed | not assessed | blocked>
-- Core/conditional: <verified, skipped, missing, or quarantined>
+- Assessed: <requirements, correctness, maintainability, or the focused delta>
+- Gaps: <unreadable code, specification not assessed, required claim without
+  evidence, unavailable observation (unverified); or "None">
 
-### Quarantine
-- <Artifact ID field with received value or `none - missing`,
-  exact validation reason, provenance when available, and verbatim raw
-  Markdown; complete judge artifact when invalid; or "None">
+### Limitations
+- <stated limits, or "None">
 
-### Repair State
-- Previous Head: <SHA or none>
-- Change Evidence: <evidence or none>
-- Prior Artifact: <reference or none>
-- Issue/PR History: <prior runs, cumulative repair heads/root causes, base drift>
-- Convergence Checkpoint: <not reached | passed with evidence | blocked>
-
-### Blocker
-- <blocker or "None">
-
-### Recommended Next Step
-<`$dev-implementer`, `$dev-ci-repair`, `$dev-merge-handoff`, caller/user, or blocked reason>
+### Next Step
+<caller, `$dev-implementer`, `$dev-ci-repair`, or blocked reason>
 ```
+
+`Decision` follows the common action: `coverage-blocked` is `blocked`,
+`repair-required` and `advisory` are `comments`, and `none` is `approved`.
+A drifted base or head is `stale` whatever the findings. `approved` requires
+complete coverage and no actionable, advisory or evidence-gap item. Standalone
+missing or ambiguous specification authority is recorded as `Specification not
+assessed` and is at least `advisory`.
+
+An observation the agent cannot obtain in its environment (a physical device,
+real account or provider, external environment, or human-only check) is
+recorded as `unverified` with its reason; it does not make otherwise complete
+coverage incomplete. An available check that was not run, an actual failure,
+unreadable code and missing authority remain gaps.
+
+Full review attaches both finder outputs unchanged. Never fabricate finder
+outputs or an approval for work that did not run.

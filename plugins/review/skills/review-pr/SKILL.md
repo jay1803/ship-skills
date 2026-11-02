@@ -17,8 +17,8 @@ canonical target; local repository context may support analysis but never
 replaces the GitHub diff or posting evidence.
 
 This is a focused PR review, not comprehensive `$review`. Do not invoke
-`$review-spec`, `$review-correctness`, `$review-code-quality`, conditional test
-review, or `$review-judge`.
+`$review-spec`, `$review-correctness`, `$review-code-quality`, or
+`$review-judge`.
 
 Read the sibling
 [Code Quality Findings Contract](../review-code-quality/references/code-quality-findings-contract.md)

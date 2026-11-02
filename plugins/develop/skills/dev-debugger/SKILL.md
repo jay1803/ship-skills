@@ -18,9 +18,9 @@ Use current repository evidence for bug tickets, regressions, crashes, hangs, wr
 
 ## Reference Selection
 
-Start from the changed surface or diagnostic evidence, not the repository label. Reuse current context that matches the target files, version, environment, and acceptance boundary. Read or load a specialist only when its workflow or an unresolved platform question is needed for the selected task; inspect additional project areas when a concrete dependency or evidence gap reaches them. Repository instructions and required validation still apply. If none of the listed platforms applies, use the shared workflow and repository guidance rather than forcing a match.
-
-Read the shared workflow, then the matching reference(s) from `references/` when applicable:
+Choose by the diagnostic evidence, not the repository label. Read a reference
+only when the causal path reaches its surface; with none, use the shared
+workflow:
 
 - iOS app, iOS simulator/device-only bug, Xcode iOS target, UIKit, App Intents, crash, hang, memory, performance, or iOS runtime behavior: [debug-ios.md](references/debug-ios.md)
 - macOS app, AppKit, macOS SwiftUI scene/window/menu, sandbox/TCC, signing, entitlement, packaging, crash, hang, performance, or macOS runtime behavior: [debug-macos.md](references/debug-macos.md)
@@ -36,12 +36,11 @@ Multiple references are allowed when the bug crosses surfaces. Pair `debug-swift
 - Use for defects: crash, hang, regression, incorrect output, broken UI, wrong data, performance issue, flaky behavior, failed acceptance check, field report, or reproducible test failure.
 - When an observed defect also exposes feasibility or third-party API uncertainty, diagnose the defect here first, then route the remaining unknown to `$dev-spike` or `$dev-api-research`.
 - For a failure first discovered during post-implementation validation, enter only from an evidence-bearing `$dev-test` handoff after that phase confirms root-cause investigation is still needed. Do not take ownership of every first red local command.
-- Do not use for new features, product ambiguity, strategic priority, PR review comments, or failing CI infrastructure. Route those to PM, `$dev-implementer`, or `$dev-ci-repair`.
-- Do not re-ask for evidence already present in the PM bug triage brief, issue, comments, screenshots, logs, stack traces, or attachments.
+- Do not use for new features, product ambiguity, strategic priority, PR review comments, or failing CI infrastructure. Return product questions to the requester; route the rest to `$dev-implementer` or `$dev-ci-repair`.
+- Do not re-ask for evidence already present in the issue, a triage brief, comments, screenshots, logs, stack traces, or attachments.
 - Do not invent root-cause confidence when the available evidence cannot distinguish the leading causes. Design the smallest useful observability change, collect the missing evidence, and resume diagnosis instead.
-- If the report is not actually a bug, stop with the reason and route back to `$pm-readiness-review` or the correct Dev role.
-- If a PM bug triage brief is present, treat its expected behavior, actual behavior, severity, user impact, affected platform, environment, workaround, and open questions as the product source of truth unless newer tracker comments supersede it.
-- When invoked inside a PM-only kickoff or diagnosis pass that does not authorize implementation, return a successful diagnosis to `$pm-spec` in Bug Synthesis Mode. Do not skip the canonical issue record by routing directly to Dev planning.
+- If the report is not actually a bug, stop with the reason and return to the requester or the correct Dev role.
+- If a bug triage brief is present, treat its expected behavior, actual behavior, severity, user impact, affected platform, environment, workaround, and open questions as the product source of truth unless newer tracker comments supersede it.
 
 ## Reproduce → Explain → Fix → Prove
 
@@ -51,7 +50,7 @@ plausible patch is never enough to enter Fix.
 
 ### Reproduce
 
-1. Resolve the bug ticket and any PM bug triage brief. Capture expected and
+1. Resolve the bug ticket and any bug triage brief. Capture expected and
    actual behavior, affected platform, environment, severity, user impact,
    reported frequency, regression window, workaround, open questions, and
    available evidence.
@@ -123,7 +122,7 @@ step. Do not convert an evidence gap into a low-confidence root cause.
   with the captured evidence.
 - If instrumentation is not authorized, unavailable, or cannot safely collect
   the needed signal, stop with the exact owner, capture plan, and escalation:
-  `$pm-readiness-review` for missing expected behavior or product decision,
+  the requester for missing expected behavior or a product decision,
   `$dev-spike` for unresolved feasibility, `$dev-api-research` for external
   contract behavior, or the responsible environment/operator for access,
   device, data, or deployment evidence.
@@ -143,8 +142,6 @@ step. Do not convert an evidence gap into a low-confidence root cause.
      `$dev-debugger`.
    - Evidence gap without an authorized or safe capture path: stop/escalate as
      defined above.
-   - PM-only kickoff or diagnosis pass with enough evidence to synthesize the
-     bug: `$pm-spec` in Bug Synthesis Mode.
    - Confirmed root cause and minimal fix/proof plan: return to the controller;
      select `$dev-planner` only for a remaining technical choice or sequencing
      need, otherwise `$dev-implementer` may use the current diagnosis/brief.
@@ -153,22 +150,21 @@ step. Do not convert an evidence gap into a low-confidence root cause.
 
 ## Investigate-Only Terminal
 
-When the canonical Issue Route receipt selects
-`investigate/bug-diagnosis` with `terminal_intent: diagnosis`, this skill
-performs the same reproduce/explain evidence work but stops after its diagnosis
-brief. It does not create a goal, implementation branch or PR, tracker closeout,
-or architect/planner/implementer dispatch.
+When the current request is diagnosis only, this skill performs the same
+reproduce/explain evidence work but stops after its diagnosis brief. It does
+not create a goal, implementation branch or PR, tracker closeout, or
+architect/planner/implementer dispatch.
 
 The default mutation budget is read-only. A scratch characterization test or
 minimal instrumentation needs exact scope and targeted validation. A durable
 characterization test, instrumentation, or repro artifact additionally requires
-the receipt to name `retained-diagnostic-artifact`, an exact user-authorized
-path, targeted validation, and a cleanup or retention disposition; otherwise
-return the plan, not the write. End with `conclusive`, `inconclusive`, `blocked`, or
+the request to authorize retaining it at an exact path, targeted validation,
+and a cleanup or retention disposition; otherwise return the plan, not the
+write. End with `conclusive`, `inconclusive`, `blocked`, or
 `not-applicable`, the causal evidence/confidence, affected boundary, candidate
 fix/proof plan, and one recommended next route. A repair proposal is not repair
-authorization: transition to `change` requires a fresh router receipt carrying
-explicit delivery authorization and this brief as its resume anchor.
+authorization: moving to a change requires a new explicit user request or
+authorization, with this brief as its resume anchor.
 
 ## Evidence Sufficiency Gate
 
@@ -196,79 +192,36 @@ a speculative patch when the causal boundary is unknown.
 ```markdown
 ## Bug Diagnosis Brief
 
-Bug:
-<Issue ID/title or symptom summary.>
-
-Mode:
-<fast | standard | strict; omitted resolves to standard>
-
-Surface:
-<iOS | macOS | SwiftUI | web | backend | Supabase | mixed | unknown>
-
-Debug References Used:
-- <selected references | not applicable, with the actual surface>
-
-Evidence:
-- <Issue text, logs, stack trace, screenshot, failing test, command output, source file, or "missing">
-
-Symptom Classification:
-<deterministic | intermittent | environment-dependent | unknown>
-
-Evidence Sufficiency:
-<sufficient | insufficient - why>
-
-Observability Gaps:
-- <Unanswered diagnostic question, missing boundary, or "none">
-
-Instrumentation Plan / Result:
-- <Minimal structured log, trace, metric, command, owner, capture result, or "not needed">
+Bug: <issue ID/title or symptom summary>
+Mode: <fast | standard | strict>; Skipped / Unverified: <entries or none>
+Decision: <reproduced | explained | fix planned | proved | needs instrumentation | needs evidence | needs spike | needs API research | not a bug | blocked>
 
 Reproduction:
-- <Steps tried, result, reproducibility, environment, or blocker>
+- <steps, environment, attempts or environment matrix, and classification: deterministic | intermittent | environment-dependent | unknown>
 
-Reproduction Attempts / Environment Matrix:
-- <Attempt count and result, or the compared environment conditions and result>
+Evidence:
+- <sources used; sufficiency, and the diagnostic questions any gap leaves open>
+
+Hypotheses:
+1. <cause> - supporting and conflicting evidence; discriminating check and result
 
 Root Cause:
-<Confirmed cause with file/line when known, or "not confirmed">
+<confirmed cause and first divergence with file/line, and confidence (high | medium | low); or "not confirmed">
 
-First Divergence:
-<Earliest observed departure from expected behavior, or "not yet observed">
-
-Confidence:
-<high | medium | low>
-
-Affected Files / Contracts:
-- <File, API, model, migration, permission, UI state, route, or contract>
-
-Candidate Causes:
-1. <Cause> - priority: <high | medium | low>
-   - Likelihood: <high | medium | low>
-   - Supporting evidence: <evidence>
-   - Conflicting or missing evidence: <evidence or "none known">
-   - Verify: <specific discriminating command, tool, log, test, or repro>
-   - Conditional solution: <narrow change to use only if confirmed>
-
-Discriminating Observation:
-<Observation that selected the root cause over the competing hypotheses, or "not yet available">
+Instrumentation:
+- <minimal privacy-safe plan, owner and capture result, or "not needed">
 
 Minimal Fix:
-<Smallest causal change, affected boundary, non-goals, and rollback/containment when relevant; or "not proposed until root cause is confirmed">
+<smallest causal change, affected files/contracts, non-goals, rollback/containment; or "not proposed until root cause is confirmed">
 
 Proof Plan / Result:
-- <Original reproduction or faithful equivalent, root-cause-boundary check, regression check, affected-environment proof, and result when implemented>
+- <original reproduction or faithful equivalent, root-cause-boundary check, regression check, affected-environment proof, and result when implemented>
 
-Risks / Guardrails:
-- <Scope, data, migration, compatibility, privacy, performance, or rollback concern>
-
-Open Questions:
-- <Only questions that block confidence or implementation>
-
-Decision:
-<reproduced | explained | fix planned | proved | needs instrumentation | needs evidence | needs spike | needs API research | not a bug | blocked>
+Risks / Open Questions:
+- <only those that block confidence or implementation>
 
 Recommended Next Step:
-<$pm-spec | $dev-planner | $dev-implementer -> $dev-debugger | $dev-implementer | $dev-spike | $dev-api-research | $pm-readiness-review | stop>
+<$dev-planner | $dev-implementer -> $dev-debugger | $dev-implementer | $dev-spike | $dev-api-research | requester decision | stop>
 ```
 
 Keep the brief evidence-led. A useful diagnosis names what is known, what is only likely, and how to prove the fix.

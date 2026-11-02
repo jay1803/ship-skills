@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "displayName": "Skill",
+  "name": "skill",
+  "version": "0.1.4",
+  "description": "Skill architecture, authoring, independent behavioral review, and evidence-backed session audits for Codex and Claude Code.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "skills",
+    "agent-design",
+    "authoring",
+    "behavior-evaluation",
+    "review",
+    "session-review",
+    "session-cost"
+  ],
+  "skills": "./skills/"
+}

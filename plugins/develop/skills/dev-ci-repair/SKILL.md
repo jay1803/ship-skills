@@ -21,21 +21,14 @@ Review comments and merge conflicts are owned by `$dev-implementer`. Use `$dev-c
 - Before a PR exists, require an evidence-bearing `$dev-test` handoff naming the repeated command, environment, attempts, and why the failure is CI/environment-shaped.
 - Route review comments and merge conflicts to `$dev-implementer`; route product behavior or scope decisions back through `$dev`.
 
-When `$review` supplies a Review v2 CI repair batch, apply the shared Review
-state gate before inspection or mutation. Require the accepted current combined
-artifact and complete run ID, generation, attempt count, generation status,
-previous/current head, base, change evidence, and prior artifact. Verify
-`Generation = Attempt Count + 1` and the effective limit/authority from the
-[shared state contract](../dev/references/dev-review-v2-contract.md#repair-and-re-review-state).
-Missing, discontinuous, reset or ceiling-exhausted unresolved state returns
-`blocked` without changing code or starting another generation.
-
-Treat every confirmed failing-check item in that combined artifact as one CI
-repair batch. At attempt `2` or later, require Dev's convergence checkpoint
-before accepting another repaired head. If the minimum repair expands product
-behavior, a public contract, persistent model, migration/deployment order,
-ownership, or cross-repository scope, return to `$dev` for PM or
-architecture/planning instead of absorbing the expansion here.
+When the PR has a Review history, repair only the CI batch the controller
+authorized for the exact PR and head: the complete in-scope failing-check set,
+never a convenient subset. The controller owns the Review ledger, triage and
+round budget; do not recount, reset or extend them here. A missing or
+mismatched authorization, or out-of-scope or mixed remediation, returns to the
+controller without repair. Ordinary failing-CI work without a Review history
+keeps its own authorization and needs no Review state. Required failing CI
+stays blocking even when ticketed separately.
 
 ## Inputs
 
@@ -46,8 +39,6 @@ architecture/planning instead of absorbing the expansion here.
 ## Workflow
 
 1. Resolve the target repo, branch, PR, failed check, and latest commit.
-   - For a Review v2 handoff, validate the shared repair state and retain the
-     complete combined artifact before inspecting a check or changing code.
    - Prefer explicit PR input.
    - Otherwise run `gh pr view --json number,url,headRefName,headRefOid,baseRefName` from the current branch.
    - If no PR exists yet, proceed only from an explicit `$dev-test` escalation, repair the handed-off command or environment failure, and report that PR checks cannot be inspected.
@@ -66,11 +57,9 @@ architecture/planning instead of absorbing the expansion here.
 5. Scope non-GitHub checks.
    - If a failed check's details URL is not a GitHub Actions run, mark it external, report the URL, and do not attempt provider-specific repair unless another active skill covers that provider.
 6. Diagnose the failure.
-   - Classify it as change-caused, pre-existing, flaky, environment-blocked, dependency/service outage, credentials/secrets, external-provider, or unknown.
+   - Classify it under the shared [failure attribution](../dev-test/references/validation-evidence.md#failure-attribution).
    - Preserve the smallest useful failure snippet, check URL, run URL, branch, and commit evidence.
 7. Repair only valid, change-caused failures.
-   - For a Review v2 handoff, repair the complete accepted failing-check batch;
-     do not select an early or convenient subset from an individual source.
    - Apply narrow fixes in the issue branch.
    - If updating the PR branch against its base is required to reproduce or repair CI and a merge conflict appears, resolve only the conflict needed for the CI repair using `$dev-implementer`'s [PR-repair conflict rules](../dev-implementer/references/pr-repair.md): understand both sides, avoid blanket `ours`/`theirs`, never discard unrelated work, and stop when a product, security, architecture, or maintainer decision is required.
    - Do not change product scope, broaden architecture, weaken tests, bypass security checks, or hide failing checks.
@@ -79,15 +68,13 @@ architecture/planning instead of absorbing the expansion here.
    - Rerun the failing local command or the closest reliable repo command.
    - Commit and push the repair when the branch is PR-backed.
    - Recheck `gh pr checks <pr>` or rerun the bundled script after push when practical.
-   - Return one final repaired head, validation, and the unchanged Review Run
-     identity to `$review`. Review accepts the head once and increments the
-     shared attempt count once for the batch.
+   - Return one final repaired head and validation to the caller. After a
+     Review batch the controller selects any re-review; ordinary CI repair does
+     not start or select Review.
 9. Enforce retry limits.
    - Retry the same failing check at most three times before stopping with a concrete diagnosis and the evidence gathered.
-   - The three-check diagnostic limit does not reset or replace Review's shared
-     repair count. The effective Review limit blocks another CI mutation or
-     reviewer dispatch; absent an exact user override it remains five accepted
-     repaired heads, so generation `7` is invalid.
+   - This diagnostic limit is separate from the controller's Review budget and
+     never resets it.
 
 ## Bundled Resource
 
@@ -115,11 +102,11 @@ Status: <passing | still failing | blocked | external | pre-existing | flaky>
 ### Diagnosis
 - <cause and evidence>
 
-### Review State
-- <not applicable, or run ID, generation, attempt count, combined artifact, convergence checkpoint, and one repaired head>
+### Review Batch
+- <not applicable, or the authorized batch and head, and the one repaired head>
 
 ### Scope Check
-- <within approved brief | replan required | PM decision required, with evidence>
+- <within approved brief | replan required | requester decision required, with evidence>
 
 ### Failure Evidence
 - <small log snippet, run URL, details URL, branch/sha, or "None">
@@ -131,6 +118,6 @@ Status: <passing | still failing | blocked | external | pre-existing | flaky>
 - `<command>`: <result>
 
 ### Remaining / Escalation
-- <next action: `$review` after a Review v2 batch; otherwise `$dev-implementer` for
-  comments/conflicts, `$dev-merge-handoff` when checks pass, or "None">
+- <next action: return to the controller for re-review after a Review batch; otherwise
+  `$dev-implementer` for comments/conflicts, `$dev-merge-handoff` when checks pass, or "None">
 ```

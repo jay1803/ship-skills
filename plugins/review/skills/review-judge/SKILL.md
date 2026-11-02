@@ -1,7 +1,7 @@
 ---
 name: review-judge
 description: >-
-  Validate and combine isolated review artifacts for one frozen target after the reviewers finish.
+  Verify and combine the correctness and maintainability finder outputs of one full review against the frozen code.
 metadata:
   owner: jay1803
   family: review
@@ -11,43 +11,34 @@ metadata:
 
 # Review: Finding Judge
 
-Validate and combine Review v2 source artifacts. Judge only supplied evidence;
-do not inspect the repository to create findings or replace a specialist's
-semantic judgment.
+Verify each supplied candidate against the frozen code and combine the two
+finder outputs of one full review. Do not search for new findings or replace a
+specialist's semantic judgment.
 
-Read the [Judge Contract](references/judge-contract.md), the shared
-[severity policy](../review/references/severity-policy.md), and
-[assembly contract](../review/references/assembly-contract.md) before judging.
+Read the [Judge Contract](references/judge-contract.md) and the shared
+[severity policy](../review/references/severity-policy.md) before judging.
 
 ## Inputs
 
-Require one frozen target envelope, its coverage signals and requirements, and
-the complete set of source artifacts collected for the generation. Stop when
-the target envelope itself is incomplete or inconsistent.
+Require the frozen target, the selected mode, both unchanged finder outputs,
+any required claims and caller-marked deferrals with their authority, and read
+access to the frozen head. Stop when the target itself is ambiguous.
 
 ## Workflow
 
-1. Verify each artifact's envelope, exact target binding, raw Markdown byte
-   length and SHA-256, and source provenance. Quarantine failures verbatim.
-2. Preserve every verified artifact's raw Markdown, native labels, and
-   provenance exactly. Assign each candidate one allowed disposition.
-3. Group only findings that satisfy every deduplication key in the Judge
-   Contract. Never collapse specification and engineering judgments.
-4. Account for required core and signaled conditional coverage using the shared artifact contract's
-   successful native-decision allowlist.
-   Envelope-valid but unsuccessful results remain history and make required
-   coverage `coverage-blocked`; then select exactly one common action.
-5. Return a compact proposed decision to `$review` for deterministic assembly. Do not modify files,
-   invoke reviewers or providers, route repairs, or post to GitHub.
+1. Check that each output names the frozen target and a native completion
+   decision, and account for every candidate, including withheld items.
+2. Check each candidate against its cited code, then assign one disposition.
+3. Group only findings that satisfy every deduplication key. Never collapse
+   specification and engineering judgments.
+4. Account for finder, specification and required-claim coverage, then select
+   exactly one common action.
+5. Return the proposal to `$review`. Do not modify files, invoke reviewers or
+   providers, route repairs, or post to GitHub.
 
 ## Output
 
-Return the decision JSON defined in the assembly contract: exact target,
-source/candidate dispositions and group IDs, mandatory-claim outcomes,
-clarification requests, and proposed common action. Reference source IDs and
-byte ranges; do not reproduce raw Markdown. The controller assembles it with
-all immutable source bytes and validates completeness before acceptance.
-
-This is a proposed judgment, not a current-head verdict. Only `$review` may
-accept it after the final target check. If input validation fails, identify the
-source and reason; Review retains its original bytes in quarantine.
+Return the frozen target, each candidate's disposition and reason, groups,
+claim outcomes, clarification requests and the proposed common action.
+Reference finding IDs; do not reproduce source text. This is a proposal, not a
+current-head verdict: only `$review` may accept it after the final target check.

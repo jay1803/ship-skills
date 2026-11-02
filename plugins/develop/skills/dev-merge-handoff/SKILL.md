@@ -24,6 +24,10 @@ Read the canonical [branch strategy](../dev/references/branch-strategy.md) befor
 - Reject an unrecognized or mismatched base until the strategy is reconciled.
 - Aggregate batch promotion is owned by `$dev-integration-manager`, which
   applies the same merge gates to the combined candidate.
+- For native stacks, read the [stack contract](../dev/references/stacked-prs.md)
+  before a merge or cleanup. This Skill can return one layer's gate evidence;
+  a command including other unmerged issues goes to the assigned integration
+  executor for the exact authorized group. Stack-ready is not merged or Done.
 - Do not write implementation fixes. Route conflicts or review findings to
   `$dev-implementer` and red checks to `$dev-ci-repair`.
 - Never bypass branch protection, force-merge, or discard dirty local work.
@@ -31,76 +35,62 @@ Read the canonical [branch strategy](../dev/references/branch-strategy.md) befor
 ## Inputs
 
 - PR number or URL, inferred from the current branch only when unambiguous.
-- Dev mode: `fast`, `standard`, or `strict`; omitted means standard. Preserve the selected defect threshold and mandatory acceptance/CI gates.
-- Skipped/unverified entries and deferred acceptance ticket/draft in every mode.
-  Apply the [unattended validation rule](../dev/references/development-mode-contract.md#unattended-validation-and-deferred-acceptance)
-  before interpreting old acceptance labels or environment requirements.
-- Verification state: **selected and pass** from `$dev-verifier` and the exact
-  head revision it verified, or **unselected with receipt-backed current
-  evidence** from the Resume Receipt.
-- PR Product Review and configured technical-review results.
+- Dev mode: `fast`, `standard`, or `strict`; omitted means standard.
+- The controller's accepted gate record for the exact PR head: verification
+  (`$dev-verifier` selected and passed, or unselected with current evidence),
+  technical Review (an accepted result, identical-tree reuse, or a recorded
+  permitted skip), open findings against the mode threshold, acceptance
+  deferrals with their follow-up, validation exceptions, and `Skipped /
+  Unverified` entries.
 - Issue branch/worktree information when available.
 - Project deploy skill and any required test-environment acceptance contract.
 
-Standalone `verify/*` evidence is not a substitute for this input. It may be a
-fresh resume anchor for a later authorized Dev route, but it neither authorizes
-a repair/merge/tracker closeout nor proves the selected full-Dev validation,
-Review, CI, and Product Review gates.
-
 ## Merge Gate
 
-Before merge, fetch live PR state and require the mode-appropriate evidence:
-
-1. Base is the expected integration branch and head is the reviewed commit.
-2. Exactly one current verification state is present for the exact PR head:
-   **selected and pass** from `$dev-verifier`, or **unselected with
-   receipt-backed current evidence**. The unselected state must bind the Resume
-   Receipt's route, selected phase plan, validation floor, and current
-   validation/verification evidence to the PR head. Missing, stale, blocked, or
-   failed verifier evidence is never unselected. A later code, test, config,
-   generated-output, or documentation change makes a selected verifier stale
-   and requires a fresh verification run; it also requires re-evaluating the
-   receipt-backed unselected state.
-3. PR Product Review passed or is explicitly not required. Fast mode may carry
-   its authorized skip only when the handoff records it under `Skipped / Unverified`.
-4. Selected technical Review has a complete, current accepted combined result.
-   Every selected run includes the thermo-nuclear code-quality rubric. Fast may record its
-   authorized Review skip; an unselected tracked-artifact gate requires the
-   matching Resume Receipt rather than fabricated review evidence.
-5. No finding crosses the selected [severity threshold](../dev/references/review-severity-policy.md):
-   P0/P1 block standard; P0/P1/P2 block strict. Remaining advisories do not
-   require an extra repair round. Required acceptance, CI, and branch protection
-   remain separate gates; resolve ambiguous native labels through Review's
-   source clarification path rather than converting high/medium mechanically.
-   Fast retains its unskippable safety and primary-path conditions.
-6. No merge conflict remains.
-7. Required CI and branch protection checks pass. If they are only in flight,
-   wait or use repository-approved auto-merge for the resolved base; never bypass them.
-8. Any additional pre-merge external or environment verifier still required after mode waivers passed
-   against the exact PR head.
-
-When validation includes baseline failures or filtered alternatives, consume the
-same [Test Result records](../dev-test/references/validation-evidence.md) and
-check that the exact exception covers this head and the merge stage. An earlier
-PR-preparation exception does not waive merge checks. Preserve Failed results,
-new failures and independently required CI; do not reinterpret them as clean.
-
-Use live GitHub evidence such as:
+The controller has already adjudicated verification, Review, findings and
+deferrals. Gate on its accepted record plus live PR facts; do not re-derive
+those decisions. Fetch live state first:
 
 ```bash
-gh pr view <pr> --json number,url,state,headRefName,baseRefName,headRefOid,mergeable,mergeStateStatus,reviewDecision,reviewRequests,latestReviews,reviews,statusCheckRollup
+gh pr view <pr> --json number,url,state,headRefName,baseRefName,headRefOid,mergeable,mergeStateStatus,reviewDecision,statusCheckRollup
 ```
 
-Apply the retry limits owned by the enclosing `$dev` workflow. A requested or
-started review is not evidence that review finished.
+Merge only when all of these hold:
+
+1. The live base is the recorded issue PR base and the live head is the head
+   the record names. For a native stack, also verify immediate base,
+   membership/order and trunk; repository merge requirements apply to the trunk.
+2. The accepted record covers every gate listed under Inputs for that head and
+   shows no open blocking finding. A missing gate, a record for another head, standalone verify-only evidence offered in its place,
+   or a record that contradicts a current user or repository requirement (such
+   as a required independent Review) blocks: return it to the controller.
+3. Any validation exception in the record names this head and the merge stage.
+   A PR-preparation exception does not cover merge, and a Failed command stays
+   Failed ([validation evidence](../dev-test/references/validation-evidence.md)).
+4. No merge conflict or independently required unresolved review thread remains.
+5. Required CI and branch protection pass on the live head. If they are only in
+   flight, wait or use repository-approved auto-merge for the resolved base;
+   for a native stack, only with verified provider support and repository
+   authority for the exact group. Never bypass them.
+6. Any pre-merge external or environment verifier still required after mode
+   waivers passed against the live head.
+7. The user's request or applicable repository policy authorizes this executor
+   to merge this exact PR: a full-lifecycle `$dev` request does; a CI or review
+   repair request relayed here does not unless it named the merge. A user
+   restriction, an unmet human review/merge rule or another recorded merge
+   executor withholds it. Otherwise return `waiting (human merge)` with the
+   exact PR, head, accepted evidence and next owner.
+
+Apply the retry limits owned by the enclosing `$dev` workflow.
 
 ## Merge And Cleanup
 
 Once the gate passes, merge the PR targeting the resolved issue base with the repository's
-approved method, normally:
+approved method. Apply the stack contract before native stack mutations; the
+ordinary single-PR example below is not an upper-layer group-merge instruction:
 
 ```bash
-gh pr merge <pr> --squash --delete-branch
+gh pr merge <pr> --squash
 ```
 
 Capture the resulting integration commit and confirm the PR is `MERGED` before any
@@ -115,16 +105,81 @@ cleanup. Then:
 - preserve and report any dirty or ambiguous state instead of forcing cleanup;
 - never delete `develop`, `main`, `master`, `trunk`, the current PR base, or a
   temporary batch branch still receiving child work. Only clean this issue head.
+- retain a stack head/worktree still needed by a layer or active owner. Verify
+  automatic retarget/rebase and dependency release before cleanup; unknown
+  membership/retention state stays retained with its reconciliation owner.
 
-Use `scripts/cleanup_merged_pr_worktree.sh` after merge. Cleanup failure after a
-confirmed merge is `merged with cleanup blocker`, not a failed merge.
+Run the cleanup helper from a surviving checkout once `MERGED` is verified:
+
+```bash
+"<dev-merge-handoff-skill-dir>/scripts/cleanup_merged_pr_worktree.sh" \
+  --confirmed-merged --branch <issue-head> \
+  --base <base> --worktree <issue-worktree> [--delete-remote] [--squash-merged]
+```
+
+`--confirmed-merged` is required and asserts the verified merge; add
+`--delete-remote` for issue-head deletion and `--squash-merged` only for a
+verified squash merge. Use the surviving checkout for subsequent commands if the
+issue worktree is removed. Check the head/worktree identity and the protections
+above before invocation; the helper is not a substitute for those checks. Cleanup failure after a confirmed merge
+is `merged with cleanup blocker`, not a failed merge.
+
+Before any remote deletion the helper queries the exact remote head's effective
+deletion rules through `gh api`: `repos/{owner}/{repo}/rules/branches/{branch}`
+and, when present, classic `repos/{owner}/{repo}/branches/{branch}/protection`.
+It deletes only when a deletion rule is absent and classic protection is absent
+or reports `allow_deletions` enabled. A deletion rule, classic protection that
+disallows deletion, a failed or unavailable query, an unparseable response, a
+remote that does not name an owner/repo, or a push target that differs from the
+configured URL (`pushurl` or an `insteadOf` rewrite) all retain the remote head.
+A pass by the account's bypass permission is not evidence of permission; the
+helper never uses `--force` or `--admin`, and it never deletes under a
+restriction. Local branch and worktree cleanup proceed under their own
+conditions regardless of the remote result.
+
+The helper exits 0 for a retained remote head. Read its stdout key-value lines:
+`remote_branch` (`deleted`, `already_absent`, `retained` or `not_applicable`),
+`remote_branch_reason` and `remote_branch_evidence` (the queried host, repository,
+branch, rule types, ruleset ids and classic status). A non-zero exit, or no
+`remote_branch` line, means the remote head is unknown: retain it and report
+`merged with cleanup blocker` when deletion was requested. `retained` without
+`--delete-remote` is an intentional retention; record it with the owner who
+accepts any follow-up. Map `retained` under a requested `--delete-remote` to
+`merged with cleanup blocker`. Do not delete a retained head with a manual
+command, `gh api` or another path. Deletion under a restriction needs a separate
+explicit user authorization that names this exact branch and rule, and must be
+recorded as that exception.
+
+### Cleanup Evidence
+
+Before tracker closeout or a terminal callback, record the exact repository,
+PR/head and worktree plus a separate outcome for the remote issue branch, local
+issue branch and issue worktree: `deleted`, `already absent`, or `retained`
+with reason. Verify post-operation state through a successful remote ref query,
+local refs, and worktree inventory/path checks. Remote-tracking refs, a helper
+success message, or an unavailable/failed query do not prove remote absence.
+An already deleted remote head needs no repeated delete or attribution guess.
+Helper `remote_branch=deleted` and `already_absent` map to those outcomes.
+`retained` carries the helper's reason and evidence unchanged. `not_applicable`
+means no remote is configured; report it with its reason, not as a deletion.
+A helper success exit or a `retained` result with rule evidence is never
+treated as the remote head being gone.
+
+A required deletion that is unsafe, fails or cannot be verified stays pending
+with the retained/unknown resource, evidence, next action and responsible owner;
+report `merged with cleanup blocker`. Do not claim full lifecycle completion or
+silently drop it from the handoff. For intentional retention (such as a primary
+checkout or an explicit user instruction), record the applicable boundary and
+who accepts any remaining follow-up. Preserve the existing tracker policy;
+issue Done or a verified merge is not itself cleanup evidence. Carry these
+outcomes unchanged into Dev State and project callbacks; project controllers
+accept cleanup separately from dependency readiness.
 
 ## Test Environment Handoff
 
-Apply the mode waiver first: real-environment deployment/verification and
-human acceptance are deferred, not `merged awaiting test deploy` or a reason
-to create a deploy skill. Report the exact merged revision and unverified
-environment in the handoff, with any separate human follow-up. For remaining
+Waived real-environment deployment/verification and human acceptance are
+follow-ups, not `merged awaiting test deploy` or a reason to create a deploy
+skill; report the exact merged revision and unverified environment. For remaining
 required or explicitly requested deployment work, resolve the environment
 mapping from repository policy after merge. A temporary
 batch branch has no implicit develop/test mapping. For a child with no required
@@ -149,15 +204,16 @@ say `test unverified`; it must not claim the environment passed.
 When a standalone deploy or live-outcome verification returns `fail`, `blocked`,
 or `unverified`, stop at that evidence boundary. Do not retry a side-effecting
 deployment, mutate tracker completion, or transform it into merge handoff until
-a fresh Issue Route receipt grants the applicable authority.
+a new explicit user request or authorization covers that action.
 
 ## Tracker And Release-Candidate Handoff
 
-Close only implementation issues actually covered by the merge and whose
-remaining mode-required gates are satisfied. Waived acceptance does not block
-engineering Done or successors; leave a separate human acceptance ticket pending
-and report its evidence as unverified. Never close that ticket from a code merge.
-Preserve waits only for gates remaining after the mode waiver.
+Close only implementation issues actually covered by the merge whose remaining
+gates are satisfied; acceptance moved to a follow-up follows the
+[Done rule](../dev/references/development-mode-contract.md#done-while-acceptance-is-pending).
+Never close a follow-up acceptance ticket from a code merge. Valid three-round
+acceptance deferrals likewise permit engineering closeout with the original
+unmet criterion and follow-up disclosed; keep the follow-up open.
 
 Return the exact base and integration commit, linked issues, test receipt, user-facing change
 summary, migrations/compatibility notes, and rollback risk. This is the input to
@@ -177,13 +233,13 @@ Head: <branch>
 Reviewed head: <SHA>
 Integration commit: <SHA or pending>
 Mode: <fast | standard | strict>
+Skipped / Unverified: <entries or none>
 
 ### Gate Evidence
-- Dev verification: <selected and pass: verifier/head | unselected with receipt-backed current evidence: receipt route/head/evidence>
-- Product Review:
-- Technical review:
+- Accepted record: <source and head; verification, technical Review, deferrals>
 - Comments/conflicts:
 - CI/protection:
+- Merge authority:
 
 ### Test Environment
 - Project deploy skill:
@@ -193,8 +249,10 @@ Mode: <fast | standard | strict>
 - Health/smoke evidence:
 
 ### Cleanup And Tracker
-- Remote branch:
-- Local worktree/branch:
+- Remote issue branch: <exact ref, outcome, verification>
+- Local issue branch: <exact ref, outcome, verification>
+- Issue worktree: <exact path, outcome, verification>
+- Cleanup follow-up: <none | retained/unknown resources, reason, next action, owner>
 - Issue state:
 
 ### Release Candidate

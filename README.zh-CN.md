@@ -17,7 +17,8 @@ ship-skills/
 │   ├── devops/     # 仓库初始化与生产发布
 │   ├── design/     # 从设计方向到设计评审
 │   ├── project/    # 项目提案、kickoff、进展更新与收尾
-│   └── research/   # 从开放问题到可决策的证据
+│   ├── research/   # 从开放问题到可决策的证据
+│   └── skill/      # Skill 设计、编写、行为评审与审计
 ├── catalog/        # 自动生成的机器可读清单
 ├── scripts/        # 安装、目录生成、打包、校验脚本
 └── wiki/           # 工作流与目录文档
@@ -32,6 +33,7 @@ ship-skills/
 | `design` | 6 | 设计流程、界面、原型、设计系统与视觉产出 |
 | `project` | 8 | 准备并维护项目生命周期文档 |
 | `research` | 16 | 把开放问题转化为可决策的证据 |
+| `skill` | 4 | 设计、编写、评审并审计 Agent Skill |
 
 `plugins/` 下的每个目录是一个发布边界，各自拥有 Codex 插件清单、Claude Code 插件
 清单和 npm 包清单。新增技能不需要新建仓库或 npm 包：把它放进与其生命周期一致的插
@@ -88,6 +90,7 @@ cd ~/github/ship-skills
 | `@jay1803/ship-skills-design` | `plugins/design` | 视觉设计工作流 |
 | `@jay1803/ship-skills-project` | `plugins/project` | 项目生命周期文档 |
 | `@jay1803/ship-skills-research` | `plugins/research` | 证据与决策支持 |
+| `@jay1803/ship-skills-skill` | `plugins/skill` | Skill 编写与评审 |
 
 npm 用于语义化版本、tarball 内容和注册表分发。Codex 安装通过插件 marketplace 完
 成，这样 runtime 才能正确注册清单和技能。发布前：

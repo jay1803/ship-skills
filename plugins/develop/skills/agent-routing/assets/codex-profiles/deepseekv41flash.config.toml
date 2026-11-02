@@ -1,0 +1,27 @@
+# Opt-in Codex CLI profile. Install into $CODEX_HOME and select with
+# `codex --profile deepseekv41flash`.
+model = "deepseek/deepseek-v4.1-flash"
+model_provider = "openrouter"
+model_reasoning_effort = "medium"
+
+[model_providers.openrouter]
+name = "OpenRouter"
+base_url = "https://openrouter.ai/api/v1"
+wire_api = "responses"
+
+# Parses the API_KEY assignment from the file; the file is never executed.
+[model_providers.openrouter.auth]
+command = "/usr/bin/env"
+args = ["python3", "-c", '''
+import os, re, shlex, sys
+value = ""
+with open(os.path.expanduser("~/.config/openrouter/.env.local")) as handle:
+    for line in handle:
+        match = re.match(r"\s*(?:export\s+)?API_KEY\s*=(.*)", line)
+        if match:
+            parts = shlex.split(match[1], comments=True)
+            value = parts[0] if len(parts) == 1 else ""
+if not value:
+    sys.exit("API_KEY is missing from ~/.config/openrouter/.env.local")
+sys.stdout.write(value)
+''']

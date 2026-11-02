@@ -11,9 +11,19 @@ threads/sessions. Reuse valid existing authorization without asking again.
 When new tasks are not authorized, execute serially inline with the same
 issue-level ownership and verification boundaries. Use bounded agents only for disposable analysis, execution, or review, not as the owner of a long-running issue workflow; route each through the canonical contract and resolved adapter.
 
-Each issue worker must receive one child issue ID, relevant project context, its earliest missing PM skill, hard predecessors, allowed child-issue writes, forbidden project writes, terminal states, and the controller callback target. The worker runs its own `$pm` chain serially and must not dispatch successors.
+Each issue worker receives one child issue ID, its source-bound
+[working context](../../pm/references/working-context.md), current child route/action
+if available, hard predecessors, allowed child writes, forbidden project writes,
+terminal states and callback target. Pass relevant contract text and source
+bindings already read; do not pass the full project history. The worker fills
+missing inputs once, runs its `$pm` actions serially and cannot dispatch successors.
 
-Start workers at the earliest missing prerequisite proven by issue evidence. Queue apparent specialist routes such as UX, UI, analytics, or technical boundary after that prerequisite; do not skip intake or another missing stage merely because the issue title reveals its eventual specialty.
+Start from the existing current child action, or obtain an initial issue route
+from the supplied facts. Intake is not a mandatory stage to replay. An apparent
+UX, analytics or technical specialty does not waive actual missing prerequisites.
+After successful local PM transitions, reuse the context without a new routing
+call. Return source-bound results so project control verifies completion without
+redoing the child's full analysis.
 
 When creation is authorized, consider persistent worker creation unavailable only after the resolved executor's controller/session entry cannot be found or an actual creation attempt fails. Then report that persistent parallel execution is unavailable and run issue workflows serially inside the invoking user-owned controller thread. Never use a bounded sub-agent or serial sub-agent as the persistent owner of an issue workflow, and never claim that the inline fallback is parallel execution.
 
@@ -38,9 +48,9 @@ Routing:
     fallback: <allowed | forbidden>
     independent_from: none
 Runtime binding: <requested and accepted executor, model, reasoning, and profile plus separate fallbacks from the active adapter>
-Routing receipt required: use the shared agent-routing receipt in the callback
-Start at: <$pm-next-skill>
-Read: <project context and source links>
+Issue route / PM action: <current child receipt/action, or facts for initial routing>
+Working context: <current contract and decision excerpts, source revisions, root/result IDs>
+Read next: <only missing/stale action inputs>
 Hard predecessors: <IDs or none>
 Allowed writes: <this child issue only>
 Forbidden writes: project description, milestones, issue membership, project-level dependencies, or any other child issue
@@ -70,7 +80,7 @@ and verify each result before advancing; do not call thread creation tools.
    - Resolve the controller thread or session identifier with the resolved executor's management tools; do not guess when several workers could match.
    - Create workers in the current saved project when possible and use a local environment unless the user explicitly requests isolation.
    - Classify the whole issue before creation. Choose `controller/standard`, `controller/deep`, or `controller/critical` with `standard` as the minimum; full lifecycle ownership gives every issue controller a `high` reasoning floor but does not force the critical model tier. Set model and reasoning explicitly from the resolved adapter.
-   - Publish the shared routing request before creation and the resolved routing notice immediately after the thread tool accepts each worker. Include the accepted binding and required routing receipt in the handoff.
+   - Publish the shared routing request before creation and the resolved routing notice immediately after the thread tool accepts each worker. Include the accepted binding in the handoff.
    - Include the exact Worker Handoff and controller callback target in the worker's initial prompt.
    - If persistent worker creation remains unavailable after entry discovery or an attempted creation, report the limitation and switch to the inline serial fallback in the invoking controller. Do not spawn a bounded sub-agent to impersonate a persistent issue controller.
 3. Dispatch the complete safe wave before waiting. Never execute a dispatched worker payload again in the controller thread.
@@ -95,7 +105,6 @@ Project: <project>
 Issue: <ISSUE-ID>
 Worker: <thread/session id and resolved executor>
 Agent routing: <requested route and executor policy plus actual executor/model/reasoning/profile binding>
-Routing receipt: <shared agent-routing receipt>
 Starting route: <$pm-skill>
 Terminal state: <Ready | Done | Blocked | Split | Deferred | Rejected>
 PM route completed: <skills run in order>

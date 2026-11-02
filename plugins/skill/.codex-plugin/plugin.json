@@ -1,0 +1,38 @@
+{
+  "name": "skill",
+  "version": "0.1.4",
+  "description": "Skill architecture, authoring, independent behavioral review, and evidence-backed session audits for Codex and Claude Code.",
+  "author": {
+    "name": "jay1803",
+    "url": "https://github.com/jay1803"
+  },
+  "homepage": "https://github.com/jay1803/ship-skills",
+  "repository": "https://github.com/jay1803/ship-skills",
+  "keywords": [
+    "skills",
+    "agent-design",
+    "authoring",
+    "behavior-evaluation",
+    "review",
+    "session-review",
+    "session-cost"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Skill",
+    "shortDescription": "Design, develop, and review agent Skills.",
+    "longDescription": "Focused Skill architecture, implementation, independent behavior acceptance, and evidence-backed session audits, with explicit authorization and evidence boundaries.",
+    "developerName": "jay1803",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Design the smallest effective architecture for this Skill.",
+      "Develop this Skill and validate the decisions it changes.",
+      "Independently review this Skill and its behavioral evidence.",
+      "Audit these sessions for avoidable cost and a reliable path to verified outcomes."
+    ]
+  }
+}

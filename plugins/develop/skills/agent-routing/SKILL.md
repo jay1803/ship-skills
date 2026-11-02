@@ -10,69 +10,34 @@ metadata:
 
 # Agent Routing
 
-Resolve semantic role, capability, reasoning and runtime binding through Jev
-when it is configured. The executing model consumes the returned packet without
-loading or repeating the classification policy, PM map or adapter
-model-selection tables.
+Choose the executor, model, reasoning effort and profile for one delegated
+agent. You make the semantic decisions; the packaged helper applies the
+deterministic floors and model table offline and returns a proposal. It never
+dispatches, calls a service, or changes authority or lifecycle gates.
 
-Jev is optional. Set `TYPESAFE_API_KEY` (or `JEV_API_KEY`) in the environment or
-in `JEV_ENV_FILE` (default `~/.config/jev/.env.local`). A `credential_unavailable`
-exit means no route was obtained: select the binding from the adapter references
-yourself and report it as locally selected.
+Every delegated role inherits all permissions available to its parent for the
+authorized task. Only an explicit user restriction or an enforced runtime limit
+narrows access; delegation and phase changes never need renewed approval.
 
-Default every role to all available parent permissions. Only explicit user
-restrictions narrow access; runtime-enforced limits still apply. Delegation and
-phase transitions never require renewed user approval for the authorized task.
-Responsibility and write coordination do not create permission gates.
+1. Decide `role`, `tier`, `effort`, `decision_state`, `risk` and
+   `judgment_review` from the task facts you hold, using the checklist in the
+   [routing contract](references/routing-contract.md#decide). Carry explicit
+   user constraints unchanged; never turn a preference into a requirement.
+2. Write those decisions, the task and the current runtime inventory to
+   `facts.json` and run
+   `python3 <this-skill>/scripts/route_agent.py --input facts.json`.
+   Exit 0 returns `routing_envelope`, `runtime_binding`, role instructions and
+   the task. Exit 2 returns `blocked` with a reason code: repair the named fact
+   or report it, and do not pick a binding around the floor by hand.
+3. Dispatch through the selected [Codex](references/codex-adapter.md) or
+   [Claude Code](references/claude-code-adapter.md) adapter.
 
-1. Collect the task, explicit user restrictions (if any) and current runtime inventory
-   using the [input contract](references/jev-input.md).
-2. Run `python3 <this-skill>/scripts/route_agent.py --input <facts.json>`.
-3. Accept `routing_envelope` and `runtime_binding`, then follow the returned
-   dispatch instructions. Preserve explicit executor/model/profile constraints.
-4. Report a `blocked` reason without dispatch or silent main-model fallback.
-   Refresh changed evidence and rerun only when the named boundary is resolved.
+The binding is a proposal until the runtime accepts it. Publish the requested
+binding before dispatch and the accepted one afterwards; keep values the
+runtime does not expose `unknown`. An existing agent keeps its actual binding on
+ordinary resume. To escalate, rerun with the new evidence and the prior
+envelope as `previous_route`; the owning controller counts the reported
+adjustment against its own budget.
 
-A route is a proposal until the runtime accepts it. Publish requested and actual
-bindings separately; unknown effective values remain unknown. The helper does
-not create agents, switch controllers, grant writes or change lifecycle gates.
-Use the same helper for evidence-backed escalation with the prior route and
-its existing counters.
-
-The program consumes the canonical [routing contract](references/routing-contract.md),
-[PM map](references/pm-routing-map.md), [Codex adapter](references/codex-adapter.md)
-and [Claude adapter](references/claude-code-adapter.md). Read those only when
-maintaining routing policy or investigating a routing defect; for persistent
-session creation/recovery, read only the selected adapter execution section.
-
-## Runtime Assets
-
-Provider-neutral role definitions live in `assets/roles/`. Generated runtime
-profiles live in `assets/codex-agents/` and `assets/claude-agents/`. Both omit
-model and reasoning settings so role remains independent from depth and
-executor selection. After changing a role, regenerate and check both formats:
-
-```bash
-./scripts/render-agent-profiles.py --write
-./scripts/render-agent-profiles.py --check
-```
-
-Copy the profiles into a Codex installation with:
-
-```bash
-./scripts/link-codex-agents.sh --apply
-```
-
-Use `--check` to verify the copied files, or `--target-dir PATH` to install them into a
-different Codex home or staging directory.
-
-Link the same semantic profiles into a Claude Code installation with:
-
-```bash
-./scripts/link-claude-agents.sh --apply
-```
-
-Claude Code profiles target `~/.claude/agents/` by default. Use `--check` or
-`--target-dir PATH` the same way as for Codex. Restart an existing Claude Code
-session after creating its `agents/` directory for the first time; later edits
-inside an already-watched directory can be picked up without restarting.
+Installing the generated role profiles and the optional DeepSeek Codex profile
+is described in the [Develop README](../../README.md#agent-routing-profiles).

@@ -1,8 +1,34 @@
 # Validation Evidence And Gate Effects
 
-Use when reporting mixed check results, comparing a baseline failure, or carrying
-an exception through Test, Verifier and merge. Extend the existing Test Result;
+Use when selecting targets/fidelity, reporting mixed check results, attributing
+or comparing a failure, or carrying an exception through Test, Verifier and merge. Extend the existing Test Result;
 do not create a second acceptance ledger or ask later owners to reconstruct logs.
+
+## Target And Harness Readiness
+
+Before an expensive suite, resolve the required check's target/scheme, suite or
+test selectors, configuration and environment from its governing source. Choose
+the smallest sufficient invocation; an app scheme may include unrelated UI tests.
+Keep every explicitly required suite in the validation brief even when a focused
+run comes first. An interrupted broad run supplies only observed partial evidence;
+it neither passes the unrun remainder nor proves a focused run replaces that floor.
+
+For selected UI evidence, name the changed component and interaction before
+building a harness. Exercise the actual input control when input behavior is the
+claim; a read-only display row does not prove typing, focus or editing. Record
+the head, component/harness, data and state with inspected screenshots or other
+required observations. A component fixture proves that component at fixture
+fidelity; full navigation or end-to-end claims need their own selected evidence.
+
+When a fixture run fails before reaching the intended boundary, check the
+cheapest observable prerequisite before another full run: the injected client,
+query entry, seed result or callback actually reaches the component under test.
+Zero observed calls/data is a harness-readiness symptom, not proof of an app
+defect or a confirmed injection root cause. Preserve the observation, repair
+setup through its existing owner or escalate unknown behavior, then retry the
+targeted path within the existing budget. Do not weaken assertions or expand
+product scope to make the harness pass. This conditional check adds no universal
+smoke phase to checks whose inputs are already established.
 
 ## One observation, separate conclusions
 
@@ -21,10 +47,18 @@ when available. No particular test framework or new parser is required.
 - A later successful rerun is a separate observation; it does not rewrite the
   earlier failure. Record which result supports the current gate and why.
 
-Keep three facts together: **observation**, **failure attribution**, and
+Keep three facts together: **observation**, [failure attribution](#failure-attribution), and
 **permitted next stage**. For example, exit 1 with three XCTest failures and a
 green Swift Testing summary is Failed overall. Reproducing the same three on
 the base supports a baseline attribution; it does not authorize excluding them.
+
+## Failure attribution
+
+Attribute each failure as change-caused, pre-existing (reproduced on the
+base), flaky (differs across identical reruns), environment or external
+(runner, dependency or service outage, credentials/secrets, third-party
+provider), out of scope, or unknown until evidence decides. Attribution selects
+the owner; it never turns a failed observation into a pass.
 
 ## Baseline and exact exception
 

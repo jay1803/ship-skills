@@ -50,8 +50,12 @@ product outcomes or returning it solely because its product shape is single.
   supplied shape evidence; it did not authorize or design the split.
 - Own one active project-level goal at a time. Infer it from live state unless the user supplies a narrower or later target.
 - Keep the invoking thread as the persistent project controller. The controller alone owns the project inventory, dependency graph, worker registry, wave barriers, project-level tracker writes, successor dispatch, and final PM-to-Dev handoff.
-- Before dispatch, follow the [Jev input contract](../pm/references/jev-input.md) and run `python3 <product-pm-skill>/scripts/route_agent.py --input <facts.json>`. Consume the returned envelope and binding without reclassifying or reading routing policies. Supply `lifecycle: controller` for fresh user-owned issue workers and the complete task scope as evidence. Existing controllers retain their actual bindings. A blocked result stops dispatch.
-- Do not write every child issue's final PRD/spec. Route child issues to `$pm`, `$pm-scope`, `$pm-solution-review`, `$pm-spec`, `$design`, `$pm-data-analytics`, or `$pm-readiness-review` when they need per-issue artifacts.
+- Before dispatch, decide the routing fields with the [routing contract](../pm/references/routing-contract.md#decide) and [PM map](../pm/references/pm-routing-map.md), then run `python3 <product-pm-skill>/scripts/route_agent.py --input <facts.json>`. Fresh user-owned issue workers use `lifecycle: controller`, decided from the complete issue scope. Existing controllers retain their actual bindings. A blocked result stops dispatch.
+- Do not write every product-outcome child's final PRD/spec. Route those
+  children to `$pm`, `$pm-scope`, `$pm-solution-review`, `$pm-spec`, `$design`,
+  `$pm-data-analytics`, or `$pm-readiness-review` when they need per-issue
+  artifacts. Accepted engineering-task children follow Engineering Task
+  Materialization below, not a second product-solution review chain.
 - Use `$pm-backlog` to draft a normalized issue tree, duplicate/follow-up set, dependency graph, and proposed milestone assignments from an authorized decomposition. Keep project cutline, final assignment decisions, and live project writes here.
 - When `$pm-backlog` runs inside this workflow, require a draft-only artifact. Accept or reject it, then apply the approved project-level tracker writes here before advancing.
 - Use `$pm-strategy` when product direction, roadmap fit, segment focus, sequencing, or product-principle tradeoffs need shaping.
@@ -85,7 +89,7 @@ product outcomes or returning it solely because its product shape is single.
    outcome without an accepted engineering-task plan to materialize, return it to the exact single-issue PM owner with a fresh Router
    receipt rather than manufacturing children.
 3. Select or reuse the active project goal using Project Goal Selection. Record the selected goal, evidence, completion criteria, and whether it came from the user or live state.
-4. Audit every issue independently. Record its existing PM artifacts, confirmed decisions, missing decisions, tracker state, current owner, hard predecessors, and earliest verified missing PM skill. Do not infer a completed prerequisite or readiness from a recently created status, title, label, or thin description.
+4. Inventory each issue independently: existing source-bound PM results, unresolved decisions, tracker state, current owner and hard predecessors. Reuse its current `pm_action` when available; otherwise pass the gathered facts to the issue worker for initial routing. Do not repeat its intake or infer readiness from a title, label, status or thin description.
 5. Reconcile existing commitments, shipped behavior, duplicates, stale scope, and assumptions. Preserve useful project and issue content instead of treating every issue as net-new.
 6. Write or refresh the project brief: what is being built, why now, for whom, user/business outcome, success signal, non-goals, and decision context.
 7. For a verified provisional umbrella, define independently valuable
@@ -101,7 +105,7 @@ product outcomes or returning it solely because its product shape is single.
 9. Build the dependency and conflict graph. Include product-decision dependencies, parent/child and split dependencies, shared project writes, shared source-of-truth artifacts, external decisions, and dev dependencies that constrain product scope.
 10. Audit acceptance using [Acceptance Classification](../pm-spec/references/acceptance-policy.md#unattended-engineering-acceptance). Keep standard engineering unattended: real-environment tests are recommendations or materially necessary separate human acceptance tickets, not implementation gates. Reuse or create the follow-up within existing tracker authority, with a human owner/role, executable steps and `human-acceptance-required`. It may depend on the delivered build, never block implementation or its successors; keep it deferred outside the coding inventory and PM Ready barrier. Missing follow-up logistics or write access leaves a draft, not an engineering block.
 11. Build the risk map across product, technical, UX, data, privacy, analytics, migration, rollout, external dependency, and operational risk.
-12. Classify every issue as `Direct`, `Parallel`, `Serial`, or `Blocked`; select its next PM skill and explain the evidence for that route.
+12. Classify scheduling as `Direct`, `Parallel`, `Serial`, or `Blocked` from dependencies and existing results; retain the issue action/owner without repeating semantic intake.
 13. Synthesize ordered PM waves. A wave contains all currently safe independent issue workers; sequence scheduling is a wave containing one issue.
 14. Apply controller-owned project setup before dispatch: project description, cutline, milestones, issue membership, and project-level dependency relationships. Otherwise produce exact tracker-ready drafts.
 15. In execution mode, dispatch and control work required by the active goal. In plan-only mode, stop after the verified goal selection, wave plan, and tracker drafts.
@@ -135,8 +139,13 @@ Tracker-only helpers are not persistent PM/Dev issue controllers.
 Preserve canonical parent scope and combined acceptance. Check each coding
 child's own engineering result and mapped product constraints using current
 readiness evidence; parent approval or plan acceptance alone does not mark
-children ready. Keep unresolved implementation and design-only records outside
-the ready coding inventory. The parent is a container for execution, not an
+children ready. Do not require a Product Solution Review or independent product
+PRD for each accepted engineering task. Verify inherited parent product
+decisions, task-local design readiness and the planner's draft acceptance check
+under the engineering ticket protocol; return missing technical design or
+verification detail to the planner, and any new product rule to the Product
+owner. Keep unresolved implementation and design-only records outside the ready
+coding inventory. The parent is a container for execution, not an
 additional coding worker or a completed product outcome. Reuse matching
 branches/PRs under the accepted child mapping. Refresh routing for the complete
 included coding inventory before the Dev project handoff, preserving actual
@@ -155,7 +164,7 @@ Use one active controller goal at a time:
 | Goal | Select when | Verified completion |
 | --- | --- | --- |
 | `Project Structured` | The project description, milestones, issue tree, cutline, membership, or dependencies are incomplete | The canonical project description is complete; valuable milestones have observable outcomes and exit criteria; every in-scope capability maps to a created issue; issue membership, parent/child structure, cutline, and dependencies are applied and verified |
-| `PM Ready` | Project structure is complete but one or more in-scope issues have not completed their required PM chain | Every in-scope issue is verified `Ready`, `Done`, `Deferred`, or `Rejected`; accepted split children are inventoried; required v1 issues are not blocked; and the Dev project handoff is complete |
+| `PM Ready` | Project structure is complete but a product-outcome issue lacks its applicable PM chain or an accepted engineering child lacks its mapped task handoff | Every in-scope issue is verified `Ready`, `Done`, `Deferred`, or `Rejected`; accepted split children are inventoried; required v1 issues are not blocked; and the Dev project handoff is complete |
 | `Project Plan Verified` | The user explicitly requests plan, audit, analysis, or draft-only work | Current state, selected execution goal, dependencies, issue routes, waves, tracker-ready drafts, and blockers are documented without claiming live execution |
 
 Use these shapes for the in-memory objective or an explicitly requested
@@ -187,7 +196,7 @@ For every discovered issue, record:
 | Delivery shape | Router classification, independent outcomes, shared acceptance, and decisive signals |
 | Current state | Tracker status, labels/type, assignee, active owner or worker |
 | Sources read | Description, PM comments, linked docs/designs, dependencies, relevant shipped behavior |
-| PM state | Existing artifacts and the earliest missing PM artifact |
+| PM state | Source-bound results, current issue action/owner or facts awaiting initial routing |
 | Product state | v1, deferred, rejected, duplicate, or outside the project cutline |
 | Dependencies | Hard predecessors, shared decisions, project writes, external blockers |
 | Human acceptance | Required/not required, label state, canonical steps state, acceptance owner or role |
@@ -208,14 +217,20 @@ Use these controller states:
 
 ## Assignment Rules
 
-Use `$pm` for a raw issue's intake and single-issue ownership. Select the next
-missing decision rather than dispatching every Skill for every child:
+Use `$pm` for single-issue ownership. Forward the minimal
+[working context](../pm/references/working-context.md) from inventory, preserving
+exact child target and authorization. A project receipt cannot substitute for an
+issue receipt. Reuse a current child receipt/action, or let the child obtain it
+once from the supplied facts. Do not duplicate the child's action classification
+in project control. The following owners remain available for missing decisions
+or explicitly requested bounded artifacts:
 
 - `$pm-scope`: unclear user problem, outcome, buildable boundary or tradeoff.
 - `$pm-strategy`: unsettled direction, investment or roadmap commitment.
 - `$pm-bug-triage`: missing expected/actual Bug evidence or diagnosis route.
-- `$pm-solution-review`: an applicable material simplification/rule review under
-  the [state machine](../pm/references/issue-state-machine.md), not every non-Bug.
+- `$pm-solution-review`: an applicable product-outcome simplification/rule review
+  under the [state machine](../pm/references/issue-state-machine.md), not each
+  accepted engineering task or every non-Bug.
 - `$pm-spec`: canonical synthesis or a confirmed change missing from active text.
 - `$design`: needed interaction/screen specification or requested visual artifact.
 - `$pm-data-analytics`: material measurement goals or event decisions.

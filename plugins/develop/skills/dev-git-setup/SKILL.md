@@ -16,7 +16,7 @@ Read the canonical [branch strategy](../dev/references/branch-strategy.md) befor
 
 Prepare Git state before implementation. This skill owns the branch/worktree decision for Dev workflows, keeps unrelated local work untouched, and uses the bundled scripts for fragile Git operations.
 
-Do not create a branch or worktree without a resolved tracker issue ID. `$dev` normally resolves it through its Issue Resolution Gate. If this skill is invoked directly without an ID, search for a relevant issue first; bind a clear match, ask when candidates are equally plausible, or create the initial issue record when none exists. Route a newly created record through `$pm` and `$pm-readiness-review` before Git setup. If tracker tools are unavailable, provide the search or creation draft and stop.
+Do not create a branch or worktree without a resolved tracker issue ID. `$dev` normally resolves it through its Issue Resolution Gate. Without one, return `blocked: issue ID required`; issue search, creation and readiness belong to the caller.
 
 Default to a separate issue worktree. Use current-checkout branch setup only when the user explicitly asks to work in the current checkout, an existing workflow requires it, or a separate worktree is impossible.
 
@@ -60,8 +60,9 @@ Default to a separate issue worktree. Use current-checkout branch setup only whe
    - Branch mode retains the clean-checkout fast-forward procedure.
 
 5. Validate the applicable repository ancestry requirement.
-   - The following main/develop check applies to the fallback two-branch setup.
-     A repository-defined single-base workflow does not require a second branch.
+   - The following main/develop check applies when the resolved setup has both
+     branches. A single-base workflow (repository-defined, or the default-branch
+     fallback without `develop`) does not require a second branch.
      For batch work, preserve the recorded fork and reconcile upstream drift
      through the controller; never reset a batch branch to current develop.
    - Validate ancestry between the resolved base commits: main must be an
@@ -74,7 +75,12 @@ Default to a separate issue worktree. Use current-checkout branch setup only whe
 
 6. Create or reuse the issue branch from the resolved issue PR base.
    - For batch work, the controller creates/publishes the shared branch before
-     child setup. Use its latest verified remote commit, not develop.
+     child setup. Ordinary children use its latest verified remote commit,
+     not develop. For a selected native stack, apply the
+     [stack contract](../dev/references/stacked-prs.md): the bottom layer uses
+     the trunk; upper layers use their recorded predecessor branch and exact
+     remote head. Reconcile a changed pin/owner before setup; keep the batch
+     trunk and promotion target distinct from this immediate base.
    - Create `feature/ISSUE_ID` or `fix/ISSUE_ID`.
    - Do not push automatically unless the user explicitly asks.
 
@@ -87,7 +93,7 @@ Default to a separate issue worktree. Use current-checkout branch setup only whe
 Prefer the bundled scripts for compatible two-base workflows. They do not
 select delivery scope or create a batch branch. Pass the resolved issue PR base
 via `--develop`; use `--main` for the applicable ancestry anchor. For a
-repository-defined single-base workflow, pass that branch to both flags. If the
+single-base workflow, pass that branch to both flags. If the
 repository does not require this ancestry invariant, use the manual fallback
 with its verified refs and preservation checks, without imposing the helper
 ancestry assumption. The examples below illustrate standalone fallback only.

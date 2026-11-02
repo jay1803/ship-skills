@@ -34,6 +34,11 @@
       "path": "plugins/review",
       "package": "@jay1803/ship-skills-review",
       "status": "stable"
+    },
+    "skill": {
+      "path": "plugins/skill",
+      "package": "@jay1803/ship-skills-skill",
+      "status": "stable"
     }
   }
 }
