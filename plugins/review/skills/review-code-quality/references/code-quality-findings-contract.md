@@ -35,6 +35,16 @@ structure in place creates a material and near-term codebase-health cost for
 the changed path. Use `optional improvement` for a concrete, bounded
 simplification with a real but non-blocking benefit.
 
+## Repository Instructions
+
+Also check the diff against the instruction files governing the changed paths
+(AGENTS.md, CLAUDE.md), using those already in context and otherwise reading
+only the applicable files. A violation is a finding only when you can quote the
+rule and the violating line; put the rule path and quote in Evidence. A quoted
+violation satisfies bar items 1–2 but still needs a bounded alternative. Skip
+rules the repository's deterministic checks already enforce. Classify by
+consequence with the labels above; the rule's wording alone is not blocking.
+
 ## Withhold Instead Of Finding
 
 Do not emit a finding for naming, formatting, subjective style, or a local

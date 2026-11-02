@@ -16,6 +16,11 @@ fixed inputs, not questions to reopen. Use this Skill when explicitly requested
 or when the shared state machine identifies a material rule/simplification
 question. A non-Bug label alone does not require this review. Reuse existing
 review evidence after verifying unchanged inputs.
+Review the product outcome, not each engineering task derived from an accepted
+Dev plan. A new product rule found in a child returns to its Product owner.
+The exact `REVIEW:PRODUCT` label on the current outcome waives an otherwise
+applicable advisory review when no approved review is evidenced; an explicit
+request to review still runs.
 
 For issue lifecycle work, apply the shared [Issue PM State Machine](../pm/references/issue-state-machine.md),
 including its downstream entry guard and single stage-comment identity.
@@ -136,8 +141,12 @@ to refresh the candidate solution and rerun this review. Do not advance to
 
 - Do not edit the issue title or description; `$pm-spec` remains the canonical
   writer.
-- Do not change labels, status, priority, assignee, project, milestone, or issue
-  relationships.
+- On `approve` for an authorized issue-bound lifecycle, add the exact
+  `REVIEW:PRODUCT` label to the reviewed issue and verify readback. Reuse an
+  existing label; if label creation or update is unavailable, report it pending
+  without claiming it was applied. Do not add the label for `simplify` or
+  `blocked`, or to a different parent/child issue. Do not change status,
+  priority, assignee, project, milestone, or issue relationships.
 - Reply with the review under the existing PM workflow root using the heading
   `## Product Solution Review`. Create it only on the first legal run; later
   runs update that comment by ID. Never add a same-stage `Supersedes` reply or
@@ -178,4 +187,6 @@ Confidence: <high | medium | low>
 
 ### Recommended Next Step
 <Use `$pm-spec` when the canonical issue needs synthesis or a rewrite; for a verified complete existing record, use `$pm-readiness-review` when approved. Otherwise user confirmation -> `$pm-scope` -> rerun `$pm-solution-review`, or an exact blocker owner.>
+
+Review Label (issue-bound approval only): <verified REVIEW:PRODUCT | pending action>
 ```

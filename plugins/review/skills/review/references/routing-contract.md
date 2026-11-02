@@ -12,6 +12,7 @@ Classify and record:
 lifecycle: bounded
 role: reviewer
 depth: standard | deep
+producing_capability_tier: <verified producing semantic tier for judgment review>
 requirements: [repo-read, github-read, github-review-write]
 permissions: read-only-repository | github-review-write
 write_scope: exact target PR review surface | none
@@ -30,10 +31,17 @@ fallback. Cross-executor independence fails closed when the resolved executor
 matches `independent_from`; a fresh context alone is not cross-executor
 independence.
 
+Carry the producing decisions' accepted semantic-tier evidence into the routing
+input before requesting judgment review. Recover missing provenance from its
+owner; the producer's incidental runtime model cannot establish that floor.
+Missing evidence keeps dispatch blocked rather than selecting a weaker tier.
+
 ## Runtime Boundary
 
 - Spawn a clean reviewer with no inherited implementation or issue context.
-- Pass only the repository path, immutable target envelope, and review task.
+- Pass only the repository path, frozen target, and review packet. Check every
+  supplied snapshot or path for prior findings or delivery history and keep
+  those with the coordinator; only a focused reviewer receives prior findings.
 - The reviewer must not delegate to another provider, plugin, bot, or reviewer.
 - A runtime inability to inspect the target is `blocked`; do not reinterpret a
   local inspection as completed independent review.

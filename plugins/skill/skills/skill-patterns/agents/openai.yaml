@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Patterns"
+  short_description: "Choose the right architecture for an agent skill"
+  default_prompt: "Use $skill-patterns to choose and review the smallest effective architecture for this skill."

@@ -28,16 +28,16 @@ must remain separate from the later independent `$review` gate.
 - Do not replace `$dev-test`. Testing produces engineering observations;
   verification maps current observations to every required acceptance and
   scope claim.
-- Do not replace Product Review, Design Review, human acceptance, deployment,
-  or production verification. Preserve each distinct gate and its status.
+- Do not replace Design Review, human acceptance, deployment, or production
+  verification. Preserve each distinct gate and its status.
 - Never edit, weaken, or substitute an external verifier to obtain a pass.
 
 ## Verify-Only Terminal
 
-When the canonical Issue Route receipt selects `verify/repo`, `verify/pr`,
-`verify/deploy`, or `verify/live-outcome` with `terminal_intent: verification`,
-this skill is a standalone evidence owner rather than a selected full-Dev
-completion gate. Freeze the exact target before any check:
+When the current request is verification only, of a repository revision, PR
+head, deployment, or live outcome, this skill is a standalone evidence owner
+rather than a selected full-Dev completion gate. Freeze the exact target before
+any check:
 
 - `repo`: repository path plus immutable revision or explicit worktree patch;
 - `pr`: PR number/URL, base, and exact head SHA;
@@ -47,7 +47,7 @@ completion gate. Freeze the exact target before any check:
   named environment, verifier, threshold, and immutable candidate.
 
 Default state is read-only and no-repair. Execute a smoke, remote query, or
-other external verification action only when the receipt or existing contract
+other external verification action only when the request or existing contract
 authorizes that exact target, action, and side-effect envelope. Missing,
 ambiguous, stale, inaccessible, skipped, or mismatched-environment evidence is
 `blocked` or `unverified`, never `pass`. Do not alter implementation,
@@ -57,9 +57,9 @@ side-effecting action merely because it failed.
 Return a claim ledger and overall `pass`, `fail`, `blocked`, `unverified`, or
 `not-applicable`, then stop. On a non-pass, return the smallest failure
 boundary and proposed repair/authority route only. A later fix or resume needs
-a fresh Issue Route receipt with explicit authorization and this ledger as its
-resume anchor; verify-only evidence never satisfies a Dev merge or tracker
-closeout gate by itself.
+a new explicit user request or authorization, with this ledger as its resume
+anchor; verify-only evidence never satisfies a Dev merge or tracker closeout
+gate by itself.
 
 For this standalone terminal, the required inputs below mean the frozen target,
 specific claim, requested freshness, exact authorized verification action (if
@@ -120,22 +120,19 @@ gate. Do not rebuild a second test summary or request the same approval again.
 
 ## Mandatory Evidence Before Review
 
-For selected full-Dev verification, first read and apply the
-[unattended validation rule](../dev/references/development-mode-contract.md#unattended-validation-and-deferred-acceptance).
-Keep waived physical-device, real-account, live-environment and human checks as
-`unverified` ledger rows with their waiver and follow-up, outside the required
-engineering claim set. Current simulator/seed/mock evidence can satisfy the
-remaining engineering claims without proving the waived fidelity. These rows
-do not block an engineering pass or the route to `$dev-pr-writer`. Standalone
-verify-only tasks retain their requested evidence contract.
+For selected full-Dev verification, first apply the
+[unattended validation precedence](../dev/references/development-mode-contract.md#unattended-validation-and-deferred-acceptance).
+Keep waived checks as `unverified` ledger rows with their follow-up, outside the
+required engineering claim set that current simulator/seed/mock evidence can
+satisfy; they do not block an engineering pass.
+Standalone verify-only tasks retain their requested evidence contract.
 
 Keep defect priority separate from acceptance completion. If the approved
 contract still requires local real-database, reopen/replay, or other evidence
 fidelity, separate unit tests or source inspection do not substitute for that
 proof. Record the exact requirement, available evidence, and missing fidelity
 before the first technical Review; P2/P3-only policy cannot turn a mandatory
-evidence gap into pass. Return the smallest test/implementation owner, not an
-automatically added Product Review stage.
+evidence gap into pass. Return the smallest test/implementation owner.
 
 ## Claim Outcomes
 
@@ -145,6 +142,10 @@ fidelity changes what evidence proves, retain that distinction in the claim
 and identify the concrete fixture/runtime entities that witness it. Two requests
 to one entity do not establish isolation between two distinct entities; inspect
 the fixture bindings as well as the assertions before accepting that claim.
+For a temporal claim, inspect the asserted state at the required observation
+point and visible boundary. A final settled result does not prove behavior while
+a prerequisite is paused or a newer operation is pending. Require evidence of
+that interval when the claim requires it; do not add unrelated timing matrices.
 Use exactly these outcomes:
 
 - `pass`: current evidence directly supports the claim.
@@ -187,7 +188,7 @@ The overall result is:
    pass; return `fail` for disproved work or `blocked` for unavailable proof and
    name the next owner.
 6. Re-resolve the target and freshness immediately before deciding.
-7. Return the ledger and overall outcome. For standalone `verify/*`, every
+7. Return the ledger and overall outcome. For standalone verify-only work, every
    outcome stops after the ledger; a pass does not dispatch `$dev-pr-writer` or
    mutate PR/Dev state. Only a verifier selected inside an already-authorized
    full-Dev receipt may route a current pass to `$dev-pr-writer`; fixes or new
@@ -244,5 +245,5 @@ Target Recheck: <unchanged | changed; stale evidence named>
 - <mode-authorized omission, never represented as passed, or "None.">
 
 ### Recommended Next Step
-<For standalone `verify/*`: `stop` after reporting the ledger, with a proposed repair/authority route only when non-pass. For selected full-Dev verification: `$dev-pr-writer` only for a current pass; otherwise the exact Dev or external owner, followed by a fresh `$dev-verifier` run.>
+<For standalone verify-only work: `stop` after reporting the ledger, with a proposed repair/authority route only when non-pass. For selected full-Dev verification: `$dev-pr-writer` only for a current pass; otherwise the exact Dev or external owner, followed by a fresh `$dev-verifier` run.>
 ```

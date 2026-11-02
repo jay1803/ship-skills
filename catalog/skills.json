@@ -621,6 +621,42 @@
       "family": "review",
       "maturity": "stable",
       "distribution": "review"
+    },
+    {
+      "name": "skill-dev",
+      "description": "Create or revise an agent Skill from an authorized design, implement its resources, and obtain evidence for the decisions it changes. Use for Skill authoring and validation, not design-only advice, independent review, or installing existing Skills.",
+      "path": "plugins/skill/skills/skill-dev",
+      "owner": "jay1803",
+      "family": "skill",
+      "maturity": "experimental",
+      "distribution": "skill"
+    },
+    {
+      "name": "skill-patterns",
+      "description": "Select and review the smallest effective architecture for an agent skill in Codex or Claude Code. Use when deciding whether a skill should be atomic, procedural, artifact-generating, routing, orchestrating, review-gating, or domain-guided; when decomposing an oversized skill; when binding an archetype to a client's invocation policy, isolation, tool scope, or auto-loading; or when reviewing discovery boundaries, ownership, and validation. Do not use to discover or install existing skills, or to scaffold skill files, which the environment's skill-creation workflow owns.",
+      "path": "plugins/skill/skills/skill-patterns",
+      "owner": "jay1803",
+      "family": "skill",
+      "maturity": "stable",
+      "distribution": "skill"
+    },
+    {
+      "name": "skill-review",
+      "description": "Independently assess a frozen agent Skill, Skill change or Skill family for useful decisions, footprint and necessity, discovery, authorization, execution and completion behavior. Use for Skill design and behavioral acceptance or a whole-Skill over-design audit, not ordinary code-only PR review, session-cost audits, fixes or publication.",
+      "path": "plugins/skill/skills/skill-review",
+      "owner": "jay1803",
+      "family": "skill",
+      "maturity": "experimental",
+      "distribution": "skill"
+    },
+    {
+      "name": "skill-session-review",
+      "description": "Review specified Codex or Claude sessions for the least costly reliable path from task input to verified outcome; diagnose input, routing, workflow, context, execution, Skills, and verification. Use for evidence-backed session audits or comparisons, not ordinary summaries or automatic fixes.",
+      "path": "plugins/skill/skills/skill-session-review",
+      "owner": "jay1803",
+      "family": "skill",
+      "maturity": "experimental",
+      "distribution": "skill"
     }
   ]
 }

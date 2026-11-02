@@ -1,0 +1,38 @@
+{
+  "codex": {
+    "tiers": {
+      "fast": "gpt-6-luna",
+      "standard": "gpt-6.1-sol",
+      "deep": "gpt-6.1-sol",
+      "critical": "gpt-6.1-sol"
+    },
+    "unresolved": "gpt-6.1-sol",
+    "ceilings": {
+      "gpt-6-luna": "fast",
+      "gpt-6.1-sol": "critical",
+      "gpt-6-sol": "deep",
+      "gpt-5.3-codex-spark": "fast"
+    },
+    "settled_only": [],
+    "explicit_bounded_worker_only": ["gpt-5.3-codex-spark"],
+    "effort": {},
+    "fallback_order": ["gpt-6-luna", "gpt-6.1-sol"]
+  },
+  "claude-code": {
+    "tiers": {
+      "fast": "claude-sonnet-5-5",
+      "standard": "claude-sonnet-5-5",
+      "deep": "claude-sonnet-5-5",
+      "critical": "claude-sonnet-5-5"
+    },
+    "unresolved": "claude-opus-5-5",
+    "ceilings": {
+      "claude-sonnet-5-5": "critical",
+      "claude-opus-5-5": "critical"
+    },
+    "settled_only": ["claude-sonnet-5-5"],
+    "explicit_bounded_worker_only": [],
+    "effort": {"xhigh": "high", "max": "high"},
+    "fallback_order": ["claude-sonnet-5-5", "claude-opus-5-5"]
+  }
+}

@@ -15,6 +15,11 @@ Options:
   --squash-merged        Allow local branch force-delete after confirmed squash merge.
   --confirmed-merged     Required acknowledgement that the PR is merged.
   -h, --help             Show this help.
+
+Stdout reports the remote head as key=value lines: remote_branch (deleted,
+already_absent, retained or not_applicable), remote_branch_reason and
+remote_branch_evidence. Deletion is refused, and the head retained, unless the
+remote's deletion rules positively allow it.
 EOF
 }
 
@@ -36,8 +41,83 @@ local_branch_exists() {
   git show-ref --verify --quiet "refs/heads/$1"
 }
 
-remote_branch_exists() {
-  git ls-remote --exit-code --heads "$remote" "$1" >/dev/null 2>&1
+# Prints present, absent or unknown. ls-remote exits 2 only for a missing ref;
+# any other failure leaves the remote head unverified.
+remote_branch_state() {
+  local status=0
+  git ls-remote --exit-code --heads "$remote" "$1" >/dev/null 2>&1 || status=$?
+  case "$status" in
+    0) printf 'present\n' ;;
+    2) printf 'absent\n' ;;
+    *) printf 'unknown\n' ;;
+  esac
+}
+
+# Sets remote_host, remote_owner and remote_repo for scp-like, URL and
+# hostname-with-port remotes. Returns 1 unless the path is exactly owner/repo.
+parse_remote_slug() {
+  local rest="$1" path
+  case "$rest" in
+    *://*) rest="${rest#*://}" ;;
+    *:*) rest="${rest%%:*}/${rest#*:}" ;;
+    *) return 1 ;;
+  esac
+  remote_host="${rest%%/*}"
+  remote_host="${remote_host##*@}"
+  remote_host="${remote_host%%:*}"
+  path="${rest#*/}"
+  path="${path%.git}"
+  path="${path%/}"
+  remote_owner="${path%%/*}"
+  remote_repo="${path#*/}"
+  [[ -n "$remote_host" && -n "$remote_owner" && -n "$remote_repo" && "$path" == */* && "$remote_repo" != */* ]]
+}
+
+# Sets guard_decision, guard_reason and guard_evidence for the exact remote
+# head. Returns 0 only when deletion is proven allowed; every other outcome,
+# including a failed or unavailable query, retains the head.
+remote_deletion_decision() {
+  local remote_url push_url encoded_branch tmp_dir err_file classified
+  remote_url="$(git config --get "remote.$remote.url" || true)"
+  push_url="$(git remote get-url --push "$remote" 2>/dev/null || true)"
+  if [[ "$push_url" != "$remote_url" ]]; then
+    guard_decision=retained
+    guard_reason="push URL differs from the configured URL (pushurl or insteadOf rewrite); the deletion target cannot be verified"
+    guard_evidence="remote=$remote push target not verified"
+    return 1
+  fi
+  if ! parse_remote_slug "$remote_url"; then
+    guard_decision=retained
+    guard_reason="remote '$remote' URL does not name an owner/repo; deletion rules cannot be verified"
+    guard_evidence="remote=$remote URL not recorded"
+    return 1
+  fi
+
+  tmp_dir="$(mktemp -d)"
+  err_file="$tmp_dir/err"
+  encoded_branch="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1], safe="/"))' "$branch" 2>/dev/null)" || encoded_branch=""
+  guard_evidence="host=$remote_host repo=$remote_owner/$remote_repo branch=$branch"
+
+  if [[ -z "$encoded_branch" ]]; then
+    guard_decision=retained
+    guard_reason="could not encode branch name for the rules query"
+  elif ! gh api --hostname "$remote_host" --paginate "repos/$remote_owner/$remote_repo/rules/branches/$encoded_branch" \
+      >"$tmp_dir/rules.json" 2>"$err_file"; then
+    guard_decision=retained
+    guard_reason="deletion rules query failed: $(tr '\n' ' ' <"$err_file")"
+  elif gh api --hostname "$remote_host" "repos/$remote_owner/$remote_repo/branches/$encoded_branch/protection" \
+      >"$tmp_dir/protection.json" 2>"$err_file" || grep -q 'Branch not protected' "$err_file"; then
+    # An unprotected branch has an empty protection file, which the classifier reads as no classic rule.
+    classified="$(python3 "$classifier" "$tmp_dir/rules.json" "$tmp_dir/protection.json" 2>/dev/null)" || classified=$'retained\tdeletion rules classifier failed\t'
+    IFS=$'\t' read -r guard_decision guard_reason guard_evidence_rules <<<"$classified"
+    guard_evidence="$guard_evidence; $guard_evidence_rules"
+  else
+    guard_decision=retained
+    guard_reason="classic branch protection query failed: $(tr '\n' ' ' <"$err_file")"
+  fi
+
+  rm -rf "$tmp_dir"
+  [[ "$guard_decision" == allowed ]]
 }
 
 clean_worktree() {
@@ -134,6 +214,10 @@ delete_remote=0
 squash_merged=0
 confirmed_merged=0
 initial_cwd="$(pwd -P)"
+classifier="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/classify_branch_deletion.py"
+remote_outcome="not_applicable"
+remote_reason=""
+remote_evidence=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -253,7 +337,7 @@ if local_branch_exists "$branch"; then
     log "deleted local branch '$branch'"
   elif [[ "$squash_merged" == "1" ]]; then
     rm -f "$branch_delete_log"
-    run git branch -D "$branch"
+    run git branch -D "$branch" >&2
     log "force-deleted local branch '$branch' after confirmed squash merge"
   else
     cat "$branch_delete_log" >&2
@@ -266,18 +350,63 @@ fi
 
 if git remote get-url "$remote" >/dev/null 2>&1; then
   run git fetch --prune "$remote"
-  if remote_branch_exists "$branch"; then
-    if [[ "$delete_remote" == "1" ]]; then
-      run git push "$remote" --delete "$branch"
-      log "deleted remote branch '$remote/$branch'"
-    else
-      log "remote branch '$remote/$branch' still exists; rerun with --delete-remote if the merged PR should remove it"
-    fi
-  else
-    log "remote branch '$remote/$branch' is absent"
-  fi
+  remote_state="$(remote_branch_state "$branch")"
+  case "$remote_state" in
+    absent)
+      remote_outcome="already_absent"
+      log "remote branch '$remote/$branch' is absent"
+      ;;
+    unknown)
+      remote_outcome="retained"
+      remote_reason="remote head state could not be verified"
+      log "remote branch '$remote/$branch' retained: $remote_reason"
+      ;;
+    present)
+      if [[ "$delete_remote" != "1" ]]; then
+        remote_outcome="retained"
+        remote_reason="--delete-remote not requested"
+        log "remote branch '$remote/$branch' still exists; rerun with --delete-remote if the merged PR should remove it"
+      elif remote_deletion_decision; then
+        remote_evidence="$guard_evidence"
+        if run git push "$remote" --delete "$branch"; then
+          case "$(remote_branch_state "$branch")" in
+            absent)
+              remote_outcome="deleted"
+              log "deleted remote branch '$remote/$branch'"
+              ;;
+            present)
+              remote_outcome="retained"
+              remote_reason="git push --delete did not remove the remote head"
+              log "remote branch '$remote/$branch' retained: $remote_reason"
+              ;;
+            *)
+              remote_outcome="retained"
+              remote_reason="remote head state could not be verified after git push --delete"
+              log "remote branch '$remote/$branch' retained: $remote_reason"
+              ;;
+          esac
+        else
+          remote_outcome="retained"
+          remote_reason="git push --delete failed"
+          log "remote branch '$remote/$branch' retained: $remote_reason"
+        fi
+      else
+        remote_outcome="retained"
+        remote_reason="$guard_reason"
+        remote_evidence="$guard_evidence"
+        log "remote branch '$remote/$branch' retained: $remote_reason"
+      fi
+      ;;
+  esac
 else
-  log "remote '$remote' not found; skipped remote branch cleanup"
+  remote_reason="remote '$remote' not found"
+  log "$remote_reason; skipped remote branch cleanup"
 fi
 
 log "cleanup complete for '$branch'"
+
+# Machine-readable remote outcome for callers. Local cleanup above is never
+# gated on it; a retained remote head is reported, not treated as a failure.
+printf 'remote_branch=%s\n' "$remote_outcome"
+printf 'remote_branch_reason=%s\n' "$remote_reason"
+printf 'remote_branch_evidence=%s\n' "$remote_evidence"

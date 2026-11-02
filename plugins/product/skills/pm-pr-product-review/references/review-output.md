@@ -27,13 +27,22 @@ Use this shape for a Merge-Ready Gate pass:
 ```markdown
 PR Product Review: Passed
 
-Compared PR #<number> against Linear <issue ids>. The implementation matches the stated requirements and I found no missing or materially different scope.
+Compared PR #<number> against Linear <issue ids>. The implementation satisfies
+the effective required scope. <If applicable: original acceptance remains
+incomplete for the disclosed P2/P3 items deferred after three Review rounds.>
 
 Evidence checked
 - Linear requirements: <issue ids and related issues>
 - PR scope: <head branch> -> <base branch>, commit <sha>
 - Platform coverage: iOS <covered / out of scope / N/A>, macOS <covered / out of scope / N/A>
 - Validation/QA evidence: <brief summary or "not required by issue">
+
+Deferred acceptance (omit when empty)
+- Original criterion and actual coverage: <source, Partial/Missing/Different or unverified outcome>
+- Finding/severity/impact: <source-authored P2/P3 and evidence>
+- Controller disposition: <current PR/base/head, three accepted rounds and policy reference>
+- Gate effect: non-blocking; original acceptance remains incomplete
+- Follow-up: <ticket ID, or exact draft and named persistence action>
 ```
 
 Use this shape for changed product behavior:
@@ -83,4 +92,3 @@ Blocked evidence
 What is needed
 - <specific next action to unblock the comparison>
 ```
-

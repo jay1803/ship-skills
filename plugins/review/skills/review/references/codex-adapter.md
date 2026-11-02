@@ -22,7 +22,8 @@ the environment did not report.
 
 ## Capability And Output Recovery
 
-Use the shared Artifact Contract dispatch evidence ownership packet.
+Use the [shared packet](review-depth.md#shared-packet) for every route; only a
+focused reviewer also receives prior findings.
 Before dispatch, verify that the selected execution surface can read its exact
 repository target and required authority. When clean contexts lack tracker or
 GitHub access, supply a source-identified, timestamped immutable snapshot via
@@ -41,5 +42,5 @@ Silent stdout is not proof of a stall. Check process termination, observable
 progress and artifact completeness against the executor's real deadline. Keep a
 healthy long-output process running; do not impose an arbitrary short quiet-time
 kill. On an actual runtime failure, retain partial output and retry only the
-failed judge against the same immutable sources within the existing retry
+failed reviewer or Judge against the same target within the existing retry
 allowance. Do not rerun successful reviewers or publish incomplete artifacts.

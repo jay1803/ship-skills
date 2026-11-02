@@ -5,9 +5,10 @@ missing decisions or evidence; they are not mandatory process stations.
 
 ## Entry and resume
 
-Read the current issue, verified PM root and relevant decisions, dependency and
-handoff evidence. Classify actual gaps in goal/scope, canonical specification,
-and readiness. Reuse equivalent current evidence regardless of comment headings.
+Use the [working context](working-context.md), current issue route and its
+`pm_action`; do not perform a second intake/gap classification. Read missing
+current issue, PM root, relevant decision, dependency and handoff inputs only
+as needed for that action. Reuse equivalent current evidence regardless of comment headings.
 Do not reread full history between uninterrupted steps. Refresh affected objects
 after writes, transport errors, concurrent changes or revised requirements.
 
@@ -49,6 +50,14 @@ unconfirmed product choices before this review; the reviewer cannot approve
 policy for the user. The number of files or a non-Bug label alone is not a
 trigger. Restoring established Bug behavior does not need this gate.
 
+Apply this review to a product outcome and its proposed product rules, not each
+engineering task derived from an accepted Dev plan. An engineering child inherits
+the parent's product contract; check its parent acceptance mapping and task
+readiness without repeating the Product Solution Review. A child that proposes
+new observable product behavior returns the exact decision to Product. Design,
+research and planning tasks receive a review appropriate to their decision
+artifact; their ticket type alone does not trigger Product Solution Review.
+
 A straightforward change preserving established mechanisms can proceed to spec
 and readiness without a Solution Review. Carry a short applicability reason in
 the handoff rather than posting a not-applicable review. Where review applies,
@@ -61,6 +70,17 @@ repository policy requires it. Record `skipped by user`, its source and scope;
 never call it approved or use it to clear product ambiguity. Mode alone does
 not override a required review. Readiness checks applicable review evidence,
 not a second full simplification audit.
+
+The exact `REVIEW:PRODUCT` label on the current product outcome also settles
+this advisory gate. If no current approved review is evidenced, treat the label
+as a waiver, even without review text; record `waived via REVIEW:PRODUCT` in the
+handoff rather than claiming review approval. An approved issue-bound review
+adds the label when authorized. The label is issue-local: a parent's label does
+not mark engineering children reviewed, and a child's label does not waive an
+unresolved parent product decision. It never substitutes for confirmed policy,
+canonical acceptance, task readiness or the substantive PM handoff. An explicit
+request to perform a new review still runs it. The label does not waive the
+separate PR Product Review after implementation.
 
 ## Canonical updates and affected scope
 

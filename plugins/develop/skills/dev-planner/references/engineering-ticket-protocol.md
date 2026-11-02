@@ -1,30 +1,27 @@
 # Engineering Ticket Protocol
 
-Read when planning engineering task boundaries, writing or accepting task
-drafts, or handing a planned task to an implementation worker. This protocol
-defines required information and decision ownership, not a fixed ticket length
-or a new workflow gate for every patch.
+Read when planning engineering task boundaries, writing task drafts, or
+handing a planned task to an implementation worker. This protocol defines
+required information and decision ownership, not a fixed ticket length or a new
+workflow gate for every patch.
 
 ## Ownership And Planning
 
-Product owns outcomes, scope and acceptance. The lead planner owns the technical
-approach, shared contracts and engineering task boundaries inside approved
-product scope. Apply the [task decomposition criteria](task-decomposition.md)
-when assessing boundaries; retain one coherent task when splitting adds only coordination. The caller
-owns assignment, tracker authority, readiness, dispatch and completion.
-
-Prefer a stronger reasoning model for the lead plan and per-task design; prefer
-execution-focused models such as Sonnet or GPT Terra for implementation after
-material decisions are settled. Supply the actual design/implementation scope
-and this preference to the existing agent-routing mechanism. Model examples
-are not required runtime IDs or a reason to bypass capability floors, explicit
-user bindings or availability. Existing controllers keep their bindings.
+The accepted issue sets outcomes, scope and acceptance. The lead planner owns
+the technical approach, shared contracts and engineering task boundaries inside
+approved product scope. Apply the
+[task decomposition criteria](task-decomposition.md) when assessing boundaries;
+retain one coherent task when splitting adds only coordination. The caller owns assignment, draft acceptance, tracker authority,
+readiness, dispatch and completion; a project controller applies its
+[ticket preparation](../../dev-project-orchestrator/references/ticket-preparation.md)
+rules. Tickets do not preselect a model.
 
 The lead plan records source/contract revisions, shared decisions, task keys,
 `implementation` or `design` kind, each task's outcome and ownership, dependency
 edges, safe PR boundaries and parent-acceptance coverage. Reuse current plans,
-existing tasks and PRs. Product gaps return to Product. Unknown technical facts
-remain named gaps; do not invent source paths, contracts or completed decisions.
+existing tasks and PRs. Product gaps return as requester questions. Unknown
+technical facts remain named gaps; do not invent source paths, contracts or
+completed decisions.
 
 Planning a task normally includes its design without a separate design ticket.
 Use a design task only when investigation or unresolved choices are a bounded
@@ -73,78 +70,3 @@ local patch can have a short specific plan. "Implement pagination" or a file
 list alone is insufficient. A useful plan identifies the query/helper to change,
 cursor and ordering semantics, response contract and cross-page test outcomes.
 Do not promote an example choice into policy for unrelated tasks.
-
-## Parallel Ticket Preparation
-
-The controller can assign one bounded planning subagent per task once the lead
-plan's shared decisions and ownership are stable. Ten tasks mean ten accountable
-assignments, not necessarily ten simultaneous processes; use available slots
-in batches. Parallel drafting does not imply parallel implementation. An
-explicit serial scope or unresolved shared contract still constrains preparation.
-Preserve the supplied dependency edges; capacity batches and task numbering are
-not dependencies. Add or remove an edge only as an explicit evidence-backed
-proposal for the controller to accept. Do not turn one producer-consumer edge
-into a serial chain through unrelated tasks.
-
-Each assignment carries:
-
-- Controller identity, task key and existing ticket ID if any; a unique output
-  location, assigned scope/non-goals and source/contract revisions.
-- Shared decisions, owned files/artifacts, required inputs, prerequisites,
-  remaining task-local design questions and executor capability preference.
-- This ticket protocol, expected title/body, acceptance evidence and return
-  format: task key, design readiness, draft, gaps/boundary changes and provenance.
-- Exact permissions: draft-only by default; any later write grant names the
-  target team/project/parent or existing issue, accepted content and allowed
-  fields. No sibling, project graph, status or product-spec writes by inference.
-
-The worker uses `$dev-planner` to refine only its assigned task. It does not
-create child tasks, dispatch replacements or redesign shared contracts. Return
-proposed boundary changes to the same controller; the lead planner resolves
-affected design before dependent drafts proceed. Reuse unaffected work.
-
-Before accepting drafts, the controller checks coverage of parent acceptance,
-shared-contract agreement, non-conflicting ownership, dependency consistency
-and whether implementation still needs design. A design task may be ready for
-design; an implementation draft with material choices open is not ready to code.
-Use an existing sufficient implementation brief without a ceremonial rewrite.
-
-## Persistence And Execution
-
-Drafting and planning alone authorize no tracker writes. When creation/update is
-authorized, the existing tracker owner may apply accepted content or delegate
-one exact ticket write to its assigned worker in a separately gated write step.
-The planning role itself remains draft-only. Preserve canonical product text;
-engineering details supplement it rather than overwriting scope or acceptance.
-Use the tracker skill and re-read each write. On an uncertain create response,
-reconcile live records before retrying; do not create a duplicate.
-
-The controller maintains task-key -> ticket-ID mapping and owns parent/child
-links, dependency edges and readiness/status transitions. Reserve one writer
-per ticket/key, verify created records before wiring cross-ticket relations,
-and preserve confirmed IDs/drafts on partial failure. An unauthorized write
-remains a draft with the named outstanding action. Where the workflow reserves
-materialization to Product, return the accepted engineering drafts to that
-owner; this protocol does not grant another role its writes.
-
-Refresh the existing readiness/router receipt after materialized scope changes;
-do not pass draft keys to issue execution or run a split parent as an extra
-implementation task. A single-issue Dev controller that discovers a multi-task
-delivery returns the affected plan and existing work to its owning controller.
-For accepted engineering tasks under one product outcome, request the PM
-controller's engineering-task materialization path with the same issue bound as
-the proposed parent. Refresh routing with that parent target and explicit
-materialization request; do not reclassify the product outcome as `multi` merely
-because it needs multiple engineering PRs. Materialization remains within the
-caller's write authority, followed by the normal project handoff for the ready
-child inventory. Do not start a nested project controller from
-an implementation leaf. Missing Product/route evidence remains a real blocker.
-
-Pass accepted ticket content and design basis to the implementation owner.
-Reuse it as the Technical Plan; do not ask an execution-focused worker to choose
-the architecture again or automatically rerun planning for an unchanged task.
-Local coding and in-scope debugging remain allowed. Source drift, failed
-assumptions or a new contract/product/migration/ownership decision returns the
-affected work to the controller for planning; preserve existing code and PRs.
-Workers do not recursively split or dispatch successors. The controller alone
-opens implementation dependency barriers and verifies combined parent acceptance.

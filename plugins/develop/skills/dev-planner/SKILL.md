@@ -28,6 +28,11 @@ belong to `$dev-project-orchestrator`; explicit multi-PR integration belongs to
 Use approved scope, acceptance criteria, current source evidence, selected mode,
 and relevant diagnosis/API/Design inputs. A current implementation brief is
 sufficient; do not demand artifacts from intentionally unselected stages.
+Check affected acceptance against the actual producer and consumer contracts,
+including audience/permission eligibility; an existing endpoint or client mock
+does not establish that the backend supports the promised behavior. A capability
+gap that changes delivery ownership or prerequisites needs the
+[task-boundary assessment](references/task-decomposition.md), not only new code steps.
 Resolve only missing ownership, local-pattern, constraint, or validation facts:
 search from relevant files/symbols/errors with `rg`, follow dependencies when
 needed, and return source anchors and material unknowns. Stop discovery once
@@ -35,10 +40,11 @@ the next decision is supported; reuse facts still current for the target.
 
 Read the [development-mode contract](../dev/references/development-mode-contract.md)
 when planning mode-dependent checks. Missing evidence that changes product
-scope, safety, a critical acceptance criterion, or dependency blocks coding and
-returns to `$pm-readiness-review`. Missing live credentials, environment access,
-or acceptance logistics may remain `blocked - may begin development` when they
-do not change safe implementation; keep that gap through outcome completion.
+scope, safety, a critical acceptance criterion, or dependency blocks coding;
+return it as the exact decision for the caller to ask the requester. Missing
+live credentials, environment access, or acceptance logistics may remain
+`blocked - may begin development` when they do not change safe implementation;
+keep that gap through outcome completion.
 
 ## Conditional Design
 
@@ -50,6 +56,7 @@ do not change safe implementation; keep that gap through outcome completion.
 | Local feasibility or competing paths cannot be settled from current evidence | `$dev-spike` |
 | Third-party behavior is the deciding unknown | `$dev-api-research` |
 | Owned backend/API behavior or compatibility may change | `$dev-api-steward` pre-implementation contract review, then finalize affected parts of this plan |
+| A permission, cache, auth/session, migration, maintenance or multi-owner state flow changes | [Stateful flows](references/stateful-flows.md) |
 
 Read only a selected reference. Do not create a modeling/bypass report for a
 simple presentation or stateless change. Domain/refactor analysis is part of
@@ -70,14 +77,6 @@ this technical plan, not another mandatory owner or document handoff.
    external dependencies that change the approach. Contract review may refine
    the plan; it does not require a second architecture artifact.
 
-For migration, maintenance, or multi-owner state changes, trace admission,
-in-flight work, transition, abort, rollback, and restart across each affected
-owner. Distinguish durable state, process-local authority, and startup
-configuration. Check alternate exit paths before settling the sequence. Use
-actual component modes when lock/journal/runtime semantics determine safety;
-a generic substitute is not proof of the required behavior. Keep this analysis
-conditional on a real stateful boundary, not a template for every patch.
-
 ## Implementation Slices When Needed
 
 When task boundaries or ticket handoff need planning, read the
@@ -90,12 +89,11 @@ implementation/design, preserve parent acceptance and existing dependencies,
 and give the caller stable keys and bounded per-task planning assignments.
 By default expand only ready parents; future dependent plans remain provisional.
 
-Prefer stronger reasoning for design and execution-focused models for settled
-implementation under the protocol. A caller can parallelize independent ticket
-preparation within runtime limits; this planner returns assignments/artifacts
-and does not become their controller. A worker assigned one fixed leaf refines
-only that leaf. Return material boundary changes to its owner instead of
-recursively splitting or dispatching. Do not write tracker records here.
+A caller can parallelize independent ticket preparation within runtime limits;
+this planner returns assignments/artifacts and does not become their controller.
+A worker assigned one fixed leaf refines only that leaf. Return material
+boundary changes to its owner instead of recursively splitting or dispatching.
+Do not write tracker records here.
 
 Create ordered slices only when sequencing, dependency handoff, migration, or
 rework risk needs them. Otherwise a concise approach with scope and acceptance
@@ -105,13 +103,12 @@ not a file list or a ceremonial "add tests" step.
 For each selected slice record the outcome, relevant scope, dependency order,
 observable acceptance evidence, rollback point (or justified not applicable),
 and a concrete stop/escalation boundary. For refactors retain invariant checks;
-for bugs retain the original repro and regression proof. Mark slices parallel
-only when contracts are stable, rollback scopes do not overlap, and ownership
-permits it; project-wide scheduling stays with the project controller.
+for bugs retain the original repro and regression proof. Marking slices
+parallel is a proposal with its evidence; project-wide scheduling stays with the
+project controller.
 
-Use verified repository commands, generated-artifact rules, and platform
-reference(s) for `$dev-implementer`. If no platform reference fits, name the
-actual surface and repository guidance. API-changing work needs a
+Give `$dev-implementer` verified repository commands, generated-artifact rules,
+and the actual changed surface with its repository guidance. API-changing work needs a
 post-implementation stewardship checkpoint before formal testing. For a
 cross-repository issue, plan only the assigned repo slice and named external
 contracts; do not create sibling work or choose a multi-PR merge strategy.
@@ -121,30 +118,22 @@ Fast records authorized omissions; standard/strict retain required checks and
 outcome evidence. Strict's severity threshold alone adds no stage. Preserve
 required production-loop verifier, fidelity, timing, and stop limits.
 
-For a changed stateful flow whose normal tests can bypass the behavior being
-promised, make the first relevant implementation slice prove one runnable path
-through the actual coordinator/repository and observable completion or routing.
-The planner identifies this checkpoint; the implementer/test owner compiles and
-executes it. A success flag, mounted success screen or disconnected callback
-proves only the harness. Inspect local runtime/seed and provider-seam options
-before concluding that the path cannot be tested; a provider substitute must
-not replace the changed behavior itself. Keep test-only APIs out of release
-surfaces and name the evidence fidelity actually demonstrated.
-
-Choose boundary probes from the changed contract: for auth or persisted session
-changes, this may mean native SDK storage/reopen and observable barriers before
-and after an identity change, with distinct consumers when isolation matters.
-Do not require this slice for a stateless patch already proved by focused tests,
-or use it to reinstate mode-waived live accounts and environment logistics.
-
 ## Repair Boundary
 
 Record the bounded behavior, contracts, modules, and generated artifacts a
 repair may touch, plus the repository-defined merge-ready representation.
 A new product decision, externally consumed contract, persistent model,
 migration/deployment order, ownership, or cross-repository surface re-enters
-planning or PM; it is not ordinary repair. Reuse unaffected decisions when
-replanning instead of restarting all investigation.
+planning or needs a requester decision; it is not ordinary repair. Reuse
+unaffected decisions when replanning instead of restarting all investigation.
+
+For a controller's redesign request after exhausted Review, inspect the failed
+plan, its Review rounds, attempted repairs, root-cause evidence and scope
+changes. Redesign the actual approach when direction or scope changes; do not
+just reword the failed plan. Return how the replacement addresses the failure,
+revised contracts/scope, validation and stop conditions. The controller decides
+under its [disposition rule](../dev/references/review-lifecycle.md#controller-disposition-after-exhaustion);
+this planner neither resets Review history nor dispatches implementation.
 
 ## Output And Handoff
 

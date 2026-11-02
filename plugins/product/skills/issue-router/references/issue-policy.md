@@ -18,7 +18,7 @@ gates.
 - Do not perform repository-wide search, architecture, implementation planning,
   PM readiness, child-issue design, Dev phase planning, Review, Release
   execution, or runtime/model routing.
-- Select workflow ownership and terminal intent only. `$agent-routing` runs
+- Select workflow ownership, terminal intent and the bounded next PM need only. `$agent-routing` runs
   later, inside the selected workflow, and keeps its executor/model/profile
   receipt separate. The router does not select a Dev phase plan.
 - Preserve one writer: this receipt grants no authority that the next owner did
@@ -37,6 +37,12 @@ Use the smallest current evidence that distinguishes a fixed route.
 - Read the canonical PM root/readiness/handoff and one linked branch/PR head,
   check, review, or merge state only when needed to distinguish PM, resume, or
   post-PR ownership.
+- Do not infer an open PR from an open issue or a request to start Dev. A current
+  linked PR is required before classifying an unknown next PR gate as `open`.
+- When Solution Review applicability matters, carry the bound issue's current
+  label names. `REVIEW:PRODUCT` on that exact product outcome settles this
+  advisory review gate; it is not evidence that a review actually ran or that
+  the issue is development-ready.
 - Do not search for a different issue, scan installed skills, or ask other
   agents to fill an evidence gap. If the minimum state cannot select one route,
   return `blocked`.
@@ -116,6 +122,14 @@ request for that inventory may select `project/dev`. Exclude its container
 parent and deferred design-only work from coding workers while retaining parent
 acceptance and dependencies. An ordinary one-issue request without this
 materialization intent keeps its existing route. Routing supplies no write grant.
+An accepted engineering task child remains inside its parent's single product
+outcome. Identify it only from the current parent relation, accepted Dev plan
+and mapped parent acceptance, not from a technical title or child status alone.
+Do not send such a child to Product Solution Review. Missing parent product
+decisions return to Product; missing task design or verification detail returns
+to the Dev planning owner. A design or research task is reviewed for its bounded
+decision artifact; it needs Product review only if it actually proposes a new
+product solution or rule.
 
 ## Fixed Decision Table
 
@@ -205,6 +219,35 @@ Skipped, stale, inaccessible, or mismatched-environment evidence is never a
 pass. Ambiguous or side-effecting live verification actions select
 `blocked/authority` before execution.
 
+## Single-issue PM action
+
+For `pm/*`, classify `pm_need` from the same evidence and API call; do not do a
+second intake pass. Select the earliest unmet need: unresolved product decision,
+missing Bug diagnosis, applicable missing review/design/dependency evidence,
+confirmed canonical delta, missing substantive readiness, or a current handoff.
+Solution Review applies at the product-outcome boundary. The exact
+`REVIEW:PRODUCT` label on the current product issue satisfies that gate, including
+when no review text exists; report that case as a waiver rather than an approval.
+An explicit current request to perform Solution Review still runs the review.
+When that request names an engineering child, bind its parent product outcome
+for the review instead of reviewing the child's technical task as product scope.
+It cannot settle a material product decision, child task readiness or the final
+PM handoff. If Jev still proposes `solution-review` for a labeled outcome or an
+accepted engineering task, the program selects a substantive readiness check
+instead of dispatching a duplicate review.
+Use `unavailable-source` when the needed source cannot be bound, and
+`not-applicable` outside single-issue PM. A valid canonical-looking issue without
+a current assessment selects `readiness-check`, never `current-handoff`.
+
+The program maps that need to `clarify`, `write-spec`, `assess-readiness`,
+`reuse-handoff` or `blocked`, preserving `$pm` as lifecycle owner. `solution-review` and `design-evidence` select their specific owner;
+`dependency-evidence` goes to PM to obtain the already named prerequisite from
+its existing owner. Do not invent a specialist pipeline. Reuse requires unchanged canonical, product decisions, relevant
+dependencies and applicable gate inputs, not simply the presence of `ready`.
+No action confirms product policy or independently performs readiness. A proposed
+new Dev route alongside an unmet PM need is a state conflict, not permission to
+ignore the gap; refresh contradictory evidence before continuing.
+
 ## Canonical Route Receipt
 
 Return this receipt exactly once. Keep values factual and minimal; `evidence`
@@ -230,6 +273,7 @@ issue_route:
     next_owner: <continue-route-table | $pm-project-orchestrator | blocked>
   live_state:
     issue_state: <state>
+    issue_role: <product-outcome | engineering-task | unknown | not-applicable>
     pm_gate: <ready | missing | blocked | not-applicable>
     dev_state: <none | active | resumable | terminal>
     pr_state: <none | open | checks | review | merge-ready | merged>
@@ -240,6 +284,7 @@ issue_route:
     resume_anchor: <none or exact artifact/controller/PR>
     mode: <not-applicable | fast | standard | strict>
     terminal_intent: <answer | artifact | diagnosis | verification | change | release>
+  pm_action: <single-issue PM only: action, next_owner, gap, required_input, evidence_refs, completion>
   completion_contract:
     required_output: [<artifact or evidence ledger>]
     mutation_budget: <none | scratch-only | retained-diagnostic-artifact | scoped-lifecycle | explicit-verification-actions>
@@ -259,7 +304,9 @@ issue_route:
 The selected controller validates receipt freshness immediately before its first
 mutation and reuses the receipt's target/delivery-shape/cardinality/owner
 decision rather than repeating the classification. Reroute only when a material
-input changes: canonical requirement or readiness, delivery shape, target
+input changes, except verified local PM progress under the
+[working-context contract](../../pm/references/working-context.md): canonical
+requirement or readiness, delivery shape, target
 cardinality, active controller, branch/PR/head, CI/review/merge state, or
 release authority. A changed PR head invalidates downstream Dev gates; it does
 not erase a current PM record.

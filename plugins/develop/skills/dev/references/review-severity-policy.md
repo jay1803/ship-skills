@@ -20,20 +20,26 @@ confidence. Effort to fix and number of changed lines do not determine severity.
 
 Examples guide judgment; a rare trigger is not automatically low severity when
 impact is irreversible. Cite the scenario and consequence. An unproven concern
-is withheld with missing evidence, not assigned a convenient lower priority.
+keeps its missing evidence visible (withheld or `needs-evidence`); never assign
+it a convenient lower priority.
 Native specification classifications and optional-improvement labels remain
 intact alongside any source-authored P-level. Do not convert Linear's numeric
 priority enum or an unlabeled `blocking`/`medium` word mechanically into a P-level.
 
 ## Mode Gate
 
+Apply the thresholds to delivery-relevant findings. Approved repair scope and
+causality are separate: a change-caused or required-path defect stays blocking
+even when repair exceeds scope; a proven independent baseline defect retains its
+severity in a controller-owned follow-up. Ticket creation or budget exhaustion
+alone never waives a delivery blocker.
+
 - Standard (also the default for a standalone review): confirmed P0/P1 block.
-  P2/P3 remain visible advisories. A complete current generation with no P0/P1
+  P2/P3 remain visible advisories. A current review with no relevant P0/P1
   advances the technical gate without another advisory-only fix/review cycle.
-- Strict: confirmed P0/P1/P2 block; P3 may remain. It uses the same selected
-  lifecycle surfaces, with deeper risk-selected failure, recovery, concurrency
-  and security inspection; it does not automatically add reviewers, models,
-  manual testing, exhaustive cases or per-assertion mutations.
+- Strict: confirmed P0/P1/P2 block; P3 may remain. It selects full Review with
+  deeper risk-selected failure, recovery, concurrency and security inspection;
+  it does not add manual testing, exhaustive cases or per-assertion mutations.
 - Fast retains its separately defined omissions and unskippable conditions.
   If Review is explicitly selected in fast mode, use the standard defect gate
   unless the caller explicitly supplies a stricter threshold.
@@ -56,11 +62,16 @@ that source. Do not invent acceptance to bypass the selected defect threshold.
 
 A later explicit user instruction may defer a requirement the user controls,
 including a confirmed P2/P3 acceptance violation. Keep the original requirement,
-finding and failed evidence; record the exact instruction and current gate
-effect using the assembly contract. A threshold override alone does not defer
+finding and failed evidence; record the exact instruction and pass it to
+Review as a caller-marked deferral. A threshold override alone does not defer
 required proof. Independent CI, safety, permissions, required review coverage,
 and branch protection remain separate gates. Missing or ambiguous authority
 returns to its owner rather than silently waiving a requirement.
+
+Dev-managed delivery also applies a standing three-round acceptance deferral
+owned by Develop's review lifecycle; it reaches Review the same way. P0/P1,
+unknown severity, missing required coverage and independent CI, safety,
+permission, protection and merge gates remain binding under any deferral.
 
 ## Review Depth And Test Expectations
 
@@ -81,7 +92,7 @@ hardening, extra permission layers or hypothetical attack matrices. Strict can
 inspect additional changed trust-boundary failure paths; speculative findings
 remain excluded. A personal-project label never excuses a demonstrated defect.
 
-Apply this scope to core lenses, conditional signals and Judge. Pass the selected
+Apply this scope to every reviewer and the Judge. Pass the selected
 mode and explicit requirement sources in the review packet. Default omissions
 are not missing required coverage; observed defects retain their severity and
 explicit user/repository requirements retain their authority.
@@ -93,7 +104,7 @@ lacks a P-level needed for the gate, or supplied findings materially disagree
 about whether the same demonstrated consequence crosses it, return a named
 clarification request to Review. Review asks only the originating source for
 its impact/preconditions and source-authored level on the same target, retaining
-the original and the additive reply. Do not start another full wave or ask
+the original and the additive reply. Do not rerun the review or ask
 siblings to vote. Unresolved gate-relevant ambiguity blocks the decision;
 ordinary source-native optional advice and withheld hypotheses do not.
 

@@ -1,6 +1,6 @@
-# Direct Eligibility And Issue Readiness
+# Direct Eligibility And Issue Resolution
 
-Read during implicit entry, issue resolution, or the audit of an existing issue without a verified PM handoff. Return to the root preflight before Dev execution.
+Read during implicit entry or to resolve a request that names no issue. Return to the root preflight before Dev execution.
 
 ## Direct Exclusion Gate
 
@@ -10,8 +10,7 @@ into issue-level orchestration.
 
 An explicit command-like `$dev` invocation, or a request for the full issue,
 PR, review, CI, merge, tracker-closeout, or release-candidate lifecycle, bypasses
-this exclusion and enters Dev. Merely discussing, creating, or editing the Dev
-skill does not count as invoking `$dev`.
+this exclusion and enters Dev.
 
 ### Direct Artifact
 
@@ -24,7 +23,7 @@ the current agent perform the work inline:
 
 - Do not create a Dev goal or Dev State, resolve or mutate a tracker issue,
   create a Dev branch/worktree, or start Dev repository discovery, technical planning,
-  implementation, verification, Review, Product Review, or merge
+  implementation, verification, Review, or merge
   handoff merely because the artifact lives in a code repository.
 - Validate proportionately. For Skill work, run the skill validator and any
   repository, catalog, link, package, or behavior checks affected by the
@@ -79,54 +78,11 @@ Resolve one tracker record before creating a branch, researching code, or changi
 1. Bind an explicitly supplied Linear ID exactly.
 2. For an unnumbered issue-level request, search the tracker for a relevant issue before doing Dev work. Search by the requested outcome or defect, affected code/product surface, repo/project context, labels, and recent related issues; read promising matches.
 3. Reuse a clearly relevant issue and state its ID. Do not create a duplicate. If several candidates are materially plausible, stop for the smallest question needed to choose the target.
-4. For an existing issue, run the Direct Dev Entry Audit below. A prior PM
-   handoff remains sufficient evidence, but it is not the only valid entry.
-5. If no relevant issue exists, create the initial issue record first with a concise outcome-oriented title, the raw request, repo/product context, and explicit unknowns. Assign the current/requesting user when known, then route it through `$pm` and `$pm-readiness-review` before Dev starts. The record is not automatically dev-ready.
+4. If no relevant issue exists, draft and create it yourself: a concise outcome-oriented title, the raw request, repo/product context, objective, expected behavior, scope, acceptance criteria, and explicit unknowns, using only requester-stated or cited product rules (`$pm-spec` may draft it when installed and the requester asks). Assign the current/requesting user when known. The record is not automatically dev-ready.
+5. For the bound, reused or new issue, the preflight's [entry audit](resume-preflight.md#entry-audit) decides readiness and asks the requester for any missing decision.
 6. If tracker tools are unavailable, provide the exact search result or creation draft and stop before branch/worktree setup or implementation.
 
 This gate applies to unnumbered bugs, features, regressions, and follow-ups. A
-project, milestone, parent issue, issue set, or multi-issue request routes to
-`$dev-project-orchestrator` rather than collapsing the scope into one duplicate
-issue record.
-
-## Direct Dev Entry Audit
-
-An explicit `$dev <existing issue>` request may begin without replaying PM when
-the issue itself is already a high-density engineering contract. Perform this
-read-only audit before branch/worktree creation or repository research:
-
-- confirm it is one coherent buildable outcome, not a project or hidden issue
-  sequence, and bind this finding to `delivery_shape: single` in the current
-  Router receipt;
-- identify the objective, current/expected behavior, in-scope work, meaningful
-  non-goals, and critical acceptance criteria from the issue and linked evidence;
-- verify material product rules are user-authored, inherited from cited current
-  behavior, or otherwise explicitly confirmed; no unresolved product choice may
-  be invented by Dev;
-- confirm dependencies, repository ownership, and execution order are clear
-  enough to start;
-- distinguish implementation inputs from human/device/credential/deployment or
-  production-only proof that can remain pending until outcome completion.
-
-If these checks pass, record `Readiness Basis: existing canonical issue` in Dev
-State, build the implementation brief from those sources, and continue in the
-requested Dev mode. Do not create filler PM comments, invoke PM workers, rewrite
-the issue, or add `scoped` merely to reproduce an already-sufficient record.
-Issue status, assignee/delegate, labels, description length, or an existing
-branch are supporting context, never sufficient proof by themselves.
-
-If the receipt is `multi` or `ambiguous`, stop this
-audit before branch/worktree creation, repository research, goals, or
-delegation. Return the entire provisional umbrella to
-`$pm-project-orchestrator`; Dev must not choose child boundaries or treat an
-existing Ready label/status as a waiver. Multiple files, layers, technologies,
-commits, expected PRs, estimate, or ordinary synchronous QA alone do not prove
-`multi` and must not cause a mechanical split.
-
-If only outcome-verification logistics are pending and they do not affect the
-implementation choice, record `Outcome Verification Readiness: blocked - may
-begin development`, preserve the exact requirement through merge/test handoff,
-and do not claim overall outcome completion. Route to `$pm-readiness-review`
-before Dev mutation when a missing product decision, scope boundary, critical
-acceptance criterion, human-safety instruction, or dependency would change what
-gets built. Newly created or genuinely ambiguous issues never use this shortcut.
+project, milestone, parent issue, issue set, or multi-issue request keeps its
+complete scope for its [request owner](resume-preflight.md#request-owner)
+rather than collapsing into one duplicate issue record.

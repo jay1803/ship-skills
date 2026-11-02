@@ -14,13 +14,18 @@ implemented.
 ## Decide Before Writing a Test
 
 Apply the [mode contract](../../dev/references/development-mode-contract.md#standard-and-strict-modes)
-first. In standard mode, TDD is opt-in through an explicit user/repository request;
-a testable boundary alone does not select it. Bug tickets still retain a focused
-repro/regression test. An ordinary failing repro before its fix is distinct from
-reverse-red mutation of a working implementation. Strict may select useful TDD;
-neither mode requires a mutation matrix as part of red/green/refactor.
+and [implementation/test order](../SKILL.md#implementation-and-test-order)
+first. TDD is opt-in through an explicit user request or repository requirement
+in every mode; a testable boundary or strict mode alone does not select it.
+Bug tickets still retain focused repro/regression proof; reuse an existing
+failing test before authoring another. An ordinary failing repro before its fix
+is distinct from reverse-red mutation of a working implementation. No mode
+requires a mutation matrix as part of red/green/refactor.
+Apply the [test authoring gate](../../dev-test/references/test-authoring.md)
+to the proposed red test; TDD does not justify duplicating an existing
+contract or testing behavior supplied by a mock.
 
-Apply TDD when all of the following are true:
+For a selected TDD request, apply it when all of the following are true:
 
 - the planned outcome has an observable result at a public API, user workflow,
   persisted state, protocol boundary, or other owned behavior boundary;

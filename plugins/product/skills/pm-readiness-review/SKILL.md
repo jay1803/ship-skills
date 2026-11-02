@@ -14,18 +14,33 @@ Assess the current product contract for engineering. Verify the evidence and
 real gaps rather than whether every PM stage left a comment. Keep independent
 judgment separate from repairing scope or writing specifications.
 
+For an accepted engineering task child, assess its mapped parent product
+constraints and handoff instead of requiring a second Product Solution Review
+or an independent product PRD. Dev planning owns the child's technical design
+and implementation-ready ticket judgment.
+
 For standalone assessment, use the
 [artifact contract](../pm/references/artifact-contract.md). For issue work, use
-the [state machine](../pm/references/issue-state-machine.md) and
-[tracker contract](../pm/references/tracker-contract.md).
+the [working context](../pm/references/working-context.md). Load the
+[state machine](../pm/references/issue-state-machine.md) for applicability or
+changed-decision questions and the [tracker contract](../pm/references/tracker-contract.md)
+only before writes.
 
 ## Evidence and judgment
 
-Read the canonical issue, current route, relevant decisions, dependencies and
-applicable review/design evidence. Reuse fresh controller context; expand into
+Assess the canonical issue, current route, relevant decisions, dependencies and
+applicable review/design evidence from the supplied context. Read missing or
+stale inputs, without rereading unchanged sources; expand into
 history when authority or a conflicting requirement needs resolution. If intake
 is already evidenced but the PM root is missing, initialize the one root under
 the tracker contract. Missing classification routes to `$pm`.
+
+Jev's `pm_gate` or `assess-readiness` action is not this assessment. Exercise
+substantive judgment against the original contract and evidence. Use an
+independent evaluator when required by the request or binding policy; otherwise
+this bounded assessment may run inline. A still-current prior handoff can be
+reused by PM without a new assessment. Any new material product change requires
+assessment of the affected contract and dependent gates.
 
 Check:
 
@@ -41,9 +56,14 @@ Check:
 - Start-relevant dependencies and product constraints are sufficient. A named
   technical-stage comment is unnecessary when the underlying evidence exists.
   Engineer-owned architecture and verifier mechanics are not PM prerequisites.
+- For an engineering child, the accepted Dev plan, parent link, mapped parent
+  acceptance and inherited product decisions are current. Missing task design
+  returns to Dev planning; a new or unresolved product rule returns to Product.
 - Any Solution Review required by the state machine covers the current inputs.
-  Reuse its result; do not repeat the full simplification audit. If inapplicable,
-  carry the reason. An authorized skip stays disclosed, not approved.
+  Reuse its result; do not repeat the full simplification audit. For an accepted
+  engineering task, use the parent product outcome's disposition and verify
+  the child's acceptance mapping. If inapplicable, carry the reason. An
+  authorized skip or `REVIEW:PRODUCT` waiver stays disclosed, not approved.
 - Needed interaction/screen decisions are available from existing evidence or
   Design. Text specifications suffice when no visual artifact is required.
   Design proposals do not authorize new retention, permission, fallback or
@@ -89,7 +109,7 @@ Decision: <ready | blocked | split | reject | defer>
 Delivery Shape: <single | multi | ambiguous, decisive evidence>
 Development Readiness: <ready | blocked>
 Outcome Verification Readiness: <not required | ready | unverified - engineering may proceed | blocked - blocks development>
-Solution Review: <applicable result/link | not applicable and reason | skipped by user and source>
+Solution Review: <approved result/link | waived via REVIEW:PRODUCT on bound outcome | not applicable and reason | skipped by user and source>
 Critical Acceptance / Constraints: <only essentials or canonical links>
 Dependencies / Existing Implementation: <start conditions and relevant issue/PR evidence>
 Design / Runtime Evidence: <only material evidence, limits and missing owners>

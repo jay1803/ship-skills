@@ -22,6 +22,11 @@ record and relevant current PR/CI/Review facts; do not preclassify route, shape
 or mode. One bound target read is normally enough. Do not search other issues
 or entire repositories to fill gaps. Include the complete included coding
 inventory for a project; explicit deferred human acceptance remains outside it.
+For an issue, copy its current label names to `labels` when review applicability
+matters; only the exact `REVIEW:PRODUCT` label on that issue can settle its
+Product Solution Review gate. Include the parent link, accepted engineering plan
+and acceptance mapping when claiming an engineering-task child. A child link or
+technical title alone does not establish that role or readiness.
 For an explicit request to materialize a supplied, accepted engineering task
 plan, bind the owning issue ID as the proposed `parent` target and include that
 request, plan basis and actual child/readiness inventory. This is target binding,
@@ -45,18 +50,55 @@ when a new authorized endpoint supersedes an earlier one. Optional
 `delivery_evidence` carries verbatim outcome/acceptance facts, not a caller's
 shape decision.
 
+For an existing PM handoff, optionally supply `pm_handoff` from the actual
+record, not a prediction:
+
+```json
+{
+  "canonical_source": "issue:ENG-123",
+  "canonical_revision": "contract-r7",
+  "handoff_source": "comment:handoff-42",
+  "handoff_revision": "handoff-r2",
+  "assessed_canonical_revision": "contract-r7",
+  "decision": "ready"
+}
+```
+
+Both `(source, revision)` pairs must appear in `evidence`; include the current
+canonical and relevant decision/dependency facts once. Without a matching ready
+record the program downgrades a proposed reuse to `assess-readiness`. This checks
+bindings only: the PM owner still verifies semantic freshness and authorization.
+Do not fetch an entire comment history solely to fill this optional field.
+
 Successful stdout contains the canonical `issue_route` and `routing_evidence`.
+`live_state.issue_role` distinguishes a product outcome from an accepted
+engineering task when the bound evidence supports it. It does not grant a task
+write, technical approval or product decision.
 Use `issue_route.selected.next_owner`, terminal intent, authority and completion
-contract directly. Return blocked routes without starting another workflow.
-Reuse a still-current receipt; on material input change refresh the affected
+contract directly. For `pm/*`, the additive `pm_action` field contains `action`
+(`clarify`, `write-spec`, `assess-readiness`, `reuse-handoff`, `blocked`), a bounded
+`next_owner`, `gap`, `required_input` and zero-based `evidence_refs` into the
+receipt's top-level evidence list. It leaves the lifecycle owner as `$pm`;
+`blocked` stops dependent PM work even when workflow routing itself succeeded.
+Do not repeat classification or treat this field as product/readiness approval.
+Return blocked routes without starting another workflow.
+Reuse a still-current receipt. Inside PM, the verified local transitions in
+[working context](../../pm/references/working-context.md) need no new paid call;
+keep their progress separate from the immutable route. Otherwise on material
+input change refresh the affected
 facts and invoke the command again, rather than reclassifying in the main model.
 
-The only network operation is a paid TypeSafe decision request containing the
-supplied evidence and policy. No tracker or repository mutation occurs. Credentials
+The network operations are the [Jev-first decision cascade](decision-cascade.md)
+over the supplied evidence and policy; low-confidence questions can additionally
+use Luna Decisions through OpenRouter. No tracker or repository mutation occurs. Jev credentials
 are read from `TYPESAFE_API_KEY`, `JEV_API_KEY`, or `JEV_ENV_FILE` (default
 `~/.config/jev/.env.local`); the file is parsed, never sourced or printed.
 The command pins `jev-1.13.0`, validates typed choices and reports input/policy
-hashes, probabilities, usage and elapsed time. It does not retry POSTs.
+hashes, probabilities, usage and elapsed time, with original provider receipts and
+final decision sources kept separately. It does not retry POSTs.
 Exit 0 means routed; exit 2 means a blocking input, policy, binding or service
 boundary. Report the reason and repair that boundary; do not silently return to
 main-model routing or ask Jev to grant missing authority.
+The separate `needs-main-model` state (also exit 2) carries only unresolved
+low-confidence disagreements. Complete its bound resolution and resume the same
+input with `--decision-resolution`; accepted choices are not reopened.

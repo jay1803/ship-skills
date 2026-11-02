@@ -1,6 +1,6 @@
 {
   "name": "@jay1803/ship-skills-develop",
-  "version": "0.12.0",
+  "version": "0.13.16",
   "description": "Single- and multi-issue engineering orchestration, implementation, integration, validation, repair, and merge handoff workflows for Codex and Claude Code.",
   "files": [
     ".codex-plugin",

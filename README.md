@@ -17,7 +17,8 @@ ship-skills/
 │   ├── devops/     # repository setup and production release
 │   ├── design/     # design direction through design review
 │   ├── project/    # project proposal, kickoff, updates and closeout
-│   └── research/   # open questions through decision-ready evidence
+│   ├── research/   # open questions through decision-ready evidence
+│   └── skill/      # skill design, authoring, behavioral review and audits
 ├── catalog/        # generated machine-readable inventory
 ├── scripts/        # install, catalog, packaging, validation
 └── wiki/           # workflow and catalog documentation
@@ -32,6 +33,7 @@ ship-skills/
 | `design` | 6 | Design flows, screens, prototypes, systems, and visual artifacts. |
 | `project` | 8 | Prepare and maintain project lifecycle documents. |
 | `research` | 16 | Turn open questions into decision-ready evidence. |
+| `skill` | 4 | Design, author, review and audit agent Skills. |
 
 The directories under `plugins/` are the release boundaries. Each has a Codex
 plugin manifest, a Claude Code plugin manifest, and an npm package manifest.
@@ -92,6 +94,7 @@ plugin:
 | `@jay1803/ship-skills-design` | `plugins/design` | visual design workflow |
 | `@jay1803/ship-skills-project` | `plugins/project` | project lifecycle documents |
 | `@jay1803/ship-skills-research` | `plugins/research` | evidence and decision support |
+| `@jay1803/ship-skills-skill` | `plugins/skill` | skill authoring and review |
 
 npm is used for semantic versions, tarball contents, and registry distribution.
 Codex installation is performed through the plugin marketplace so the runtime

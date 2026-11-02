@@ -1,19 +1,17 @@
 # Implementation And Validation
 
-Read when preparing or running selected pre-PR phases. The numbered lifecycle preserves ownership; the Resume Receipt selects stages and may resume later without replaying completed work.
+Read for selected pre-PR work. The Resume Receipt selects stages; resume at the pending owner without replaying completed work.
 
-## Implementer Reference Selection
+## Implementer Platform Selection
 
-Use `$dev-implementer` for coding, and choose the narrowest platform reference(s) that match the changed surface. Multiple references are allowed when the issue crosses layers; sequence backend/API contracts before clients by default.
+Use `$dev-implementer` for coding with the [platform hazards](../../dev-implementer/SKILL.md#platform-hazards)
+of every changed surface; sequence backend/API contracts before clients by default.
 
-- `implement-ios.md`: iOS app code, Xcode iOS targets, iOS simulator/device build-run-debug, UIKit, iOS SwiftUI screens, App Intents, iOS runtime behavior.
-- `implement-macos.md`: macOS app code, AppKit, macOS SwiftUI scenes/windows/menus, macOS build-run-debug, signing, entitlements, packaging, SwiftPM GUI apps.
-- `implement-swiftui.md`: SwiftUI-specific view, state, layout, navigation, animation, accessibility, preview, performance, Liquid Glass, or Instruments trace work across iOS/macOS. Pair with `implement-ios.md` or `implement-macos.md` when platform build/run support is also needed.
-- `implement-web.md`: frontend web app code, React, Next.js, Vite, dashboards, responsive browser UI, client state, browser tests.
-- `implement-backend.md`: backend/API/service code, workers, jobs, queues, persistence, migrations, auth, permissions, service contracts, and backend integration tests.
-- `implement-supabase.md`: Supabase backend code, migrations, RLS, Auth, Edge Functions, Storage, Realtime, cron, queues, generated types, backend API behavior.
-
-Project defaults are allowed when the repo clearly documents one, but they are advisory. If the actual issue touches a different surface, route by the issue and repo evidence. Ask only when two implementers would make materially different architecture or product-scope decisions.
+Project defaults are allowed when the repo clearly documents one, but they are
+advisory. If the actual issue touches a different surface, route by the issue
+and repo evidence. Return material architecture or product-scope choices to the
+controller for the planner or a requester decision under the
+[autonomous decision rule](execution-ownership.md#autonomous-decisions-and-discovered-work).
 
 ## Project Classification And QA
 
@@ -30,113 +28,82 @@ Before implementation and before QA, classify the project and touched surface fr
 - mixed
 
 Use the [mode contract](development-mode-contract.md#standard-and-strict-modes)
-for validation depth. Standard selects primary-flow and ticket-specific regression
-coverage plus necessary build/typecheck and enforced repository/CI checks. Strict
-adds risk-selected failure/recovery and integration coverage. Project type helps
-locate the smallest sufficient test surface; available suites are not all mandatory.
+for validation depth and selected hands-on QA. Project type helps locate the
+smallest sufficient test surface; available suites are not all mandatory.
 Use the relevant Apple build target, backend API/schema check, web component/route
 test, or CLI/package/config check. API changes retain API Steward closeout.
 
-In fast mode, validate only the primary path with focused unit tests and the minimum build/typecheck/lint/schema/CI checks required to create and merge the PR. Do not exhaustively validate listed edge cases or run optional integration, E2E, smoke, hands-on, review, acceptance, deployment, or production-verification work; record every skip and unknown in Dev State and closeout reporting without opening a dedicated risk ticket merely for the omission.
+Carry a compact validation brief into implementation: required checks and their
+source, target/suite selectors, changed regression, and any required UI component,
+interaction and evidence fidelity. Resolve a missing input/harness prerequisite
+at that boundary before expensive execution; a display fixture does not prove
+an input-control requirement. Use `$dev-test`'s
+[target and harness readiness](../../dev-test/references/validation-evidence.md#target-and-harness-readiness)
+guidance without adding optional suites to the selected floor.
 
-Select additional hands-on QA from explicit user/repository/acceptance requirements
-or a concrete changed-path risk not covered by automated checks. Name the
-required iOS device/simulator, macOS app, browser, or runtime surface and expected
-result in the receipt. `$dev-test` performs only that selected scope; a UI change
-or strict mode alone does not require every platform or adjacent flow.
+Apply the development-mode contract, including its [real-environment precedence](development-mode-contract.md#unattended-validation-and-deferred-acceptance), before classifying QA as required. For other QA surfaces, record why they are not applicable when the repo/change has no runnable surface or does not touch the behavior; missing required automated evidence remains blocked. In fast mode, apply the [fast-mode rules](development-mode-contract.md#fast-mode) instead.
 
-Apply the development-mode contract before classifying QA as required. In standard/strict mode, real-environment and human test surfaces are waived even when an old ticket requires them. For other QA surfaces, record why they are not applicable when the repo/change has no runnable surface or does not touch the behavior; missing required automated evidence remains blocked. In fast mode, apply the unskippable conditions from the development-mode contract and record every other omitted surface as skipped or unverified.
+## Selected Pre-PR Work
 
-## End-To-End Workflow
+The issue worker accepts state and artifacts under
+[execution ownership](execution-ownership.md) and keeps the objective in Dev
+State.
 
-Delegation legend for the numbered workflow:
+### Preparation And Missing Decisions
 
-- **Main thread**: `$dev` orchestrator owns Dev State, goal lifecycle, branch/worktree setup, resolved-base PR creation, tracker/PR mutations, issue-base merge/test handoff, user communication, and blocker decisions. `$release` alone owns production promotion and applies the repository's configured merge executor.
-- **Read/report artifact**: delegate when the execution-ownership contract selects isolation, independence, capability, or useful parallelism; otherwise bounded inline work is allowed. `$dev` accepts the evidence and decides the next phase.
-- **Serial worker**: keep one mutating/validation owner at a time. Reuse a suitable implementation worker for testing and scoped repair; selected responsibilities and evidence remain explicit without a new agent per phase.
-- **Conditional**: apply execution-ownership to read/report work; keep edits and externally mutating actions serial and within the controller's authorized scope.
+Reconcile Git/worktree/base state only when the receipt requires
+`$dev-git-setup`. Build one compact brief from current canonical evidence:
+objective, scope/non-goals, acceptance, relevant design/contract constraints,
+project surface, validation floor and material risks. Link applicable outcome
+or human-acceptance requirements with their mode disposition. Missing readiness
+returns to the preflight's [entry audit](resume-preflight.md#entry-audit) before
+Git mutations.
 
-Before the numbered lifecycle, apply the Resume-First Preflight. When
-Dev was not explicitly invoked, its first decision is the Direct Exclusion Gate;
-Direct Artifact and Direct Patch return immediately and do not enter this
-lifecycle. Otherwise it applies the Issue Resolution Gate and, for an existing
-record without a verified PM handoff, the Direct Dev Entry Audit. An unnumbered
-issue-level request that enters Dev must be connected to an existing issue or
-recorded in a newly created one; no goal, branch, worktree, code investigation,
-implementation, tracker/PR mutation, or downstream delegation may begin first.
-`pm_required` and `blocked` stop here with zero downstream Dev roles.
+Resolve only deciding unknowns: `$dev-debugger` for an unexplained defect,
+`$dev-spike` for local feasibility, `$dev-api-research` for third-party facts,
+and `$dev-planner` for approach, invariants, task boundaries or sequencing.
+Reuse an accepted root cause/plan; no separate discovery or architecture artifact
+is needed for clear work. A new material boundary requires the planner's explicit
+`split`, `no_split` or `blocked` assessment before dependent dispatch, under the
+root Skill's reassessment protocol.
 
-1. After `dev_new` or `dev_resume` preflight and its Resume Receipt, start or reuse one active goal for the full Dev lifecycle when goal tools are available.
-   - Owner: main thread (`$dev` orchestrator).
-   - Default goal: address the approved feature or bug, merge the PR into the resolved issue PR base, and complete the mode-required test handoff.
-   - Cover branch/worktree setup, issue/spec reading, implementation, mode-appropriate validation/review gates, PR creation against the resolved issue PR base, review/comment/CI repairs, issue-base merge, cleanup, and test-environment/release-candidate handoff.
-   - Do not create a second implementation-only goal.
-   - Do not mark the goal complete at PR creation unless the user explicitly set a PR-only boundary.
+For backend/API changes, `$dev-api-steward` locks intended contracts before
+implementation and compares the resulting diff afterward. Carry its constraints
+into the brief and update required docs, generated clients, compatibility and
+migration guidance. Contract disagreement returns to implementation. Cross-issue
+execution belongs to `$dev-project-orchestrator`; its explicit multi-PR integration
+checkpoint belongs to `$dev-integration-manager`.
 
-2. Reconcile issue/spec, repo, mode, base branch, and branch/worktree only when the Resume Receipt requires `$dev-git-setup`.
-   - Owner: controller-coordinated mutation, inline or delegated with inherited permissions (`$dev-git-setup`) only for required reconciliation; otherwise continue directly from the validated pending lifecycle gate without duplicate branch/worktree state.
-   - The read-only preflight already reads Linear title, description, comments, attachments, linked context, status, labels, and acceptance criteria when tools are available.
-   - Build a compact implementation brief: objective, in-scope work, non-goals, acceptance criteria, human-acceptance label/steps when present, production-loop contract/readiness when present, project classification, validation expectations, QA mode, and known risks.
-   - Record the readiness basis: verified PM handoff or existing canonical issue audit.
-   - If the issue is not dev-ready, stop before any git action with the missing decision and route to `$pm-readiness-review`.
+### Implementation And Validation
 
-3. Resolve only the missing repository facts, and run selected investigation or
-   `$dev-planner` when a real technical decision remains.
-   - The current owner gathers source-anchored context; no separate discovery
-     artifact is required. Use `$dev-debugger` for an unexplained defect,
-     `$dev-spike` for local feasibility, and `$dev-api-research` for third-party
-     facts that change the decision.
-   - `$dev-planner` owns approach and sequencing in one Technical Plan. It reads
-     domain/refactor references only for material invariant, state, ownership,
-     or migration decisions. Clear changes use the brief without planning.
-   - Run pre-implementation `$dev-api-steward` for backend/API behavior or
-     contract changes using the current approach/brief. Feed its constraints
-     into the plan when selected; no separate architecture artifact is needed.
-   - Preserve selected platform guidance, required verification/fidelity,
-     production-loop thresholds, compatibility, and escalation boundaries.
+Apply `$dev-implementer` inline with the brief, selected platform guidance,
+prerequisites and return gate, or dispatch it as a bounded agent only under
+[delegated implementation](execution-ownership.md#delegated-implementation).
+The same owner handles coding, local tests and scoped fixes. It returns unresolved scope/contract decisions to their owner
+and commits only scoped changes. Follow its
+[implementation/test order](../../dev-implementer/SKILL.md#implementation-and-test-order).
+TDD follows an explicit user request or repository requirement; its
+red/green/adapt/decline evidence needs no extra worker or plan.
 
-4. Implement with `$dev-implementer` and relevant platform guidance.
-   - Keep one suitable implementation owner for code, local validation, and
-     bounded fixes. TDD, when selected or requested, is its conditional
-     reference; preserve meaningful red/green/adapt/decline evidence without
-     another worker or planner-only document requirement.
-   - Inspect current code/tests and keep changes within the approved brief.
-     Add practical required tests/artifacts, preserve domain/refactor rules,
-     and commit only scoped changes before PR creation.
-   - Return unresolved scope or technical decisions to the controller, not a
-     speculative patch. Reuse sufficient current context rather than repeating
-     discovery, architecture, and planning after each local failure.
+Apply `$dev-test` at the selected mode's QA bar. Assess existing evidence before
+rerunning and use its test-authoring gate before adding tests. Preserve primary
+paths, ticket regressions and required checks; select extra integration or
+hands-on coverage from explicit requirements or concrete changed-path risk.
+Apply unattended waivers before classifying unavailable evidence as blocking.
+Keep unavailable remaining required proof blocked/unverified, not passed.
+After three failed implementation/test repair attempts for the same blocker,
+stop that loop with evidence. Review-managed repair uses its separate cumulative
+round budget; do not reset either counter on resume.
 
-5. Run post-implementation `$dev-api-steward` when API behavior changed or may have changed.
-   - Owner: conditional. Apply execution-ownership for implementation-vs-contract review; use a serial worker or controller-coordinated edit path for docs, generated clients, changelog, examples, or migration-guide changes.
-   - Compare the implementation diff to the intended contract.
-   - Update OpenAPI/Swagger, API docs, examples, changelog, versioning notes, and migration guidance when needed.
-   - If implementation and contract disagree, route back to `$dev-implementer` before PR creation.
-   - If client-impact work spans multiple issues, PRs, or repos, route planning
-     and issue execution to `$dev-project-orchestrator`; use
-     `$dev-integration-manager` for the explicit PR/branch integration
-     checkpoint it produces.
+### Selected Completion Verification
 
-6. Apply `$dev-test` with the selected mode and project QA bar.
-   - Owner: formal test responsibility on the active branch/worktree; the same suitable implementation worker may execute it. Assess existing evidence under `$dev-test` before rerunning; preserve the complete selected validation bar.
-   - In fast mode, run focused primary-path unit tests and structurally required checks only; return skipped tests, acceptance criteria, edge cases, and production evidence under `Skipped / Unverified`.
-   - In standard mode, validate the primary flow and ticket-specific regression; do not add reverse-red/mutation or unrelated edge-case coverage by default. Strict extends coverage under the mode contract.
-   - Add the receipt's required hands-on and material acceptance/edge-case checks after automated checks; report unavailable required evidence as blocked or unverified.
-   - Apply the mode contract's unattended waiver before selecting a production-loop verifier; simulator/seed/fixture checks still run, while real-environment evidence is deferred without blocking engineering. Fast mode records optional production verification as skipped unless it is an enforced pre-merge or unskippable safety/primary-path gate.
-   - Fix valid QA findings before PR creation. After three failed repair attempts for the same blocker, stop or mark that QA surface blocked with evidence.
-
-7. Run `$dev-verifier` only when independent freshness is needed, implementer evidence is insufficient, risk is high, or the head changed.
-   - Owner: completion-evidence verification under execution-ownership; preserve any explicit independent verifier requirement.
-   - Freeze the exact base/head target and map every acceptance criterion,
-     required test or runtime claim, scope boundary, and remaining uncertainty
-     to current evidence.
-   - Require an explicit `pass`, `fail`, `blocked`, or `not-applicable` outcome
-     for each claim and for the overall result. Implementation intent is never
-     completion evidence.
-   - When selected, proceed only from a current overall pass. Route failures or
-     evidence gaps to their owning Dev skill, then rerun verification against
-     the changed target before PR creation. When not selected, preserve the
-     receipt's validation floor and continue from the current validated gate.
-
-Required outcomes and authority remain shared; select validation depth from the
-mode contract rather than treating standard and strict coverage as identical.
+Select `$dev-verifier` for required independent evidence, insufficient implementer
+proof or material changed-path risk. A new head alone does not select it.
+When already selected, invalidate evidence affected by changed code, inputs,
+config or dependencies and verify the current exact target before advancing.
+Use its claim ledger and evidence-freshness rules rather than duplicating test
+summaries. Each required acceptance/test/runtime claim and material scope boundary
+needs an explicit outcome; implementation intent cannot establish completion.
+Proceed from a current overall pass, or route failures/gaps to their owning Skill.
+When unselected, retain the selected validation floor and continue without
+manufacturing a verifier artifact.

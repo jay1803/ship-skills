@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "displayName": "Develop",
   "name": "develop",
-  "version": "0.12.0",
+  "version": "0.13.16",
   "description": "Single- and multi-issue engineering orchestration, implementation, integration, validation, repair, and merge handoff workflows.",
   "author": {
     "name": "jay1803",

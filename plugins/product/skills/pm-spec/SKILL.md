@@ -14,9 +14,10 @@ Produce the human-reviewable product contract for development. Preserve deep
 agent detail in the PM thread or later Dev artifacts instead of using the
 canonical issue description as an exhaustive execution plan.
 
-For issue lifecycle work, apply the shared [Issue PM State Machine](../pm/references/issue-state-machine.md),
-including its downstream entry guard, Product Decision record, and single
-stage-comment identity.
+For issue lifecycle work, consume the [working context](../pm/references/working-context.md)
+and confirmed delta. Use the [state machine](../pm/references/issue-state-machine.md)
+for unresolved decisions or applicable review changes; do not rerun intake or
+fetch unchanged history. Standalone invocation remains a direct Spec entry.
 
 For a standalone analysis or draft, follow the
 [Product Artifact Contract](../pm/references/artifact-contract.md) and complete
@@ -29,53 +30,39 @@ unconfirmed product decision.
 
 ## Workflow
 
-1. Read the original issue title and description, labels, status, priority,
-   assignee, comments, attachments, linked context, and available docs.
-2. Read the single `## PM Workflow` root and relevant replies or diagnosis
-   evidence. If no PM root exists, use `$pm` intake/root initialization instead of
-   creating a separate top-level comment.
-   If an upstream stage owns an unresolved Decision Delta or required artifact,
-   return `upstream_blocked` to the controller without analysis or a Linear
-   comment. Do not create a duplicate Spec Gate for an upstream blocker.
-3. Apply Solution Review only when required by the state machine's material
-   simplification/rule criteria or an explicit request/policy. Reuse current
-   evidence; route an applicable missing/stale review to its owner. A non-Bug
-   label does not by itself require review. Check
-   [technical constraints](references/technical-constraints.md) before writing
-   when capability, compatibility or runtime acceptance could change scope.
-4. Establish the intent baseline: the user's exact request, verified inherited
-   behavior, and decisions the user explicitly confirmed. A continuation command
-   is workflow authorization, not product confirmation, unless it directly
-   answered an explicit pending approval request containing the exact proposal.
-5. Compare the candidate contract with that baseline. Classify every new
-   material rule using [Decision Provenance](references/decision-provenance.md).
-6. Verify that every user-confirmed material proposal is recorded in the single
-   `## Product Decision` reply with its exact answer and source. If the user has
-   answered elsewhere, record or update that reply before canonical writing.
-7. If this stage itself discovers a new material `Agent proposal`, do not edit the issue
-   title or description, do not add `scoped`, and do not claim readiness. Reply
-   by creating or updating the one `## Spec Write Result` comment with a compact
-   Decision Delta, enter `unresolved_decision`, and stop for the user's decision.
-8. When the delta is empty or confirmed, write observable product behavior and
-   only the critical acceptance outcomes needed to preserve the promise. Keep
-   detailed edge cases, test matrices, implementation mechanics, and verifier
-   procedures in the PM thread or Dev plan.
-9. Rewrite a vague, placeholder, or outdated title. Preserve one that already
-   reflects the agreed outcome and scope.
-10. Update the canonical issue title and description together when tracker tools
-   allow. This is the only PM skill in the default chain that rewrites them.
-11. When current goal, behavior, constraints and needed Design evidence are
-    confirmed, route to `$pm-readiness-review`. Resolve material technical or
-    Design choices before canonical writing, not through a mandatory post-spec
-    stage. Return a newly discovered product delta to its owner for confirmation.
-12. Assign the issue to the current/requesting user when identity is known. Add
-    or preserve `human-acceptance-required` when required. Add `scoped` only
-    after both canonical fields are written or verified and no material decision
-    remains unconfirmed.
-13. Return the verified write result to the controller for the combined
-    readiness/handoff record. Post a separate compact write receipt only for an
-    independently requested spec artifact or evidence needed before a wait;
-    reuse its comment ID. Do not repeat the canonical contract.
+1. Consume the current canonical title/description, exact confirmed change and
+   relevant provenance from the working context. Read only missing/stale sources;
+   attachments, docs and history are conditional. Reuse the verified PM root;
+   missing root initialization is a bounded `$pm` operation, not a new PM chain.
+   An upstream unresolved decision returns `upstream_blocked` without another
+   analysis or tracker comment.
+2. Compare the candidate with the exact request, inherited behavior and confirmed
+   decisions. Apply the authority gate below. Verify the single Product Decision
+   record covers material user answers before writing. A newly discovered
+   proposal returns its exact Decision Delta; reuse the existing result record
+   only when a durable blocker is needed. Do not write canonical fields or add
+   `scoped` while the decision is unresolved.
+3. Reuse applicable Solution Review and Design evidence. Missing required inputs
+   return to their owner. Load [technical constraints](references/technical-constraints.md)
+   only when capability, compatibility or runtime acceptance could change scope.
+   Do not add an obligatory review/design/technical phase.
+4. Write concise observable behavior, scope and critical acceptance using the
+   information contract below. Preserve an accurate title; reconcile obsolete
+   active text with confirmed changes. Apply title/description together when
+   supported; verify changed fields under the
+   [tracker contract](../pm/references/tracker-contract.md). If no delta exists,
+   verify the existing contract without a no-op write. Keep detailed mechanics
+   and test matrices in source artifacts or the Dev plan.
+5. Assign to the current/requesting user when known and authorized. Align
+   acceptance labels; add `scoped` only after both canonical fields are verified
+   and no material decision remains. An unavailable write produces an unapplied
+   draft, never a successful result.
+6. Return canonical binding, provenance and actual readback to the same context.
+   A successful write/verification advances directly to readiness within an
+   existing PM lifecycle; no second intake or routing call. A standalone request
+   stops at its specified artifact. Use the combined handoff for the write
+   receipt, with a separate compact receipt only when needed before a wait or
+   for an independently requested Spec artifact.
 
 ## Decision Authority Gate
 

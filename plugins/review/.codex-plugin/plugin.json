@@ -1,6 +1,6 @@
 {
   "name": "review",
-  "version": "0.5.1",
+  "version": "0.5.12",
   "description": "GitHub-native PR code review, isolated technical-review orchestration, and finding judgment.",
   "author": {
     "name": "jay1803",

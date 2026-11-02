@@ -28,6 +28,41 @@ requirement; carry it through Dev and Review. A skip stays skipped, a failed
 observation stays failed, and independent CI, safety, permissions, and branch
 protection still require their own evidence and authority.
 
+## Three-Round Acceptance Deferral
+
+In Dev-managed delivery, the controller may defer a remaining acceptance-related
+P2/P3 finding after the active engineering plan's three accepted independent
+Review rounds, **including an item explicitly required by the original ticket**.
+This standing policy supplies the acceptance exception; an additional item-specific
+waiver is not needed merely because the criterion was explicit. Product Review
+consumes that same ledger, not a new three-round Product counter. Before that
+boundary, explicit required acceptance retains its existing gate.
+
+Record the disposition in the existing delivery history: original requirement
+and source, finding ID and source-authored severity with impact evidence, the
+three accepted round artifacts, current PR/base/head, actual failed/partial or
+unverified outcome, this policy as the gate authority, and the deduplicated
+follow-up ticket containing the remaining behavior and evidence. Use existing
+tracker authority to create/reuse that ticket; unavailable writes leave an exact
+draft and named persistence action, never a claimed ticket. This policy grants
+no external write or merge authority.
+
+Product Review independently checks that binding. Keep the requirement's actual
+coverage status and mark its gate effect `non-blocking — deferred after three
+rounds`, with the follow-up reference. Do not mark it `Covered`, erase it, or
+rewrite the original ticket to manufacture conformance. When other effective
+requirements pass, the Product gate may pass with these disclosed deferrals and
+development/successors may advance through their own gates. Do not reopen repair,
+require a fourth review, or restart planning solely for the deferred criterion.
+
+A ticket's scheduling priority, an ungraded finding, missing required review
+coverage, or budget exhaustion alone cannot establish eligibility. P0/P1 and
+independent CI, safety, permissions, branch protection and human merge policy
+remain binding; strict's independent engineering P2 defects also retain their
+gate. A later explicit requirement-owner instruction forbidding this deferral
+for the item takes precedence. Verify current evidence rather than guessing a
+lower severity or applying a stale disposition to a changed target.
+
 ## Unattended Engineering Acceptance
 
 For standard delivery (also when mode is omitted), write required product

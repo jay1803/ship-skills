@@ -27,6 +27,11 @@ outside engineering barriers and cannot be closed from a merge. Do not invent
 extra tickets for routine omitted QA. A standalone live-validation request keeps
 its own requested completion contract.
 
+Mechanical root/metadata maintenance uses the established route and
+[working context](working-context.md). Apply the exact supported payload with
+tracker tools and verify readback; it is not a separate intake analysis, agent
+or routing call. Preserve unchanged fields and reuse known record IDs.
+
 ## One thread, material records only
 
 `$pm` creates or reuses exactly one `## PM Workflow` root with the classification
@@ -34,8 +39,8 @@ and relevant source links. Direct-entry readiness may perform this bounded
 initialization when equivalent intake evidence already exists. Keep the exact
 root comment ID; the issue ID or a child URL is not a substitute.
 
-Later writes use a native reply under that root. With `linear-cli`, use
-`linear issue comment add <issue> --parent <root-comment-id> ...`. Re-read a
+Later writes use a native reply under that root (with the `linear` Skill: the
+CLI's `--parent <root-comment-id>` or the equivalent parent field of another client). Re-read a
 reply and verify `parent.id` equals the root. When native replies are unavailable,
 append to the verified root only if editing is supported. Otherwise return an
 exact unapplied draft; do not post another top-level PM comment.
@@ -66,6 +71,13 @@ replacement for `PM Thread`. Use the
 [state machine](issue-state-machine.md) for legacy readiness/handoff pairs and
 resume/freshness checks.
 
+For issue-bound Product Solution Review approval, resolve the exact
+`REVIEW:PRODUCT` label and add it only to the reviewed outcome within the
+authorized write scope. If the label does not exist, create it only when label
+management is supported and authorized; otherwise return the pending label
+action. An already present exact label may waive the advisory review without a
+review comment. Record that as a waiver unless a current approval is evidenced.
+
 ## Writer ownership
 
 | Owner | Allowed work within the user's authorization |
@@ -74,7 +86,7 @@ resume/freshness checks.
 | `$pm-spec` | Rewrite an existing issue's canonical title and description, align acceptance wording/label and add `scoped` only after verified canonical completion |
 | `$pm-scope` | Clarify problem/scope, propose decisions and return decomposition drafts; material supporting reply only |
 | `$pm-bug-triage` | Bug evidence, severity and supported bug metadata; no canonical rewrite, `scoped` or active status |
-| `$pm-solution-review` | Independent simplification and provenance findings; no scope repair or canonical rewrite |
+| `$pm-solution-review` | Independent simplification and provenance findings; add `REVIEW:PRODUCT` on issue-bound approval when authorized; no scope repair or canonical rewrite |
 | `$pm-readiness-review` | Read-only gate judgment and its authorized combined handoff reply; no scope repair or inferred Dev launch |
 | `$pm-data-analytics` | Measurement plan and its authorized supporting reply |
 | `$pm-backlog` | Draft issue trees, dependencies and follow-ups; no live multi-issue writes |

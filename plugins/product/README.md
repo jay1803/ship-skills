@@ -47,6 +47,14 @@ calls. Existing complete tickets can enter readiness directly. Bugs reuse
 triage/diagnosis, verify or repair the canonical restoration scope, then enter
 readiness. Solution Review applies to material rule/simplification questions or
 an explicit request/policy; non-Bug classification alone does not require it.
+
+It applies to product outcomes, not accepted engineering-task children under
+one product outcome. `REVIEW:PRODUCT` on the current product issue satisfies
+the advisory Solution Review gate; without approved review evidence the handoff
+calls this a waiver, not an approval. Engineering children inherit confirmed
+product acceptance and receive task-local design/readiness checks from their
+accepted Dev plan. A new product rule returns to Product.
+
 Technical product constraints are investigated before specification when they
 can change scope or acceptance. Independent reviews retain their judgment.
 
@@ -72,6 +80,31 @@ PM still confirms product policy, scope and acceptance. Install Design when that
 capability is needed; missing Design does not block unrelated PM work.
 
 Install Product with `codex plugin add product@jay1803-ship-skills`. Develop lifecycle
-entrypoints require Product's Issue Router. `linear-cli` remains a standalone
+entrypoints require Product's Issue Router. `linear` remains a standalone
 integration installed separately through the standalone linker. Source changes
 do not publish plugin releases or update installed consumers.
+
+## Discovery evaluation
+
+The cases in `evals/behavior/fixtures/mx119-product-trace.json` stage all 14
+current Product entrypoints. They check single-issue PM, bug triage, project PM,
+scope framing, PR product conformance, read-only issue routing, and two nearby
+requests owned by engineering or technical review.
+
+```bash
+npm run eval:trace -- \
+  --case mx119-product-trace/explicit-single-issue-pm \
+  --case mx119-product-trace/implicit-bug-triage \
+  --case mx119-product-trace/contextual-project-pm \
+  --case mx119-product-trace/implicit-product-scope \
+  --case mx119-product-trace/explicit-product-pr-review \
+  --case mx119-product-trace/explicit-read-only-issue-router \
+  --case mx119-product-trace/negative-engineering-implementation \
+  --case mx119-product-trace/negative-technical-code-review \
+  --run-dir .eval-runs/product-discovery-1
+```
+
+This opt-in run uses disposable read-only workspaces and retains Codex JSONL
+for the checker described in `evals/behavior/contract.md`. It tests discovery
+decisions only; it does not execute PM work or verify downstream tracker,
+readiness, or PR-review outcomes.

@@ -35,10 +35,8 @@ sections. Existing behavior need not be redesigned to fill a checklist.
 
 Inline execution retains the current runtime. Delegate only when independent
 judgment or a bounded parallel task adds value and delegation is authorized.
-Before dispatch, use the package-local Jev routing command under the
-[input contract](jev-input.md). Consume its envelope and binding directly;
-do not load the PM map or adapter classification tables.
+Route it as described under [Delegation](../SKILL.md#delegation).
 Pass the request, relevant sources, target artifact, exact write scope, existing
 PM root when applicable, and stopping condition. Return the artifact, sources,
-routing receipt, applied writes or drafts, evidence, and unresolved decisions.
+applied writes or drafts, evidence, and unresolved decisions.
 A bounded worker does not acquire controller ownership or dispatch successors.

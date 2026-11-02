@@ -8,8 +8,8 @@ plan; no separate bypass artifact or architecture handoff is required.
 Use the approved source spec, acceptance criteria, current implementation, and
 contract tests. Anchor every rule to a source statement or observed behavior.
 Do not invent product rules, API fields, retention policy, or permissions.
-A missing product decision returns to `$pm-readiness-review`; a technical
-unknown stays explicit in the plan or routes to investigation.
+A missing product decision returns as the exact question for the requester; a
+technical unknown stays explicit in the plan or routes to investigation.
 
 Resolve only what affects the decision:
 

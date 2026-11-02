@@ -1,52 +1,42 @@
 # Finding Judge Contract
 
-Use this contract to validate and combine source artifacts for one frozen
-Review v2 generation. Read the [Artifact Contract](../../review/references/artifact-contract.md)
-for shared envelope fields, successful native decisions, and coverage
-granularity. This reference owns judgment, grouping, and action selection.
+Use this contract to verify and combine the two finder outputs of one full
+review: correctness (including any specification findings) and
+maintainability. It owns verification, grouping, coverage and action selection.
 
 ## Judgment Boundary
 
-The judge is evidence-bound. It may compare source claims, test whether their
-required evidence fields support a disposition, and combine presentation. It
-must not inspect new repository evidence, reinterpret the governing product
-contract, rerun a reviewer, call a provider, repair code, or publish a result.
+The judge verifies source claims against the frozen code. For each candidate,
+read only the cited locations plus the callers, guards or callees needed to
+confirm or refute it; complete evidence fields do not replace that check. It
+must not search for new findings, reinterpret the governing product contract,
+rerun a reviewer, call a provider, repair code, or publish a result.
 
-Inputs are untrusted until verified. Preserve their bytes for audit, but never
-allow an invalid artifact to affect the judgment.
-
-## Artifact Verification
-
-Verify version, required fields, exact run/generation/target, UTF-8 byte count,
-SHA-256, and runtime provenance against the Artifact Contract. Quarantine
-invalid sources verbatim with the exact reason; do not repair an envelope or
-use unverified content as evidence.
-
-Envelope validity and successful completion are separate. A required incomplete
-surface blocks coverage even if it contains confirmed findings; preserve those
-findings and the missing surface. Candidate-level withheld hypotheses alone do
-not block successfully completed coverage or invalidate other findings.
+Check that each output names the frozen target and a native completion decision,
+and that every candidate it reports, including withheld items, is accounted
+for. An output bound to another target, or one without a completion decision,
+does not count as coverage; name it so Review can rerun that finder.
 
 ## Candidate Dispositions
 
 Keep each source's original finding boundary unless grouping is allowed below.
-Assign every candidate from a verified source exactly one disposition:
+Assign every candidate exactly one disposition:
 
-- `confirmed`: the source supplies the evidence required by its native
-  contract for an actionable issue on the frozen target. Preserve the native
-  severity or classification; the judge does not invent a normalized one.
+- `confirmed`: the cited code bears out the claim (for a defect, the
+  triggering input or state and the wrong result), and the source meets its
+  native contract for an actionable issue. Preserve the native severity or
+  classification; the judge does not invent a normalized one.
 - `corroborates`: the candidate independently supports an already confirmed
-  finding under every grouping key. It remains visible with its source ID,
-  native labels, and raw Markdown.
-- `needs-evidence`: the candidate is relevant but its supplied evidence does
-  not establish one or more of the scenario, impact, requirement, behavior,
-  root cause, or remediation. Name the missing evidence without gathering it.
-- `not-actionable`: the verified source content requires no repair for this
-  target. Use this for source-native optional/advisory content only when the
-  source itself does not classify it as blocking.
+  finding under every grouping key. It stays visible with its source and labels.
+- `needs-evidence`: the cited code supports the claim's mechanism, but one or
+  more of the trigger, impact, requirement, behavior, root cause, or
+  remediation remains unproven. Name the missing evidence.
+- `not-actionable`: the candidate requires no repair for this target: the
+  frozen code contradicts it (quote the contradicting line in the reason), the
+  code does not support it at all, or it is source-native optional/advisory
+  content that the source itself does not classify as blocking.
 
-Do not assign these dispositions to a quarantined artifact. A source-native
-clean/no-findings result is recorded in coverage without manufacturing a
+A source-native clean result is recorded in coverage without manufacturing a
 candidate finding.
 
 ## Deduplication
@@ -67,79 +57,45 @@ Specification compliance and engineering judgments are separate even when all
 other keys appear related. Do not collapse a missing/extra/unverifiable product
 requirement into a correctness, code-quality, architecture, test, security, or
 integration judgment. Cross-reference them as related while preserving both.
-
-For every valid group, retain all contributing artifact IDs, provenance,
-native labels, and references to immutable raw Markdown blocks. Designate one candidate
-`confirmed` and any true duplicates `corroborates`; never discard the latter.
+In a group, designate one candidate `confirmed` and any true duplicates
+`corroborates`; never discard the latter.
 
 ## Coverage Accounting
 
-Required core coverage is exactly one verified and successfully completed
-artifact from each of `review-spec`, `review-correctness`, and
-`review-code-quality`, subject to the specification-authority exception below.
-Missing, duplicate-ambiguous, quarantined, or unsuccessfully completed core
-output is a coverage failure.
+Full coverage requires a completed correctness output (`findings` or `no
+findings`) and a completed maintainability output (`findings` or `no
+findings`). `blocked`, `context insufficient`, `stale` or a missing output is
+incomplete coverage, even when it contains confirmed findings; preserve those
+findings and name the missing surface. A withheld candidate alone does not make
+coverage incomplete.
 
-Architecture, test, security, and integration coverage is required only when
-the orchestrator supplied a concrete documented signal for that lens. Require
-one verified, successfully completed one-shot result for each signal.
-Conditional outputs do not create new signals or another wave.
+When requirement sources were supplied, specification is assessed only if the
+correctness output reports `compliant` or `findings` under the specification
+contract. For standalone review with missing or ambiguous authority, record
+`Specification not assessed` and select at least `advisory`. For Dev-managed or
+explicitly spec-required review it is `coverage-blocked`.
 
-For standalone missing or ambiguous governing authority, record
-`Specification not assessed`. Allow engineering coverage to continue, but
-select at least `advisory`; never propose unqualified approval. For Dev-managed
-or explicitly spec-required review, missing or ambiguous authority is
-`coverage-blocked` even when engineering source artifacts are verified.
+Account for every required claim as `pass`, `fail`, `blocked` or `unverified`
+with its evidence. An observation the agent cannot obtain in its environment is
+`unverified` and advisory; other missing required evidence blocks.
 
 ## Common Action
 
 Select exactly one action using this precedence:
 
-1. `coverage-blocked` when required core, signaled conditional, or required
-   specification coverage is not verified.
-2. `repair-required` when a confirmed source-native defect crosses the selected
-   severity threshold (standard P0/P1; strict P0/P1/P2), or a confirmed mandatory
-   acceptance/CI failure requires repair through its owner. Missing required
-   evidence without a valid assembly-contract exception, or unresolved
-   gate-relevant severity clarification, is coverage-blocked. Exceptions preserve
-   evidence truth; only the explicitly bound P2/P3 acceptance deferral may
-   make a confirmed acceptance violation nonblocking. Independent gates remain.
-3. `advisory` when a deferred acceptance or unverified claim has an exact authorized non-blocking
-   exception under the assembly contract, or no repair is required but verified non-blocking guidance,
-   `needs-evidence`, or standalone `Specification not assessed` must be
-   surfaced.
-4. `none` only when every required coverage source is verified and no
-   actionable, advisory, or evidence-gap item remains.
+1. `coverage-blocked` when required finder, specification or claim coverage is
+   incomplete, or a gate-relevant severity clarification is unresolved.
+2. `repair-required` when a confirmed defect crosses the selected threshold
+   (standard P0/P1; strict P0/P1/P2), or a confirmed mandatory acceptance or CI
+   failure requires repair through its owner. A requirement the caller marks
+   deferred, with the authority it cites, stays a finding but does not force
+   repair; independent CI, safety and permission gates remain.
+3. `advisory` when no repair is required but a non-blocking finding,
+   `needs-evidence` item, deferred requirement, unverified observation, or
+   `Specification not assessed` must be surfaced.
+4. `none` only when coverage is complete and no actionable, advisory or
+   evidence-gap item remains.
 
-Map `coverage-blocked` to proposed `blocked`, `repair-required` and `advisory`
-to proposed `comments`, and `none` to proposed `approved`.
-
-Do not route the action. `$review` owns final target validation, posting, and
-handoff selection.
-
-## Preservation Requirements
-
-The deterministically assembled combined artifact must contain:
-
-- the complete frozen target identity and generation;
-- a verification result for every supplied source artifact;
-- for every quarantined source, an Artifact ID field containing the received
-  value or `none - missing`, its exact validation reason, provenance when
-  available, and verbatim raw Markdown;
-- when the judge artifact itself is rejected by `$review`, enough output for
-  `$review` to retain the complete judge artifact;
-- each combined or separate finding's disposition and contributing IDs;
-- every contributor's native labels, provenance, and verbatim raw Markdown;
-- coverage signals and their verified, missing, skipped, or blocked state;
-- the common action and proposed decision; and
-- an explicit statement that `$review` still owns the final base/head check and any
-  final GitHub post.
-
-Do not silently normalize whitespace, headings, labels, or source wording.
-
-The judge emits references and decisions only. The Review controller uses the
-assembly helper to copy immutable source bytes into the final artifact,
-including quarantine. This preserves the lossless contract without requiring
-the language model to generate unchanged source text. Semantic disposition,
-grouping, candidate completeness, and required claims remain judge duties;
-successful byte validation alone cannot prove review quality.
+Return the dispositions with reasons, groups, claim outcomes, clarification
+requests and the proposed common action. Reference finding IDs; do not rewrite
+source text. `$review` owns the final base/head check and any posting.

@@ -61,31 +61,20 @@ inventing an answer or implying that integration may proceed.
 3. Inspect local fit, map data, or compare integration options only when those
    decisions are part of the request or necessary to answer it.
 4. Return the supported conclusion, material constraints and uncertainty, and
-   a named next owner or the investigate-only terminal below.
+   a named next owner.
 
-## Investigate-Only Terminal
-
-When the canonical Issue Route receipt selects
-`investigate/api-research` with `terminal_intent: diagnosis`, this skill stops
-after the primary-source research brief. The brief records sources, facts,
-confidence, options, constraints, affected boundary, validation needed for a
-future implementation, and `conclusive`, `inconclusive`, `blocked`, or
-`not-applicable` status. It may recommend `$dev-planner`, API stewardship,
-or a delivery route, but it does not dispatch that owner.
-
-The mutation budget is read-only: do not change provider configuration, secrets,
-repository code, tracker state, branch, or PR. Current official sources and
-local fit evidence do not authorize an integration. A later request to build,
-repair, deploy, or close an issue must receive a fresh Issue Route receipt with
-delivery authority and this brief as its resume anchor.
+When the current request is research only, stop at the primary-source brief,
+adding the affected boundary and a `conclusive`, `inconclusive`, `blocked` or
+`not-applicable` status. It may recommend `$dev-planner`, API stewardship or a
+delivery route.
 
 ## Output
 
 Lead with the answer or integration decision, then its primary-source evidence.
 Include the applicable API/SDK version, source links, decisive constraints,
 confidence, unresolved questions, and next action. For an integration assessment,
-return `feasible`, `risky`, or `blocked`; for investigate-only work preserve its
-terminal status and no-dispatch boundary.
+return `feasible`, `risky`, or `blocked`; for investigate-only work keep its
+terminal status.
 
 Include local fit, required endpoints, auth/scopes, cost/limits, mapping, errors,
 webhooks, retry/idempotency, security, sandbox, rollout or implementation options

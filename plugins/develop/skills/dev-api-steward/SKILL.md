@@ -20,7 +20,7 @@ Run this skill whenever a Dev task may change backend/API behavior:
 - Request body, response body, query parameter, header, auth, permission, webhook, pagination, or error behavior changes.
 - Database/schema changes that alter externally visible API data.
 - OpenAPI/Swagger, generated client, SDK example, curl example, integration guide, or API docs may need updates.
-- Client behavior may change for iOS, macOS, web, backend consumers, partners, or scripts.
+- Behavior may change for any client or consumer of the API.
 
 ## Timing
 
@@ -32,7 +32,7 @@ Use two gates for API work:
 2. **Post-implementation contract closeout** after `$dev-implementer` and before `$dev-test` / `$dev-verifier`.
    - Compare the actual diff to the intended contract.
    - Update OpenAPI/Swagger/docs/examples/changelog/versioning notes as needed.
-   - Produce the contract evidence that `$dev-test`, `$dev-verifier`, `$dev-pr-writer`, and `$pm-pr-product-review` can use.
+   - Produce the contract evidence that `$dev-test`, `$dev-verifier`, and `$dev-pr-writer` can use.
 
 This timing avoids stale speculative docs while settling the contract before implementation.
 
@@ -41,7 +41,7 @@ This timing avoids stale speculative docs while settling the contract before imp
 - **API contract review**: check whether request/response behavior, endpoint semantics, auth, permissions, pagination, webhooks, or generated contracts changed.
 - **Docs update**: update OpenAPI/Swagger, API docs, endpoint docs, integration guides, generated docs, or examples when the API surface changed.
 - **Changelog entry**: record what changed, why, compatibility, migration notes, and whether it is breaking.
-- **Client impact analysis**: identify affected iOS, macOS, web, backend, script, partner, or generated-client consumers.
+- **Client impact analysis**: identify the affected clients and consumers, including generated clients, from the repository, docs and issue.
 - **Versioning judgment**: decide whether the change is backwards-compatible, additive, breaking, deprecated, or migration-required.
 - **Error model consistency**: ensure status codes, error shapes, messages, retryability, and validation errors follow existing conventions.
 - **Example maintenance**: update curl examples, sample payloads, SDK examples, fixtures, docs snippets, or integration notes.
@@ -51,16 +51,23 @@ This timing avoids stale speculative docs while settling the contract before imp
 1. Read the current scope/approach, relevant technical constraints, repository evidence, and implementation diff for the selected gate. Reuse existing briefs and selected-stage outputs; stop for unresolved contract facts rather than demanding documents from unselected stages.
 2. Locate the API source of truth:
    - OpenAPI/Swagger spec, route definitions, controller/service handlers, schema files, generated clients, docs, examples, changelog, migrations, tests, and fixtures.
+   - At the pre-implementation gate, read applicable repository ADR/versioning
+     policy and the affected schema/decoder before accepting compatibility.
+     Return the permitted contract series and migration constraints to the
+     planner/implementation brief; do not defer them to post-implementation docs.
 3. Determine whether the change affects external or internal API behavior.
    - If no API contract changed, record `No API Steward changes required` with evidence.
 4. Run the relevant gate:
    - Pre-implementation: return the intended contract and stewardship tasks to the caller/controller for the next selected phase, including `$dev-planner` when planning is selected.
    - Post-implementation: update docs/changelog/examples and produce the final contract review.
 5. Check compatibility.
-   - Additive nullable fields, optional request fields, or new endpoints are usually backwards-compatible.
+   - Additive fields are compatible only with the repository's versioning rules
+     and affected consumers. A closed response schema or strict decoder may
+     require a new contract series even for a nullable field; JSON optionality
+     alone does not establish compatibility.
    - Required request fields, removed/renamed fields, changed meaning, stricter validation, auth/scope changes, status-code changes, pagination changes, or error-shape changes may be breaking.
 6. Check clients.
-   - Identify affected client repos/modules when visible from the current repo, docs, generated clients, PRs, or PM handoff.
+   - Identify affected client repos/modules when visible from the current repo, docs, generated clients, PRs, or issue.
    - If client updates are required, name the client work. Route multi-issue or
      cross-repository execution to `$dev-project-orchestrator`; use
      `$dev-integration-manager` for the explicit PR/branch set and integration
@@ -97,10 +104,7 @@ Compatibility: <backwards-compatible | breaking | deprecated | migration-require
 - Migration / versioning notes:
 
 ### Client Impact
-- iOS:
-- macOS:
-- Web:
-- Backend / scripts / partners:
+- <client or consumer>: <impact and required work, or none>
 
 ### Files Updated
 - <path or "None">
